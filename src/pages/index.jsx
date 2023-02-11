@@ -28,9 +28,16 @@ export default function Home() {
           href="/favicon.ico"
         />
       </Head>
-      <main className="container" style={{ padding: '50px 0 100px 0' }}>
+      <main
+        className="container"
+        style={{ padding: '50px 0 100px 0' }}
+      >
         {!session ? (
-          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="dark" />
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            theme="dark"
+          />
         ) : (
           <Account session={session} />
         )}

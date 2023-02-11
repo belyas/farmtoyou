@@ -4,8 +4,8 @@ export default function ProtectedPage() {
   const session = useSession();
 
   if (!session) {
-    return <div>Access denied!</div>
+    return <div>Access denied!</div>;
   }
 
-  return <div>You're allowed to see the page</div>
+  return <div>You're allowed to see the page</div>;
 }

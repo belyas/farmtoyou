@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prettier:fix": "prettier --write src",
-    "prettier:check": "prettier --check src"
+    "prettier:check": "prettier --check src",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -25,7 +26,7 @@
     "@commitlint/config-conventional": "^17.4.2",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "prettier": "^2.8.4"
   },
   "husky": {
