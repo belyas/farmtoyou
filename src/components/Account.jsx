@@ -11,6 +11,7 @@ export default function Account({ session }) {
 
   useEffect(() => {
     getProfile();
+    // eslint-disable-next-line
   }, [session]);
 
   async function getProfile() {
