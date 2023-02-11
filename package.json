@@ -6,14 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier:fix": "prettier --write src",
+    "prettier:check": "prettier --check src"
   },
   "dependencies": {
     "@next/font": "13.1.6",
-    "eslint": "8.34.0",
-    "eslint-config-next": "13.1.6",
+    "@supabase/auth-helpers-nextjs": "^0.5.4",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.2.7",
+    "@supabase/supabase-js": "^2.7.1",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.4"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run prettier:fix && npm run lint"
+    }
   }
 }
