@@ -1,0 +1,1 @@
+//It returns a validation token, and validates the token
