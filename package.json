@@ -9,9 +9,7 @@
     "lint": "next lint",
     "prettier:fix": "prettier --write src",
     "prettier:check": "prettier --check src",
-    "prepare": "husky install",
-    "test": "jest --verbose --colors",
-    "test:w": "jest --watch --verbose --colors"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -30,9 +28,9 @@
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "husky": "^8.0.0",
-    "jest": "^29.4.3",
     "prettier": "^2.8.4"
   },
+  "type": "module",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
