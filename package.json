@@ -9,7 +9,9 @@
     "lint": "next lint",
     "prettier:fix": "prettier --write src",
     "prettier:check": "prettier --check src",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest --verbose --colors",
+    "test:w": "jest --watch --verbose --colors"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -24,9 +26,11 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
+    "babel-jest": "^29.4.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "husky": "^8.0.0",
+    "jest": "^29.4.3",
     "prettier": "^2.8.4"
   },
   "husky": {
