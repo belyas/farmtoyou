@@ -10,7 +10,8 @@
     "prettier:fix": "prettier --write src",
     "prettier:check": "prettier --check src",
     "prepare": "husky install",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --no-cache"
+    "test": "jest --verbose --colors",
+    "test:w": "jest --watch --verbose --colors"
   },
   "dependencies": {
     "@next/font": "13.1.6",
