@@ -20,6 +20,8 @@ cp .env.example .env.local
 
 ## Project Folder Structure
 
+I have modified the folder structure as the following:
+
 - Under the `/src` folder are all our codes.
 - `/api` folder contains all code we need to access the APIs of our application. For each API,we could have one folder where we could have API files and the test file.
 - `/components` folder contains the frontend code that we need to build the application. It has serval sub folders:
