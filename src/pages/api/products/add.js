@@ -1,40 +1,37 @@
-////be for product creation.
-//-recieves input from creation form
-//-validate the input
-//-query database with POST request to create a new entry
-
 import { supabase } from '../../../utils/supabaseClient';
 
 const hasEmptyValue = array => {
-  return array.find(item => item === undefined || item === '' || item === null);
+  const found = array.find(item => item === undefined || item === '' || item === null);
+  return found !== undefined;
 };
 
 export default async function add(req, res) {
-  if (req.method === 'POST') {
-    // Get data submitted in request's body.
-    const body = req.body;
+  if (req.method != 'POST') {
+    return res.status(500).json({ data: 'Request method must be POST.' });
+  }
+  const isEmptyBody = Object.keys(req.body).length === 0 ? true : false;
 
-    console.log('body:', body);
-
-    //if any of the filed is empty, return early
-    if (hasEmptyValue(Object.values(body))) {
-      res.status(400).json({ data: "Filed can't be empty" });
-    } else {
-      const { data, error } = await supabase
-        .from('baskets')
-        .insert([{ title: 'test' }])
-        .select();
-      if (!error) {
-        res.status(200).json({ data: data });
-      } else {
-        res.status(500).json({ data: error });
-      }
-    }
-  } else {
-    return res.status(400).json({ data: 'Request method must be POST.' });
+  if (isEmptyBody) {
+    return res.status(500).json({ data: 'Request body must not be empty' });
   }
 
-  //insert data into database
+  const body = req.body;
 
-  //respond with success msg
+  const bodyValues = Object.values(body);
+
+  const emptyValue = await hasEmptyValue(Object.values(body));
+
+  if (emptyValue) {
+    return res.status(500).json({ data: 'All fields must not be empty' });
+  }
+
+  //QQ:More validations?
+
+  const { error } = await supabase.from('products').insert(body);
+
+  if (!error) {
+    return res.status(200).json({ data: 'Product created!' });
+  } else {
+    return res.status(500).json({ data: 'Internal Server Error.' });
+  }
 }
