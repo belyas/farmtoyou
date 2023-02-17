@@ -1,10 +1,10 @@
 import Head from 'next/head';
+import Link from 'next/link';
 // import { Inter } from '@next/font/google'
 // import styles from '@/styles/Home.module.css';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
-
 // const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
@@ -42,6 +42,7 @@ export default function Home() {
           <Account session={session} />
         )}
       </main>
+      <Link href={'/products/add'}>Add new Product</Link>
     </>
   );
 }
