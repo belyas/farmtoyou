@@ -2,6 +2,18 @@ import add from './add';
 import httpMocks from 'node-mocks-http';
 import createRandomProduct from '../../../utils/generateFakeData';
 
+jest.mock('../../../utils/supabaseClient.js', () => ({
+  supabase: {
+    from() {
+      return {
+        insert() {
+          return '';
+        },
+      };
+    },
+  },
+}));
+
 describe('test add products', () => {
   it('Request method must be POST', async () => {
     const getReq = httpMocks.createRequest({
@@ -11,7 +23,7 @@ describe('test add products', () => {
 
     const getResult = await add(getReq, res);
 
-    expect(getResult.statusCode).toEqual(500);
+    expect(getResult.statusCode).toEqual(405);
   });
 
   it('Request body must not be empty', async () => {
@@ -23,7 +35,7 @@ describe('test add products', () => {
     const res = httpMocks.createResponse();
     const emptyReqResult = await add(emptyReq, res);
 
-    expect(emptyReqResult.statusCode).toEqual(500);
+    expect(emptyReqResult.statusCode).toEqual(400);
   });
   it('All fields must not be empty', async () => {
     const reqBody = {
@@ -44,18 +56,19 @@ describe('test add products', () => {
     });
     const res = httpMocks.createResponse();
     const someEmptyReqResult = await add(someEmptyFieldsReq, res);
-    expect(someEmptyReqResult.statusCode).toEqual(500);
+    expect(someEmptyReqResult.statusCode).toEqual(400);
   });
-  it('Valid input should create a row in the database, and return 200', async () => {
+  it('With valid input, add should query supabase and return 200', async () => {
+    const supabase = require('../../../utils/supabaseClient.js').supabase;
+
     const product = createRandomProduct();
-    console.log('product:', product);
     const req = httpMocks.createRequest({
       method: 'POST',
       body: product,
     });
     const res = httpMocks.createResponse();
     const result = await add(req, res);
-    console.log('result:', result);
+
     expect(result.statusCode).toEqual(200);
   });
 });
