@@ -1,5 +1,5 @@
 const hasEmptyValue = array => {
-  const result = array.findIndex(item => item === undefined || item === '' || item === null);
+  const result = array.findIndex(item => !item);
   return result !== -1;
 };
 
