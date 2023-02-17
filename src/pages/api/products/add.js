@@ -1,5 +1,5 @@
 import { supabase } from '../../../utils/supabaseClient';
-import hasEmptyValue from '@/utils/hasEmptyValue';
+import hasEmptyValue from '../../../utils/hasEmptyValue';
 
 export default async function add(req, res) {
   if (req.method != 'POST') {
