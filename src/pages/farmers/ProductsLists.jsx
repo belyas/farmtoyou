@@ -1,8 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-export default function farmersProducts() {
-  
+export default function ProductsLists() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -13,18 +12,18 @@ export default function farmersProducts() {
     fetchData();
   }, []);
   return (
-   <div>
-    <h1>List of Farmers Products!</h1>
-    <ul>
-      {products.map(product => (
-        <li key={product.id}>
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <p>Price: ${product.price}</p>
-          <p>{product.quantity}</p>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h1>List of Farmers Products!</h1>
+      <ul>
+        {products.map(product => (
+          <li key={product.id}>
+            <h2>{product.name}</h2>
+            <p>{product.description}</p>
+            <p>Price: ${product.price}</p>
+            <p>{product.quantity}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
