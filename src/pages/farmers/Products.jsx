@@ -1,11 +1,11 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function ProductsLists() {
+export default function Products() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch('');
+      const res = await fetch('localhost:3000/api/products/add');
       const data = await res.json();
       setProducts(data);
     }
@@ -27,3 +27,4 @@ export default function ProductsLists() {
     </div>
   );
 }
+
