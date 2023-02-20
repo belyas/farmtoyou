@@ -16,7 +16,7 @@ import HomeProducts from '@/components/homeProducts';
 // const inter = Inter({ subsets: ['latin'] })
 export async function getServerSideProps() {
   try {
-    const productsData = await fetch('http://localhost:3000/api/products').then(res => res.json());
+    const productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
     return { props: { productsData } };
   } catch (error) {
     return error;
