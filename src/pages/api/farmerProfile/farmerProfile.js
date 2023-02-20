@@ -7,13 +7,10 @@ export default async function getProfile(req, res) {
   if (!req.query) {
     return res.status(400).send({ data: 'Request must not be empty.' });
   }
-  const profile_id = parseInt(req.query.id);
+  const profile_id = req.query.id;
 
-  if (!Number.isInteger(profile_id)) {
-    return res.status(400).send({ data: 'Id must be an integer' });
-  }
   try {
-    const { data, error } = await supabase.from('profiles').select().eq('farmer_id', profile_id);
+    const { data, error } = await supabase.from('farmers').select('*, profiles (*)').eq('profile_id', profile_id).single();
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
@@ -23,6 +20,6 @@ export default async function getProfile(req, res) {
     }
     res.status(200).json({ data: data });
   } catch (error) {
-    return res.status(500).json({ data: 'Internal Server Error.' });
+    return res.status(500).json({ data: 'Internal Server Error.', error });
   }
 }
