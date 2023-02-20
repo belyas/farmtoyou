@@ -4,17 +4,16 @@ export default async function products(req, res) {
   if (req.method != 'GET') {
     return res.status(405).json({ data: 'Request method must be GET.' });
   }
-  //if no query param, return all products
-
-  if (!req.query.id) {
+  //if no query params, return the latest 20 products
+  if (!req.query || !req.query.id) {
     try {
-      const { data, error } = await supabase.from('products').select();
+      const { data, error } = await supabase.from('products').select().limit(20);
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
-      return res.status(200).send({ data: data });
+      return res.status(200).json({ data: data });
     } catch (error) {
-      return res.status(500).send({ data: 'Internal Server Error.' });
+      return res.status(500).json({ data: 'Internal Server Error.', error });
     }
   }
   // const farmer_id = parseInt(req.query.id);
