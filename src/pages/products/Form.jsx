@@ -7,31 +7,28 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 const Form = () => {
-  const [formData, setFormData] = React.useState({});
   const [submitting, setSubmitting] = useState(false);
+  
 
   const formik = useFormik({
     initialValues: {
       title: '',
-      date: new Date(),
+      delivery_date: new Date(),
       price: '',
       items: '',
-      subscriptionfrequency: '',
-      startsubscription: new Date(),
-      endsubscription: new Date(),
-      file: null,
+      subscription_frequency: '',
+      subscription_start: new Date(),
+      subscription_end: new Date(),
+      photo: null,
       organic: false,
     },
     onSubmit: values => {
       setSubmitting(true);
       // Uploading and submitting FIle
       const formData = new FormData();
-      formData.append('file', values.file);
+      formData.append('photo', values.photo);
 
-      setFormData({
-        ...formData,
-        organic: (values.organic === 'Yes').toString(),
-      });
+      
 
       console.log(formik.values);
     },
@@ -66,30 +63,30 @@ const Form = () => {
   }, [submitting, formik.values]);
 
   // handle Delivery Date  change
-  const handleDateChange = date => {
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date
+  const handleDateChange = delivery_date => {
+    const formattedDate = `${delivery_date.getFullYear()}-${(delivery_date.getMonth() + 1).toString().padStart(2, '0')}-${delivery_date
       .getDate()
       .toString()
       .padStart(2, '0')}`;
-    formik.setFieldValue('date', formattedDate);
+    formik.setFieldValue('delivery_date', formattedDate);
   };
 
   // handle start Subscription change
 
-  const handleSubStartChange = startsubscription => {
-    const formattedDate = `${startsubscription.getFullYear()}-${(startsubscription.getMonth() + 1)
+  const handleSubStartChange = subscription_start => {
+    const formattedDate = `${subscription_start.getFullYear()}-${(subscription_start.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}-${startsubscription.getDate().toString().padStart(2, '0')}`;
-    formik.setFieldValue('startsubscription', formattedDate);
+      .padStart(2, '0')}-${subscription_start.getDate().toString().padStart(2, '0')}`;
+    formik.setFieldValue('subscription_start', formattedDate);
   };
 
   // handle End Subscription change
 
-  const handleSubEndChange = endsubscription => {
-    const formattedDate = `${endsubscription.getFullYear()}-${(endsubscription.getMonth() + 1)
+  const handleSubEndChange = subscription_end => {
+    const formattedDate = `${subscription_end.getFullYear()}-${(subscription_end.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}-${endsubscription.getDate().toString().padStart(2, '0')}`;
-    formik.setFieldValue('endsubscription', formattedDate);
+      .padStart(2, '0')}-${subscription_end.getDate().toString().padStart(2, '0')}`;
+    formik.setFieldValue('subscription_end', formattedDate);
   };
 
   // handle radio change
@@ -98,6 +95,13 @@ const Form = () => {
     formik.setFieldValue('organic', event.target.value);
   };
 
+  const handleFrequency = event =>{
+    formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
+  }
+
+  const handlePrice = event =>{
+    formik.setFieldValue('price', (event.target.value));
+  }
   return (
     <form
       action="/api/products/add"
@@ -146,52 +150,52 @@ const Form = () => {
           name="Delivery Date"
           required
           onChange={event => handleDateChange(new Date(event.target.value))}
-          value={formik.values.date}
+          value={formik.values.delivery_date}
         />
       </div>
       <div>
-        <label htmlFor="Subscription End">Subcription End:</label>
+        <label htmlFor="subscription_end">Subcription End:</label>
         <input
           type="date"
-          name="Subscription End"
+          name="subscription_end"
           required
           onChange={event => handleSubEndChange(new Date(event.target.value))}
-          value={formik.values.endsubscription}
+          value={formik.values.subscription_end}
         />
       </div>
       <div>
-        <label htmlFor="Subscription Start">Subscription Start:</label>
+        <label htmlFor="subscription_start">Subscription Start:</label>
         <input
           type="date"
-          name="Subscription Start"
+          name="subscription_start"
           required
           onChange={event => handleSubStartChange(new Date(event.target.value))}
-          value={formik.values.startsubscription}
+          value={formik.values.subscription_start}
         />
       </div>
-      <label htmlFor="subscriptionfrequency">Subscription Frequency</label>
+      <label htmlFor="subscription_frequency">Subscription Frequency</label>
       <select
-        id="subscriptionfrequency"
-        name="subscriptionfrequency"
-        value={formik.values.subscriptionfrequency}
-        onChange={formik.handleChange}
+        id="subscription_frequency"
+        name="subscription_frequency"
+        value={formik.values.subscription_frequency}
+        onChange={handleFrequency}
         onBlur={formik.handleBlur}
       >
-        <option value="">Select an option</option>
-        <option value="1">Once a week</option>
-        <option value="2">Twice a week</option>
+        <option value=" ">Select an option</option>
+        <option value={1}>Once a week</option>  
+        <option value={2}>Twice a week</option>
       </select>
-      {formik.touched.subscriptionfrequency && formik.errors.subscriptionfrequency ? (
-        <div>{formik.errors.subscriptionfrequency}</div>
+      {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
+        <div>{formik.errors.subscription_frequency}</div>
       ) : null}
       <div>
         <label htmlFor="file">Choose a file:</label>
         <input
-          id="file"
-          name="file"
+          id="photo"
+          name="photo"
           type="file"
           onChange={event => {
-            formik.setFieldValue('file', event.currentTarget.files[0]);
+            formik.setFieldValue('photo', event.currentTarget.photo);
           }}
         />
       </div>
