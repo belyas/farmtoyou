@@ -1,9 +1,17 @@
 import { supabase } from '../../../utils/supabaseClient';
+import update from './update';
 
 export default async function products(req, res) {
+
+  if (req.method == 'PUT') {
+		return update(req, res)
+	}
+
+  
   if (req.method != 'GET') {
     return res.status(405).json({ data: 'Request method must be GET.' });
   }
+
 
   if (!req.query || !req.query.id) {
     return res.status(400).send({ data: 'Request query must not be empty.' });
