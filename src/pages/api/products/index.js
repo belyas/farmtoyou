@@ -1,13 +1,16 @@
 import { supabase } from '../../../utils/supabaseClient';
 import update from './update';
+import remove from './remove';
 
 export default async function products(req, res) {
-
   if (req.method == 'PUT') {
-		return update(req, res)
-	}
+    return update(req, res);
+  }
 
-  
+  if (req.method == 'DELETE') {
+    return remove(req, res);
+  }
+
   if (req.method != 'GET') {
     return res.status(405).json({ data: 'Request method must be GET.' });
   }
@@ -15,8 +18,11 @@ export default async function products(req, res) {
   //if no query params, return the latest 20 products
 =======
 
+<<<<<<< HEAD
 
 >>>>>>> 9a7ac6c (product updtae done)
+=======
+>>>>>>> 4909f6a (products remove done)
   if (!req.query || !req.query.id) {
     try {
       const { data, error } = await supabase.from('products').select().order('created_at').limit(20);
