@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 
 const Form = () => {
   const [submitting, setSubmitting] = useState(false);
-  
 
   const formik = useFormik({
     initialValues: {
@@ -27,8 +26,6 @@ const Form = () => {
       // Uploading and submitting FIle
       const formData = new FormData();
       formData.append('photo', values.photo);
-
-      
 
       console.log(formik.values);
     },
@@ -64,10 +61,9 @@ const Form = () => {
 
   // handle Delivery Date  change
   const handleDateChange = delivery_date => {
-    const formattedDate = `${delivery_date.getFullYear()}-${(delivery_date.getMonth() + 1).toString().padStart(2, '0')}-${delivery_date
-      .getDate()
+    const formattedDate = `${delivery_date.getFullYear()}-${(delivery_date.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}`;
+      .padStart(2, '0')}-${delivery_date.getDate().toString().padStart(2, '0')}`;
     formik.setFieldValue('delivery_date', formattedDate);
   };
 
@@ -95,13 +91,13 @@ const Form = () => {
     formik.setFieldValue('organic', event.target.value);
   };
 
-  const handleFrequency = event =>{
+  const handleFrequency = event => {
     formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
-  }
+  };
 
-  const handlePrice = event =>{
-    formik.setFieldValue('price', (event.target.value));
-  }
+  const handlePrice = event => {
+    formik.setFieldValue('price', event.target.value);
+  };
   return (
     <form
       action="/api/products/add"
@@ -182,7 +178,7 @@ const Form = () => {
         onBlur={formik.handleBlur}
       >
         <option value=" ">Select an option</option>
-        <option value={1}>Once a week</option>  
+        <option value={1}>Once a week</option>
         <option value={2}>Twice a week</option>
       </select>
       {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
