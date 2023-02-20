@@ -1,9 +1,9 @@
 import Head from 'next/head';
 // import { Inter } from '@next/font/google'
 // import styles from '@/styles/Home.module.css';
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
+import Auth from '@/components/Auth';
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -35,8 +35,7 @@ export default function Home() {
         {!session ? (
           <Auth
             supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            theme="dark"
+            showLinks={true}
           />
         ) : (
           <Account session={session} />
