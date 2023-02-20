@@ -4,7 +4,11 @@ import Head from 'next/head';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Auth from '@/components/Auth';
+=======
+import HomeProducts from '@/components/homeProducts';
+>>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
 =======
 import HomeProducts from '@/components/homeProducts';
 >>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
@@ -46,11 +50,14 @@ export default function Home({ productsData }) {
       >
         {!session ? (
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Auth
             supabaseClient={supabase}
             showLinks={true}
           />
 =======
+=======
+>>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
           <div>
             <HomeProducts productsData={productsData} />
             <Auth
@@ -59,6 +66,9 @@ export default function Home({ productsData }) {
               theme="dark"
             />
           </div>
+<<<<<<< HEAD
+>>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
+=======
 >>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
         ) : (
           <Account session={session} />
