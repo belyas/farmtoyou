@@ -10,7 +10,11 @@ export default async function getProfile(req, res) {
   const profile_id = req.query.id;
 
   try {
-    const { data, error } = await supabase.from('farmers').select('*, profiles (*)').eq('profile_id', profile_id).single();
+    const { data, error } = await supabase
+      .from('farmers')
+      .select('*, profiles (*)')
+      .eq('profile_id', profile_id)
+      .single();
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
