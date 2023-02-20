@@ -5,11 +5,12 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
 import Auth from '@/components/Auth';
 import HomeProducts from '@/components/homeProducts';
+import { getURL } from '@/utils';
 
 // const inter = Inter({ subsets: ['latin'] })
 export async function getServerSideProps() {
   try {
-    const productsData = await fetch('http://localhost:3000/api/products').then(res => res.json());
+    const productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
     return { props: { productsData } };
   } catch (error) {
     return error;
