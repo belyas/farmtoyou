@@ -1,10 +1,22 @@
 import { supabase } from '../../../utils/supabaseClient';
+import update from './update';
 
 export default async function products(req, res) {
+
+  if (req.method == 'PUT') {
+		return update(req, res)
+	}
+
+  
   if (req.method != 'GET') {
     return res.status(405).json({ data: 'Request method must be GET.' });
   }
+<<<<<<< HEAD
   //if no query params, return the latest 20 products
+=======
+
+
+>>>>>>> 9a7ac6c (product updtae done)
   if (!req.query || !req.query.id) {
     try {
       const { data, error } = await supabase.from('products').select().order('created_at').limit(20);
