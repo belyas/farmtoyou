@@ -7,25 +7,38 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { getURL } from '@/utils';
+import { useSession, useUser } from '@supabase/auth-helpers-react';
+import Link from 'next/link';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
+  const user = useUser();
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
+    console.log('user', user);
     async function fetchData() {
-      const res = await fetch(`${getURL()}api/products`);
+      const res = await fetch(`${getURL()}api/products?id=${user.id}`);
       const { data } = await res.json();
 
       setProducts(data);
     }
+
     fetchData();
-  }, []);
+  }, [user]);
 
   return products;
 };
 
 export default function Products() {
   const products = useProducts();
+  const session = useSession();
+
+  if (!session) {
+    return <Link href="/">Click here to login</Link>;
+  }
 
   return (
     <>
