@@ -30,7 +30,7 @@ const Form = () => {
 
       setFormData({
         ...formData,
-        organic: (values.organic === "Yes").toString(),
+        organic: (values.organic === 'Yes').toString(),
       });
 
       console.log(formik.values);
@@ -64,7 +64,6 @@ const Form = () => {
       submitData();
     }
   }, [submitting, formik.values]);
-
 
   // handle Delivery Date  change
   const handleDateChange = date => {
