@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Container from '@mui/material/Container';
 import { VIEWS } from './constants';
-import {
-  EmailAuth,
-  ForgottenPassword,
-  // UpdatePassword,
-} from './Steps';
+import { EmailAuth, ForgottenPassword, MagicLink, UpdatePassword } from './Steps';
 // import { UserContextProvider, useUser } from './UserContext'
-const UpdatePassword = () => {};
 
-function Auth({ supabaseClient, view = 'sign_in', redirectTo, showLinks = true }) {
+const Container = ({ children }) => <div className="auth-container">{children}</div>;
+
+function Auth({ supabaseClient, view = 'sign_in', redirectTo, magicLink = false, showLinks = true }) {
   const [authView, setAuthView] = useState(view);
   const [defaultEmail, setDefaultEmail] = useState('');
   const [defaultPassword, setDefaultPassword] = useState('');
@@ -26,7 +22,10 @@ function Auth({ supabaseClient, view = 'sign_in', redirectTo, showLinks = true }
     setDefaultEmail,
     setDefaultPassword,
     redirectTo,
+    magicLink,
     showLinks,
+    i18n,
+    appearance,
   };
 
   /**
@@ -36,7 +35,7 @@ function Auth({ supabaseClient, view = 'sign_in', redirectTo, showLinks = true }
   switch (authView) {
     case VIEWS.SIGN_IN:
       return (
-        <Container maxWidth="sm">
+        <Container>
           <EmailAuth
             {...emailProp}
             authView={'sign_in'}
@@ -45,31 +44,46 @@ function Auth({ supabaseClient, view = 'sign_in', redirectTo, showLinks = true }
       );
     case VIEWS.SIGN_UP:
       return (
-        <Container maxWidth="sm">
+        <Container>
           <EmailAuth
             supabaseClient={supabaseClient}
-            authView={VIEWS.SIGN_UP}
+            authView={'sign_up'}
             setAuthView={setAuthView}
             defaultEmail={defaultEmail}
             defaultPassword={defaultPassword}
             setDefaultEmail={setDefaultEmail}
             setDefaultPassword={setDefaultPassword}
             redirectTo={redirectTo}
+            magicLink={magicLink}
             showLinks={showLinks}
           />
         </Container>
       );
-    case VIEWS.FORGOTTEN_PASSWORD:
-      return (
-        <Container maxWidth="sm">
-          <ForgottenPassword
-            supabaseClient={supabaseClient}
-            setAuthView={setAuthView}
-            redirectTo={redirectTo}
-            showLinks={showLinks}
-          />
-        </Container>
-      );
+    // case VIEWS.FORGOTTEN_PASSWORD:
+    //   return (
+    //     <Container>
+    //       <ForgottenPassword
+    //         supabaseClient={supabaseClient}
+    //         setAuthView={setAuthView}
+    //         redirectTo={redirectTo}
+    //         showLinks={showLinks}
+    //       />
+    //     </Container>
+    //   )
+
+    // case VIEWS.MAGIC_LINK:
+    //   return (
+    //     <Container>
+    //       <MagicLink
+    //         appearance={appearance}
+    //         supabaseClient={supabaseClient}
+    //         setAuthView={setAuthView}
+    //         redirectTo={redirectTo}
+    //         showLinks={showLinks}
+    //         i18n={i18n}
+    //       />
+    //     </Container>
+    //   )
     // case VIEWS.UPDATE_PASSWORD:
     //   return (
     //     <Container>
@@ -80,10 +94,5 @@ function Auth({ supabaseClient, view = 'sign_in', redirectTo, showLinks = true }
       return null;
   }
 }
-
-Auth.ForgottenPassword = ForgottenPassword;
-// Auth.UpdatePassword = UpdatePassword
-// Auth.UserContextProvider = UserContextProvider
-// Auth.useUser = useUser
 
 export default Auth;
