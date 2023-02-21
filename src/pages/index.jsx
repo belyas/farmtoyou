@@ -44,7 +44,6 @@ export default function Home({ productsData }) {
       >
         {!session ? (
           <div>
-            <HomeProducts productsData={productsData} />
             <Auth
               supabaseClient={supabase}
               showLinks={true}
@@ -53,6 +52,7 @@ export default function Home({ productsData }) {
         ) : (
           <Account session={session} />
         )}
+        <HomeProducts productsData={productsData} />
       </main>
     </>
   );
