@@ -1,6 +1,16 @@
 import { supabase } from '../../../utils/supabaseClient';
+import update from './update';
+import remove from './remove';
 
 export default async function products(req, res) {
+  if (req.method == 'PUT') {
+    return update(req, res, supabase);
+  }
+
+  if (req.method == 'DELETE') {
+    return remove(req, res, supabase);
+  }
+
   if (req.method != 'GET') {
     return res.status(405).json({ data: 'Request method must be GET.' });
   }
