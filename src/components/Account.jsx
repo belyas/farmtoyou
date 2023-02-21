@@ -20,7 +20,7 @@ export default function Account({ session }) {
 
       let { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, website, avatar_url`)
+        .select(`user_type, firstname, lastname`)
         .eq('id', user.id)
         .single();
 
@@ -73,7 +73,7 @@ export default function Account({ session }) {
         <input
           id="email"
           type="text"
-          value={session.user.email}
+          value={session?.user?.email}
           disabled
         />
       </div>
@@ -103,15 +103,6 @@ export default function Account({ session }) {
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
-        </button>
-      </div>
-
-      <div>
-        <button
-          className="button block"
-          onClick={() => supabase.auth.signOut()}
-        >
-          Sign Out
         </button>
       </div>
     </div>

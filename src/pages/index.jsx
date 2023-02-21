@@ -1,26 +1,32 @@
 import Head from 'next/head';
-// import { Inter } from '@next/font/google'
-// import styles from '@/styles/Home.module.css';
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
-import Account from '@/components/Account';
-import Auth from '@/components/Auth';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/homeProducts';
 import { getURL } from '@/utils';
 
-// const inter = Inter({ subsets: ['latin'] })
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  let productsData = {};
+  let error = {};
+
   try {
-    const productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
-    return { props: { productsData } };
+    productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
   } catch (error) {
-    return error;
+    error = error;
   }
+
+  return {
+    props: {
+      productsData,
+      error,
+      initialSession: session,
+    },
+  };
 }
 
 export default function Home({ productsData }) {
-  const session = useSession();
-  const supabase = useSupabaseClient();
-
   return (
     <>
       <Head>
@@ -42,16 +48,6 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        {!session ? (
-          <div>
-            <Auth
-              supabaseClient={supabase}
-              showLinks={true}
-            />
-          </div>
-        ) : (
-          <Account session={session} />
-        )}
         <HomeProducts productsData={productsData} />
       </main>
     </>
