@@ -59,7 +59,6 @@ export default function Home({ productsData }) {
 =======
 >>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
           <div>
-            <HomeProducts productsData={productsData} />
             <Auth
               supabaseClient={supabase}
               appearance={{ theme: ThemeSupa }}
@@ -73,6 +72,7 @@ export default function Home({ productsData }) {
         ) : (
           <Account session={session} />
         )}
+        <HomeProducts productsData={productsData} />
       </main>
     </>
   );
