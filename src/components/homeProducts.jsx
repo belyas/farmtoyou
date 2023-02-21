@@ -10,6 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 
+//TODO add link to each card
 const HomeProducts = ({ productsData }) => {
   const products = productsData.data;
   const productItems = products.map((product, index) => {
@@ -34,6 +35,7 @@ const HomeProducts = ({ productsData }) => {
             >
               {product.title}
             </Typography>
+
             <Typography
               variant="body2"
               color="text.secondary"
