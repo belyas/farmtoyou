@@ -44,7 +44,6 @@ export default function Home({ productsData }) {
       >
         {!session ? (
           <div>
-            <HomeProducts productsData={productsData} />
             <Auth
               supabaseClient={supabase}
               appearance={{ theme: ThemeSupa }}
@@ -54,6 +53,7 @@ export default function Home({ productsData }) {
         ) : (
           <Account session={session} />
         )}
+        <HomeProducts productsData={productsData} />
       </main>
     </>
   );
