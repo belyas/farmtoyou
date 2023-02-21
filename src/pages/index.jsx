@@ -4,10 +4,20 @@ import Head from 'next/head';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
 import Auth from '@/components/Auth';
+import HomeProducts from '@/components/homeProducts';
+import { getURL } from '@/utils';
 
 // const inter = Inter({ subsets: ['latin'] })
+export async function getServerSideProps() {
+  try {
+    const productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
+    return { props: { productsData } };
+  } catch (error) {
+    return error;
+  }
+}
 
-export default function Home() {
+export default function Home({ productsData }) {
   const session = useSession();
   const supabase = useSupabaseClient();
 
@@ -33,13 +43,16 @@ export default function Home() {
         style={{ padding: '50px 0 100px 0' }}
       >
         {!session ? (
-          <Auth
-            supabaseClient={supabase}
-            showLinks={true}
-          />
+          <div>
+            <Auth
+              supabaseClient={supabase}
+              showLinks={true}
+            />
+          </div>
         ) : (
           <Account session={session} />
         )}
+        <HomeProducts productsData={productsData} />
       </main>
     </>
   );
