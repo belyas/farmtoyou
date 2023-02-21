@@ -7,8 +7,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Unstable_Grid2';
 
 //TODO add link to each card
 const HomeProducts = ({ productsData }) => {
@@ -47,7 +47,7 @@ const HomeProducts = ({ productsData }) => {
               color="text.secondary"
               component="div"
             >
-              {product.price}
+              €{product.price}
             </Typography>
           </CardContent>
 
