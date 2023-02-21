@@ -5,14 +5,13 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Unstable_Grid2';
+import Link from 'next/link';
 
-//TODO add link to each card
+//TODO add real route to each card
 const HomeProducts = ({ productsData }) => {
   const products = productsData.data;
+
   const productItems = products.map((product, index) => {
     return (
       <Grid
@@ -22,20 +21,24 @@ const HomeProducts = ({ productsData }) => {
         key={index}
       >
         <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image="http://placekitten.com/200/300"
-            title="placeholder kitten"
-          />
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-            >
-              {product.title}
-            </Typography>
+          <Link href="/">
+            <CardMedia
+              sx={{ height: 140 }}
+              image="http://placekitten.com/200/300"
+              title="placeholder kitten"
+            />
+          </Link>
 
+          <CardContent>
+            <Link href="/">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+              >
+                {product.title}
+              </Typography>
+            </Link>
             <Typography
               variant="body2"
               color="text.secondary"
