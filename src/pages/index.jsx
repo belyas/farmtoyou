@@ -3,17 +3,12 @@ import Head from 'next/head';
 // import styles from '@/styles/Home.module.css';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Auth from '@/components/Auth';
-=======
 import HomeProducts from '@/components/homeProducts';
->>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
-=======
-import HomeProducts from '@/components/homeProducts';
->>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
+import { getURL } from '@/utils';
 
 // const inter = Inter({ subsets: ['latin'] })
+
 export async function getServerSideProps() {
   try {
     const productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
@@ -49,26 +44,12 @@ export default function Home({ productsData }) {
         style={{ padding: '50px 0 100px 0' }}
       >
         {!session ? (
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <Auth
-            supabaseClient={supabase}
-            showLinks={true}
-          />
-=======
-=======
->>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
           <div>
             <Auth
               supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
-              theme="dark"
+              showLinks={true}
             />
           </div>
-<<<<<<< HEAD
->>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
-=======
->>>>>>> e4f0734 (modify api route so it returns all products when there is no query param)
         ) : (
           <Account session={session} />
         )}
