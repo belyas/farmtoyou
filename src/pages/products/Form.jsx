@@ -5,6 +5,7 @@ import { getURL } from '@/utils';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import * as Yup from 'yup';
 
 const Form = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -21,6 +22,12 @@ const Form = () => {
       photo: null,
       organic: false,
     },
+    validationSchema: Yup.object({
+      title: Yup.string().max(20, "Title mustn't be more than 20 Characters Long.").required('Title is required:*'),
+      price: Yup.number().required('Price is required:*'),
+      items: Yup.string().max(30, "Items mustn't be more than 30 Characters Long.").required('Items is required:*'),
+    }),
+
     onSubmit: values => {
       setSubmitting(true);
       // Uploading and submitting FIle
@@ -30,6 +37,10 @@ const Form = () => {
       console.log(formik.values);
     },
   });
+
+  console.log(formik.errors);
+
+  // Sending Data to Backend
   useEffect(() => {
     const submitData = async () => {
       try {
@@ -109,7 +120,7 @@ const Form = () => {
           htmlFor="title"
           id="title"
         >
-          Title:
+          {formik.touched.title && formik.errors.title ? formik.errors.title : 'Title:'}
         </label>
         <input
           type="text"
@@ -117,26 +128,29 @@ const Form = () => {
           required
           value={formik.values.title}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </div>
       <div>
-        <label htmlFor="items">Items:</label>
+        <label htmlFor="items">{formik.touched.items && formik.errors.items ? formik.errors.items : 'Items:'}</label>
         <input
           type="text"
           name="items"
           required
           value={formik.values.items}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </div>
       <div>
-        <label htmlFor="items">Price:</label>
+        <label htmlFor="items">{formik.touched.price && formik.errors.price ? formik.errors.price : 'Price:'}</label>
         <input
           type="number"
           name="price"
           required
           value={formik.values.price}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </div>
       <div>
