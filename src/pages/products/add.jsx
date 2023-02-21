@@ -1,31 +1,36 @@
-import { useState } from 'react';
 import * as React from 'react';
 import { Formik, useFormik } from 'formik';
 import { getURL } from '@/utils';
 import { useSession, useUser } from '@supabase/auth-helpers-react';
+import { useState } from 'react';
 import Link from 'next/link';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
 
-const Form = () => {
+const Add = () => {
+  const daysOfWeek = ['select a day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
   const [submitting, setSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       title: '',
-      delivery_date: new Date(),
+      delivery_date: '',
       price: '',
-      items: '',
+      description: '',
       subscription_frequency: '',
       subscription_start: new Date(),
       subscription_end: new Date(),
       photo: null,
       organic: false,
+      category: [],
     },
     validationSchema: Yup.object({
       title: Yup.string().max(20, "Title mustn't be more than 20 Characters Long.").required('Title is required:*'),
       price: Yup.number().required('Price is required:*'),
-      items: Yup.string().max(30, "Items mustn't be more than 30 Characters Long.").required('Items is required:*'),
+      description: Yup.string().required('description is required:*'),
     }),
 
     onSubmit: values => {
@@ -37,8 +42,6 @@ const Form = () => {
       console.log(formik.values);
     },
   });
-
-  console.log(formik.errors);
 
   // Sending Data to Backend
   useEffect(() => {
@@ -70,14 +73,6 @@ const Form = () => {
     }
   }, [submitting, formik.values]);
 
-  // handle Delivery Date  change
-  const handleDateChange = delivery_date => {
-    const formattedDate = `${delivery_date.getFullYear()}-${(delivery_date.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${delivery_date.getDate().toString().padStart(2, '0')}`;
-    formik.setFieldValue('delivery_date', formattedDate);
-  };
-
   // handle start Subscription change
 
   const handleSubStartChange = subscription_start => {
@@ -102,13 +97,11 @@ const Form = () => {
     formik.setFieldValue('organic', event.target.value);
   };
 
+  //handle frequency
   const handleFrequency = event => {
     formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
   };
 
-  const handlePrice = event => {
-    formik.setFieldValue('price', event.target.value);
-  };
   return (
     <form
       action="/api/products/add"
@@ -132,18 +125,20 @@ const Form = () => {
         />
       </div>
       <div>
-        <label htmlFor="items">{formik.touched.items && formik.errors.items ? formik.errors.items : 'Items:'}</label>
+        <label htmlFor="description">
+          {formik.touched.description && formik.errors.description ? formik.errors.description : 'Description:'}
+        </label>
         <input
           type="text"
-          name="items"
+          name="description"
           required
-          value={formik.values.items}
+          value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
       </div>
       <div>
-        <label htmlFor="items">{formik.touched.price && formik.errors.price ? formik.errors.price : 'Price:'}</label>
+        <label htmlFor="price">{formik.touched.price && formik.errors.price ? formik.errors.price : 'Price:'}</label>
         <input
           type="number"
           name="price"
@@ -154,14 +149,24 @@ const Form = () => {
         />
       </div>
       <div>
-        <label htmlFor="items">Delivery Date:</label>
-        <input
-          type="date"
-          name="Delivery Date"
-          required
-          onChange={event => handleDateChange(new Date(event.target.value))}
+        <label htmlFor="delivey_date">Delivery Date:</label>
+        <select
+          id="dayOfWeek"
+          name="dayOfWeek"
           value={formik.values.delivery_date}
-        />
+          onChange={event => {
+            formik.setFieldValue('delivery_date', event.target.value);
+          }}
+        >
+          {daysOfWeek.map(day => (
+            <option
+              key={day}
+              value={day}
+            >
+              {day}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="subscription_end">Subcription End:</label>
@@ -183,21 +188,19 @@ const Form = () => {
           value={formik.values.subscription_start}
         />
       </div>
-      <label htmlFor="subscription_frequency">Subscription Frequency</label>
-      <select
-        id="subscription_frequency"
-        name="subscription_frequency"
-        value={formik.values.subscription_frequency}
-        onChange={handleFrequency}
-        onBlur={formik.handleBlur}
-      >
-        <option value=" ">Select an option</option>
-        <option value={1}>Once a week</option>
-        <option value={2}>Twice a week</option>
-      </select>
-      {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
-        <div>{formik.errors.subscription_frequency}</div>
-      ) : null}
+      <div>
+        <label htmlFor="subscription_frequency">Subscription Frequency</label>
+        <select
+          id="subscription_frequency"
+          name="subscription_frequency"
+          value={formik.values.subscription_frequency}
+          onChange={handleFrequency}
+          onBlur={formik.handleBlur}
+        >
+          <option value=" ">Select an option</option>
+          <option value={1}>Once a week</option>
+        </select>
+      </div>
       <div>
         <label htmlFor="file">Choose a file:</label>
         <input
@@ -205,8 +208,28 @@ const Form = () => {
           name="photo"
           type="file"
           onChange={event => {
-            formik.setFieldValue('photo', event.currentTarget.photo);
+            formik.setFieldValue('photo', event.currentTarget.files[0]['name']);
           }}
+        />
+      </div>
+      <div>
+        <Autocomplete
+          multiple
+          id="category"
+          options={category}
+          sx={{ width: 300, margin: 1 }}
+          value={formik.values.category}
+          onChange={(event, value) => {
+            formik.setFieldValue('category', value);
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="category"
+              variant="outlined"
+              fullWidth
+            />
+          )}
         />
       </div>
       <div>
@@ -233,6 +256,7 @@ const Form = () => {
           No
         </label>
       </div>
+
       <div>
         <button type="submit">Submit</button>
       </div>
@@ -240,4 +264,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Add;
