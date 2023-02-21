@@ -39,12 +39,6 @@ const HomeProducts = ({ productsData }) => {
             <Typography
               variant="body2"
               color="text.secondary"
-            >
-              {product.description}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
               component="div"
             >
               €{product.price}
@@ -52,12 +46,7 @@ const HomeProducts = ({ productsData }) => {
           </CardContent>
 
           <CardActions>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
+            <Button variant="contained">Add to cart</Button>
           </CardActions>
         </Card>
       </Grid>
