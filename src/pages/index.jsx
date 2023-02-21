@@ -46,8 +46,7 @@ export default function Home({ productsData }) {
           <div>
             <Auth
               supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
-              theme="dark"
+              showLinks={true}
             />
           </div>
         ) : (
