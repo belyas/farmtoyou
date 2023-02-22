@@ -1,10 +1,10 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import Image from 'next/image';
-import { Typography } from '@mui/material';
+import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
+import AddToCartButton from './elements/addToCartButton';
+import SelectProductQuantity from './elements/selectProductQuantity';
 
 const Product = ({ productData }) => {
-  console.log('productdata', productData);
-  console.log('product title', productData.title);
   const product = productData[0];
 
   return (
@@ -46,6 +46,8 @@ const Product = ({ productData }) => {
           >
             {product.description}
           </Typography>
+          <SelectProductQuantity />
+          <AddToCartButton />
         </Grid>
       </Grid>
     </>
