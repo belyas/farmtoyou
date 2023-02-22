@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useReducer } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
@@ -13,24 +13,18 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { redirect } from '@/utils';
+import { authReducer, initialState } from './authReducer';
 
 function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
+  const [data, dispatch] = useReducer(authReducer, initialState);
   const isMounted = useRef(true);
-  const [userType, setUserType] = useState(USER_TYPE.CUSTOMER);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confPassword, setConfPassword] = useState('');
-  const [shop, setStop] = useState('');
-  const [shopDescription, setStopDescription] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
   const isSignin = authView === VIEWS.SIGN_IN;
   const isSignup = authView === VIEWS.SIGN_UP;
   const isForgotPassword = authView === VIEWS.FORGOTTEN_PASSWORD;
-  const isFarmer = isSignup && userType === USER_TYPE.FARMER;
+  const isFarmer = isSignup && data.userType === USER_TYPE.FARMER;
 
   useEffect(() => {
     isMounted.current = true;
@@ -48,20 +42,19 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
     switch (authView) {
       case VIEWS.SIGN_IN:
         const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password,
+          email: data.email,
+          password: data.password,
         });
 
         if (signInError) {
           setError(signInError.message);
         } else {
           setMessage('You have successfully been logged in.');
-          setTimeout(() => (window.location.href = '/'), 500);
           redirect({ timer: 500 });
         }
         break;
       case VIEWS.SIGN_UP:
-        if (password && confPassword && password !== confPassword) {
+        if (data.password !== data.confPassword) {
           setError('Double check password is correct.');
           setLoading(false);
           return;
@@ -71,13 +64,13 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
           data: { user: signUpUser, session: signUpSession },
           error: signUpError,
         } = await supabaseClient.auth.signUp({
-          email,
-          password,
+          email: data.email,
+          password: data.password,
           options: {
             data: {
-              firstname,
-              lastname,
-              user_type: userType,
+              firstname: data.firstname,
+              lastname: data.lastname,
+              user_type: data.userType,
             },
           },
         });
@@ -87,8 +80,8 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
         } else if (signUpUser && !signUpSession) {
           if (isFarmer) {
             const { error } = await supabaseClient.from('farmers').insert({
-              shop_name: shop,
-              shop_description: shopDescription,
+              shop_name: data.shop,
+              shop_description: data.shopDescription,
               profile_id: signUpUser.id,
             });
 
@@ -103,7 +96,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
         }
         break;
       case VIEWS.FORGOTTEN_PASSWORD:
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(data.email);
 
         if (error) {
           setError(error.message);
@@ -167,9 +160,8 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             autoFocus
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeEmail' })}
           />
           <TextField
             margin="normal"
@@ -180,7 +172,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changePassword' })}
           />
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -250,19 +242,19 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
               row
               aria-labelledby="user-type"
               name="usertype-buttons-group"
-              value={userType}
+              value={data.userType}
             >
               <FormControlLabel
                 value={USER_TYPE.CUSTOMER}
                 control={<Radio />}
                 label="Customer"
-                onChange={() => setUserType(USER_TYPE.CUSTOMER)}
+                onChange={() => dispatch({ type: 'changeUserType', payload: USER_TYPE.CUSTOMER })}
               />
               <FormControlLabel
                 value={USER_TYPE.FARMER}
                 control={<Radio />}
                 label="Farmer"
-                onChange={() => setUserType(USER_TYPE.FARMER)}
+                onChange={() => dispatch({ type: 'changeUserType', payload: USER_TYPE.FARMER })}
               />
             </RadioGroup>
           </FormControl>
@@ -273,9 +265,8 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             autoFocus
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeEmail' })}
           />
           <TextField
             margin="normal"
@@ -285,8 +276,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changePassword' })}
           />
           <TextField
             margin="normal"
@@ -296,7 +286,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             label="Confirm Password"
             type="password"
             id="conf-password"
-            onChange={e => setConfPassword(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeConfPassword' })}
           />
           <TextField
             margin="normal"
@@ -305,8 +295,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             id="firstname"
             label="First name"
             name="firstname"
-            onChange={e => setFirstname(e.target.value)}
-            autoComplete={'firstname'}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeFirstname' })}
           />
           <TextField
             margin="normal"
@@ -315,8 +304,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             id="lastname"
             label="Last name"
             name="lastname"
-            onChange={e => setLastname(e.target.value)}
-            autoComplete={'lastname'}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeLastname' })}
           />
           {isFarmer && (
             <>
@@ -327,8 +315,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
                 id="shop"
                 label="shop name"
                 name="shop"
-                onChange={e => setStop(e.target.value)}
-                autoComplete={'shop'}
+                onChange={e => dispatch({ payload: e.target.value, type: 'changeShop' })}
               />
               <TextField
                 label="Shop description"
@@ -339,7 +326,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
                 fullWidth
                 id="shopDescription"
                 name="shopDescription"
-                onChange={e => setStopDescription(e.target.value)}
+                onChange={e => dispatch({ payload: e.target.value, type: 'changeShopDescription' })}
               />
             </>
           )}
@@ -366,6 +353,18 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
                 variant="body2"
               >
                 Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                href="#auth-sign-in"
+                onClick={e => {
+                  e.preventDefault();
+                  setAuthView(VIEWS.SIGN_IN);
+                }}
+                variant="body2"
+              >
+                {'Sign in'}
               </Link>
             </Grid>
           </Grid>
@@ -400,7 +399,7 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => dispatch({ payload: e.target.value, type: 'changeEmail' })}
           />
           <Button
             type="submit"
@@ -429,140 +428,6 @@ function EmailAuth({ authView = VIEWS.SIGN_IN, setAuthView, supabaseClient }) {
       </>
     );
   }
-
-  // return (
-  //   <form
-  //     id={isSignin ? `auth-sign-in` : `auth-sign-up`}
-  //     onSubmit={handleSubmit}
-  //     autoComplete={'on'}
-  //     style={{ width: '100%' }}
-  //   >
-  //     <Container maxWidth="sm">
-  //       {!isSignin && (
-  //         <FormControl>
-  //           <RadioGroup
-  //             row
-  //             aria-labelledby="user-type"
-  //             name="usertype-buttons-group"
-  //             value={userType}
-  //           >
-  //             <FormControlLabel
-  //               value={USER_TYPE.CUSTOMER}
-  //               control={<Radio />}
-  //               label="Customer"
-  //               onChange={() => setUserType(USER_TYPE.CUSTOMER)}
-  //             />
-  //             <FormControlLabel
-  //               value={USER_TYPE.FARMER}
-  //               control={<Radio />}
-  //               label="Farmer"
-  //               onChange={() => setUserType(USER_TYPE.FARMER)}
-  //             />
-  //           </RadioGroup>
-  //         </FormControl>
-  //       )}
-  //       <Container maxWidth="md">
-  //         <TextField
-  //           required
-  //           id="email"
-  //           label="email"
-  //           variant="outlined"
-  //           autoComplete="email"
-  //           defaultValue={email}
-  //           type="email"
-  //           name="email"
-  //           onChange={e => setEmail(e.target.value)}
-  //         />
-  //         <TextField
-  //           required
-  //           id="password"
-  //           label="password"
-  //           variant="outlined"
-  //           type="password"
-  //           name="password"
-  //           defaultValue={password}
-  //           onChange={e => setPassword(e.target.value)}
-  //           autoComplete={isSignin ? 'current-password' : 'new-password'}
-  //         />
-  //         {isFarmer && (
-  //           <>
-  //             <TextField
-  //               required
-  //               id="shop"
-  //               label="shop name"
-  //               variant="outlined"
-  //               name="shop"
-  //               onChange={e => setStop(e.target.value)}
-  //               autoComplete={'shop'}
-  //             />
-  //           </>
-  //         )}
-  //       </Container>
-
-  //       <Button
-  //         variant="contained"
-  //         size="small"
-  //         type="submit"
-  //         disabled={loading}
-  //       >
-  //         {loading ? 'loading' : isSignin ? 'login' : 'sign up'}
-  //       </Button>
-
-  //       {showLinks && (
-  //         <Container maxWidth="sm">
-  //           {isSignin && (
-  //             <Link
-  //               href="#auth-forgot-password"
-  //               onClick={e => {
-  //                 e.preventDefault();
-  //                 setAuthView(VIEWS.FORGOTTEN_PASSWORD);
-  //               }}
-  //             >
-  //               Forgot password?
-  //             </Link>
-  //           )}
-  //           {isSignin ? (
-  //             <Link
-  //               href="#auth-sign-up"
-  //               onClick={e => {
-  //                 e.preventDefault();
-  //                 handleViewChange(VIEWS.SIGN_UP);
-  //               }}
-  //             >
-  //               Sign up
-  //             </Link>
-  //           ) : (
-  //             <Link
-  //               href="#auth-sign-in"
-  //               onClick={e => {
-  //                 e.preventDefault();
-  //                 handleViewChange(VIEWS.SIGN_IN);
-  //               }}
-  //             >
-  //               Sign in
-  //             </Link>
-  //           )}
-  //         </Container>
-  //       )}
-  //     </Container>
-  //     {message && (
-  //       <Stack
-  //         sx={{ width: '100%' }}
-  //         spacing={2}
-  //       >
-  //         <Alert severity="success">{message}</Alert>
-  //       </Stack>
-  //     )}
-  //     {error && (
-  //       <Stack
-  //         sx={{ width: '100%' }}
-  //         spacing={2}
-  //       >
-  //         <Alert severity="error">{error}</Alert>
-  //       </Stack>
-  //     )}
-  //   </form>
-  // );
 }
 
 export { EmailAuth };
