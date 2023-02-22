@@ -5,7 +5,8 @@ import AddToCartButton from './elements/addToCartButton';
 import SelectProductQuantity from './elements/selectProductQuantity';
 
 const Product = ({ productData }) => {
-  const product = productData[0];
+  console.log(productData);
+  const product = productData;
 
   return (
     <>

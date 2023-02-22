@@ -22,7 +22,7 @@ const HomeProducts = ({ productsData }) => {
         key={index}
       >
         <Card sx={{ maxWidth: 345 }}>
-          <Link href={`/products/${encodeURIComponent(product.id)}`}>
+          <Link href={`/products/${product.id}`}>
             <CardMedia
               sx={{ height: 140 }}
               image="http://placekitten.com/200/300"
@@ -31,7 +31,7 @@ const HomeProducts = ({ productsData }) => {
           </Link>
 
           <CardContent>
-            <Link href={`/products/${encodeURIComponent(product.id)}`}>
+            <Link href={`/products/${product.id}`}>
               <Typography
                 gutterBottom
                 variant="h5"
