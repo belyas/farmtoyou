@@ -29,7 +29,7 @@ const Add = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().max(20, "Title mustn't be more than 20 Characters Long.").required('Title is required:*'),
-      price: Yup.number().required('Price is required:*'),
+      price: Yup.number().positive('Price must be a positive number').required('Price is required:*'),
       description: Yup.string().required('description is required:*'),
     }),
 
