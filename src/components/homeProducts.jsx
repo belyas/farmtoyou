@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Link from 'next/link';
+import AddToCartButton from './elements/addToCartButton';
 
 //TODO add real route to each card
 const HomeProducts = ({ productsData }) => {
@@ -21,7 +22,7 @@ const HomeProducts = ({ productsData }) => {
         key={index}
       >
         <Card sx={{ maxWidth: 345 }}>
-          <Link href="/">
+          <Link href={`/products/${product.id}`}>
             <CardMedia
               sx={{ height: 140 }}
               image="http://placekitten.com/200/300"
@@ -30,7 +31,7 @@ const HomeProducts = ({ productsData }) => {
           </Link>
 
           <CardContent>
-            <Link href="/">
+            <Link href={`/products/${product.id}`}>
               <Typography
                 gutterBottom
                 variant="h5"
@@ -49,7 +50,7 @@ const HomeProducts = ({ productsData }) => {
           </CardContent>
 
           <CardActions>
-            <Button variant="contained">Add to cart</Button>
+            <AddToCartButton />
           </CardActions>
         </Card>
       </Grid>
