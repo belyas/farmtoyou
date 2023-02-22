@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,40 +5,41 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { getURL } from '@/utils';
-import { useSession, useUser } from '@supabase/auth-helpers-react';
 import Link from 'next/link';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
-const useProducts = () => {
-  const [products, setProducts] = useState([]);
-  const user = useUser();
+export async function getServerSideProps(ctx) {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    console.log('user', user);
-    async function fetchData() {
-      const res = await fetch(`${getURL()}api/products?id=${user.id}`);
-      const { data } = await res.json();
-
-      setProducts(data);
-    }
-
-    fetchData();
-  }, [user]);
-
-  return products;
-};
-
-export default function Products() {
-  const products = useProducts();
-  const session = useSession();
-
-  if (!session) {
-    return <Link href="/">Click here to login</Link>;
+  if (!session?.user) {
+    return { props: { products: [], initialSession: null } };
   }
 
+  try {
+    let { error, data: products = [] } = await supabase
+      .from('products')
+      .select('*, farmers ( profile_id )')
+      .eq('farmers.profile_id', session.user.id);
+
+    // TODO: improve the above query to only return rows related to current farmer
+    if (products.length > 0) {
+      products = products.filter(product => product.farmers?.profile_id === session.user.id);
+    }
+
+    if (error) {
+      throw typeof error === 'string' ? new Error(error) : error;
+    }
+
+    return { props: { products, initialSession: session } };
+  } catch (error) {
+    return { props: { data: 'Internal Server Error.', error, initialSession: null } };
+  }
+}
+
+export default function Products({ products }) {
   return (
     <>
       <h3>Products: </h3>

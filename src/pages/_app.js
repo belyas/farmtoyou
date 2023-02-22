@@ -3,9 +3,11 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
+  const route = useRouter();
 
   return (
     <SessionContextProvider
@@ -15,7 +17,15 @@ export default function App({ Component, pageProps }) {
       {!pageProps?.initialSession && <Link href={'/login'}>Login</Link>}
       {pageProps?.initialSession && (
         <>
-          <button onClick={() => supabase.auth.signOut()}>Sign Out</button> | <Link href={'/profile'}>Profile</Link>{' '}
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut();
+              route.push('/');
+            }}
+          >
+            Sign Out
+          </button>{' '}
+          | <Link href={'/profile'}>Profile</Link>{' '}
         </>
       )}
       <Component {...pageProps} />
