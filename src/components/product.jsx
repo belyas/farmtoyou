@@ -4,10 +4,7 @@ import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/mate
 import AddToCartButton from './elements/addToCartButton';
 import SelectProductQuantity from './elements/selectProductQuantity';
 
-const Product = ({ productData }) => {
-  console.log(productData);
-  const product = productData;
-
+const Product = ({ product }) => {
   return (
     <>
       <Grid
@@ -47,7 +44,7 @@ const Product = ({ productData }) => {
           >
             {product.description}
           </Typography>
-          <SelectProductQuantity />
+          <SelectProductQuantity stock={product.quantity} />
           <AddToCartButton />
         </Grid>
       </Grid>

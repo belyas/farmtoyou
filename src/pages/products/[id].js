@@ -17,5 +17,5 @@ export async function getServerSideProps(context) {
 export default function ProductPage({ data, error }) {
   const productFound = error ? false : true;
 
-  return <>{productFound ? <Product productData={data} /> : <p>Page not found</p>}</>;
+  return <>{productFound ? <Product product={data} /> : <p>Page not found</p>}</>;
 }
