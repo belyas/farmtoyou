@@ -10,12 +10,12 @@ export async function getServerSideProps(context) {
     }
     return { props: { data } };
   } catch (error) {
-    return res.status(500).json({ data: 'Internal Server Error.', error });
+    return { props: { data: 'Internal Server Error.', error } };
   }
 }
 
-export default function ProductPage({ data }) {
-  const productFound = Boolean(data.length);
+export default function ProductPage({ data, error }) {
+  const productFound = Boolean(data.length) && !error;
 
   return (
     <>
