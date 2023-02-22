@@ -2,7 +2,7 @@ import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/mate
 import { useState } from 'react';
 
 const SelectProductQuantity = () => {
-  const [quantity, SetQuantity] = useState(0);
+  const [quantity, SetQuantity] = useState(1);
 
   const handleChange = event => {
     SetQuantity(event.target.value);

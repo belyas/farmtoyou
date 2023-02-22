@@ -4,7 +4,7 @@ import Product from '@/components/product';
 export async function getServerSideProps(context) {
   const productId = context.query.id;
   try {
-    const { data, error } = await supabase.from('products').select().eq('id', productId);
+    const { data, error } = await supabase.from('products').select().eq('id', productId).single();
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
@@ -15,17 +15,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function ProductPage({ data, error }) {
-  const productFound = Boolean(data.length) && !error;
+  const productFound = error ? false : true;
 
-  return (
-    <>
-      {productFound ? (
-        <>
-          <Product productData={data} />
-        </>
-      ) : (
-        <p>Page not found</p>
-      )}
-    </>
-  );
+  return <>{productFound ? <Product productData={data} /> : <p>Page not found</p>}</>;
 }
