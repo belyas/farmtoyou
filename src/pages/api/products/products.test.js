@@ -14,20 +14,6 @@ jest.mock('../../../utils/supabaseClient.js', () => ({
     },
   },
 }));
-//Attemp to setup fake db and mock supabase. Need further investigation
-// const setUpProductsDatabase = () => {
-//   const products = [];
-//   const product = createRandomProduct();
-//   product.farmer_id = 1;
-//   products.push(product);
-//   console.log('products', products);
-// };
-// beforeAll(() => {
-//   return setUpProductsDatabase();
-// });
-// beforeEach(() => {
-//   jest.clearAllMocks();
-// });
 
 describe('Test add products', () => {
   it('Request method must be POST', async () => {
@@ -72,6 +58,7 @@ describe('Test add products', () => {
     const someEmptyReqResult = await add(someEmptyFieldsReq, res);
     expect(someEmptyReqResult.statusCode).toEqual(400);
   });
+
   it('With valid input, add should query supabase and return 200', async () => {
     const supabase = require('../../../utils/supabaseClient.js').supabase;
 

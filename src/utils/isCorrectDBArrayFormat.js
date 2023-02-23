@@ -1,4 +1,4 @@
-const arrayFormatRe = /{[a-zA-Z]*}/;
+const arrayFormatRe = /^{[a-zA-Z,]*}$/;
 
 //Question how to modify regexp to also make sure within {} there is value?
 const correctDBArray = string => {
