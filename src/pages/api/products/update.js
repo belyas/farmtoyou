@@ -15,6 +15,6 @@ export default async function update(req, res, supabase) {
       return res.status(500).json({ error });
     }
 
-    return res.status(204);
+    return res.status(204).json({ seccess: true });
   }
 }
