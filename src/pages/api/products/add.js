@@ -3,6 +3,7 @@ import hasEmptyValue from '../../../utils/hasEmptyValue';
 import validDate from '@/utils/isValideDate';
 import hasAllFields from '@/utils/hasAllFields';
 import correctDBArray from '@/utils/isCorrectDBArrayFormat';
+import farmerFound from '@/utils/findFarmerById';
 
 export default async function add(req, res) {
   if (req.method != 'POST') {
@@ -59,6 +60,10 @@ export default async function add(req, res) {
   if (!quantityIsPositiveInt) {
     return res.status(400).json({ data: 'Quantity must be a positive integer' });
   }
+  const farmerExists = await farmerFound(body.farmer_id);
+  if (!farmerExists) {
+    return res.status(400).json({ data: 'Farmer id must be valid' });
+  }
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   //question: should case be ignored in this check?
@@ -78,6 +83,7 @@ export default async function add(req, res) {
   if (!correctDBArray(body.delivery_method)) {
     return res.status(400).json({ data: 'Delivery method must use {*} database array format.' });
   }
+  //test farmer_id exists
 
   try {
     const { error } = await supabase.from('products').insert(body);
