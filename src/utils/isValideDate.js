@@ -8,12 +8,12 @@ export const endIsBigger = (start, end) => {
 
 const validDate = (start, end) => {
   if (!isInFuture(start) || !isInFuture(end)) {
-    return false;
+    return { valid: false, message: 'Subscription start and end dates must be in future.' };
   }
   if (!endIsBigger(start, end)) {
-    return false;
+    return { valid: false, message: 'Subscription end date must be after start date.' };
   }
-  return true;
+  return { valid: true };
 };
 
 export default validDate;
