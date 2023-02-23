@@ -4,8 +4,26 @@ import validDate from '@/utils/isValideDate';
 import hasAllFields from '@/utils/hasAllFields';
 import correctDBArray from '@/utils/isCorrectDBArrayFormat';
 import farmerFound from '@/utils/findFarmerById';
+import nextConnect from 'next-connect';
+import multer from 'multer';
+import path from 'path';
 
-export default async function add(req, res) {
+const photoDirectory = path.join(process.cwd(), 'src/assets/uploads/products');
+
+const storage = multer.diskStorage({
+  destination: photoDirectory,
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, +'-' + uniqueSuffix);
+  },
+});
+const upload = multer({
+  storage: storage,
+});
+
+const add = nextConnect();
+
+add.post(async (req, res) => {
   if (req.method != 'POST') {
     return res.status(405).json({ data: 'Request method must be POST.' });
   }
@@ -16,6 +34,7 @@ export default async function add(req, res) {
   }
 
   const body = req.body;
+  console.log('body', body);
 
   //Need to have all required fields
   const fields = [
@@ -86,7 +105,12 @@ export default async function add(req, res) {
   if (!correctDBArray(body.category)) {
     return res.status(400).json({ data: 'Category field must use {*} database array format.' });
   }
-  //test farmer_id exists
+
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).json({ data: 'Please upload a photo.' });
+  }
 
   try {
     const { error } = await supabase.from('products').insert(body);
@@ -97,4 +121,8 @@ export default async function add(req, res) {
   } catch (error) {
     return res.status(500).json({ data: 'Internal Server Error.', error });
   }
-}
+});
+
+add.use(upload.single('file'));
+
+export default add;
