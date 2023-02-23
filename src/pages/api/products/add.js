@@ -44,6 +44,16 @@ export default async function add(req, res) {
     return res.status(400).json({ data: 'Date must be valid' });
   }
 
+  const priceIsPositiveInt = Math.sign(body.price) === 1;
+  const quantityIsPositiveInt = Math.sign(body.quantity) === 1;
+
+  if (!priceIsPositiveInt) {
+    return res.status(400).json({ data: 'Price must be a positive integer' });
+  }
+  if (!quantityIsPositiveInt) {
+    return res.status(400).json({ data: 'Quantity must be a positive integer' });
+  }
+
   try {
     const { error } = await supabase.from('products').insert(body);
     if (error) {
