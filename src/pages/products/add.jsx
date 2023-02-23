@@ -5,10 +5,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { Alert } from '@mui/material';
-import { Box } from '@mui/system';
 import Snackbar from '@mui/material/Snackbar';
 import moment from 'moment';
-import { useDropzone } from 'react-dropzone';
 
 const Add = () => {
   const router = useRouter();
@@ -18,10 +16,6 @@ const Add = () => {
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   // add a state to store the binary data of the file
-  const [fileData, setFileData] = useState(null);
-
-  // Validating according to mimetypes
-  const allowedExtensions = ['.jpg', '.jpeg', '.png'];
 
   const formik = useFormik({
     initialValues: {
@@ -58,7 +52,10 @@ const Add = () => {
           return moment(value, 'dd/MM/YYYY', true).isValid();
         })
         .required('Subscription end date is required'),
-      photo: Yup.mixed().required('Photo is required'),
+      photo: Yup.mixed()
+        .required('Photo is required')
+        .test('File Size', 'Too big', value => value && value.size < 1024 * 1024)
+        .test('File type', 'Invalid!', value => value && ['image/png', 'image/jpeg'].includes(value.type)),
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required'),
       category: Yup.array().min(1, 'Please select at least one category').required('Category is required'),
     }),
@@ -66,7 +63,7 @@ const Add = () => {
     onSubmit: async (values, { setSubmitting }) => {
       // Uploading and submitting FIle
       const formData = new FormData();
-      formData.append('photo', fileData);
+      formData.append('photo', values.photo);
       try {
         const response = await fetch('http://localhost:3000/api/products/add', {
           method: 'POST',
@@ -121,14 +118,6 @@ const Add = () => {
   const handleFrequency = event => {
     formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
   };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
-    maxFiles: 1,
-    onDrop: acceptedFiles => {
-      setFileData(acceptedFiles[0]);
-    },
-  });
 
   return (
     <form
@@ -226,10 +215,11 @@ const Add = () => {
           Photo:
           {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
         </label>
-        <div {...getRootProps()}>
-          <input {...getInputProps()} />
-          {formik.values.photo ? <p>{formik.values.photo.name}</p> : <input type="file" />}
-        </div>
+        <input
+          type="file"
+          name="photo"
+          onChange={event => formik.setFieldValue('photo', event.target.files[0])}
+        />
       </div>
       <div>
         <label htmlFor="delivey_date">
@@ -333,12 +323,7 @@ const Add = () => {
         ) : null}
       </div>
       <div>
-        <button
-          type="submit"
-          onClick={() => formik.submitForm()}
-        >
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </div>
 
       <Snackbar
