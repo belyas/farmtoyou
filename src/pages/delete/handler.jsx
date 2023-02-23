@@ -1,8 +1,7 @@
-
 const handleDelete = async () => {
   try {
     //const res = await fetch(`http://api/products/${productId}`, {
-      const res = await fetch(`${getURL()}api/products?id=${product.id}`, {
+    const res = await fetch(`${getURL()}api/products?id=${product.id}`, {
       method: 'DELETE',
     });
     if (res.status === 200) {
