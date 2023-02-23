@@ -44,7 +44,6 @@ export default async function add(req, res) {
     return res.status(400).json({ data: 'All fields must not be empty' });
   }
 
-  console.log('body', body);
   const isValidDate = validDate(body.subscription_start, body.subscription_end);
 
   if (!isValidDate.valid) {
@@ -82,6 +81,10 @@ export default async function add(req, res) {
 
   if (!correctDBArray(body.delivery_method)) {
     return res.status(400).json({ data: 'Delivery method must use {*} database array format.' });
+  }
+
+  if (!correctDBArray(body.category)) {
+    return res.status(400).json({ data: 'Category field must use {*} database array format.' });
   }
   //test farmer_id exists
 
