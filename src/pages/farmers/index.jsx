@@ -17,7 +17,7 @@ export async function getServerSideProps(ctx) {
   if (!session?.user) {
     return { props: { products: [], initialSession: null } };
   }
-
+console.log('user:', session.user)
   try {
     let { error, data: products = [] } = await supabase
       .from('products')
@@ -40,6 +40,10 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function Products({ products }) {
+  const deleteHandler = async (id) => {
+    console.log('id:', id)
+  };
+
   return (
     <>
       <h3>Products: </h3>
@@ -74,7 +78,9 @@ export default function Products({ products }) {
                 <TableCell align="center">{product.description}</TableCell>
                 <TableCell align="center">{product.price}</TableCell>
                 <TableCell align="center">{product.quantity}</TableCell>
-                <TableCell align="center">&nbsp;</TableCell>
+                <TableCell align="center">
+                  <button onClick={() => deleteHandler(product.id)}>Delete</button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
