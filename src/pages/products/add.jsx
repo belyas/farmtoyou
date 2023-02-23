@@ -53,9 +53,7 @@ const Add = () => {
         })
         .required('Subscription end date is required'),
       photo: Yup.mixed()
-        .required('Photo is required')
-        .test('File Size', 'Too big', value => value && value.size < 1024 * 1024)
-        .test('File type', 'Invalid!', value => value && ['image/png', 'image/jpeg'].includes(value.type)),
+        .required('Photo is required'),
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required'),
       category: Yup.array().min(1, 'Please select at least one category').required('Category is required'),
     }),
@@ -80,10 +78,10 @@ const Add = () => {
         // show success message
         setShowSuccess(true);
 
-        // Redirect to /products page after 2 seconds
-        setTimeout(() => {
-          router.push('/products');
-        }, 2000);
+        // // Redirect to /products page after 2 seconds
+        // setTimeout(() => {
+        //   router.push('/products');
+        // }, 2000);
       } catch (error) {
         console.error(error);
         // show error message
@@ -117,6 +115,18 @@ const Add = () => {
   //handle frequency
   const handleFrequency = event => {
     formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
+  };
+
+  //handle photo change
+  const handlePhotoChange = event => {
+    const file = event.target.files[0];
+    // Binary data
+    const reader = new FileReader();
+    reader.onload = () => {
+      const binaryData = reader.result;
+      formik.setFieldValue('photo', binaryData);
+    };
+    reader.readAsBinaryString(file.slice(0, file.size));
   };
 
   return (
@@ -218,7 +228,7 @@ const Add = () => {
         <input
           type="file"
           name="photo"
-          onChange={event => formik.setFieldValue('photo', event.target.files[0])}
+          onChange={handlePhotoChange}
         />
       </div>
       <div>
