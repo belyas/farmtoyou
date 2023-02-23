@@ -52,8 +52,7 @@ const Add = () => {
           return moment(value, 'dd/MM/YYYY', true).isValid();
         })
         .required('Subscription end date is required'),
-      photo: Yup.mixed()
-        .required('Photo is required'),
+      photo: Yup.mixed().required('Photo is required'),
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required'),
       category: Yup.array().min(1, 'Please select at least one category').required('Category is required'),
     }),
