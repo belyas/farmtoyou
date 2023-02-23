@@ -77,17 +77,15 @@ const Add = () => {
         // show success message
         setShowSuccess(true);
 
-        // // Redirect to /products page after 2 seconds
-        // setTimeout(() => {
-        //   router.push('/products');
-        // }, 2000);
+        // Redirect to /products page after 2 seconds
+        setTimeout(() => {
+          router.push('/products');
+        }, 2000);
       } catch (error) {
         console.error(error);
         // show error message
         setShowError(true);
       }
-
-      console.log(formik.values);
 
       setSubmitting(false);
     },
