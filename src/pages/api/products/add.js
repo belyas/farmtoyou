@@ -2,6 +2,7 @@ import { supabase } from '../../../utils/supabaseClient';
 import hasEmptyValue from '../../../utils/hasEmptyValue';
 import validDate from '@/utils/isValideDate';
 import hasAllFields from '@/utils/hasAllFields';
+import correctDBArray from '@/utils/isCorrectDBArrayFormat';
 
 export default async function add(req, res) {
   if (req.method != 'POST') {
@@ -59,12 +60,30 @@ export default async function add(req, res) {
     return res.status(400).json({ data: 'Quantity must be a positive integer' });
   }
 
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  //question: should case be ignored in this check?
+  const deliveryDateInWeek = daysOfWeek.findIndex(day => day === body.delivery_date) !== -1;
+  if (!deliveryDateInWeek) {
+    return res.status(400).json({ data: 'Delivery date must be a day of a week' });
+  }
+
+  if (body.subscription_frequency !== 1) {
+    return res.status(400).json({ data: 'Delivery frequency must be 1' });
+  }
+
+  if (typeof body.organic !== 'boolean') {
+    return res.status(400).json({ data: 'Organic field must provide a boolean value' });
+  }
+
+  if (!correctDBArray(body.delivery_method)) {
+    return res.status(400).json({ data: 'Delivery method must use {*} database array format.' });
+  }
+
   try {
     const { error } = await supabase.from('products').insert(body);
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-
     return res.status(200).json({ data: 'Product created!' });
   } catch (error) {
     return res.status(500).json({ data: 'Internal Server Error.', error });
