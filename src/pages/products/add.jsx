@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import moment from 'moment';
+import { getURL } from '@/utils';
 
 const Add = () => {
   const router = useRouter();
@@ -41,10 +42,14 @@ const Add = () => {
         .oneOf(daysOfWeek, 'Please select a delivery day')
         .notOneOf(['Select the day'], 'Please select a delivery day')
         .required('Please select a delivery day'),
-      subscription_frequency: Yup.string()
+      subscription_frequency: Yup.number().required('Subscription Frequency is required')
         .notOneOf(['Select an option'], 'Please select an option')
         .required('Subscription frequency is required'),
-      subscription_start: Yup.date().required('Subscription start date is required'),
+      subscription_start: Yup.date()
+        .required('Subscription start date is required')
+        .test('valid-date', 'Please enter a valid date', value => {
+          return moment(value, 'dd/MM/YYYY', true).isValid();
+        }),
 
       subscription_end: Yup.date()
         .required('Subscription end date is required')
@@ -62,10 +67,10 @@ const Add = () => {
       const formData = new FormData();
       formData.append('photo', values.photo);
       try {
-        const response = await fetch('http://localhost:3000/api/products/add', {
+        const response = await fetch(`${getURL}/products/add`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
           },
           body: JSON.stringify(values),
         });
@@ -80,7 +85,7 @@ const Add = () => {
         // Redirect to /products page after 2 seconds
         setTimeout(() => {
           router.push('/products');
-        }, 2000);
+        }, 500);
       } catch (error) {
         console.error(error);
         // show error message
