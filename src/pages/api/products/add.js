@@ -1,6 +1,6 @@
 import { supabase } from '../../../utils/supabaseClient';
 import hasEmptyValue from '../../../utils/hasEmptyValue';
-import validDate from '@/utils/isValideDate';
+import validDate from '@/utils/isValidDate';
 import hasAllFields from '@/utils/hasAllFields';
 import correctDBArray from '@/utils/isCorrectDBArrayFormat';
 import farmerFound from '@/utils/findFarmerById';
@@ -85,10 +85,11 @@ add.post(async (req, res) => {
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   //question: should case be ignored in this check?
-  const deliveryDateInWeek = daysOfWeek.findIndex(day => day === body.delivery_date) !== -1;
+  const deliveryDateInWeek = daysOfWeek.findIndex(day => day.toLowerCase() === body.delivery_date.toLowerCase()) !== -1;
   if (!deliveryDateInWeek) {
     return res.status(400).json({ data: 'Delivery date must be a day of a week' });
   }
+  body.delivery_date = body.delivery_date.toLowerCase();
 
   if (body.subscription_frequency !== 1) {
     return res.status(400).json({ data: 'Delivery frequency must be 1' });
@@ -108,9 +109,9 @@ add.post(async (req, res) => {
 
   const file = req.file;
 
-  if (!file) {
-    return res.status(400).json({ data: 'Please upload a photo.' });
-  }
+  // if (!file) {
+  //   return res.status(400).json({ data: 'Please upload a photo.' });
+  // }
 
   try {
     const { error } = await supabase.from('products').insert(body);
