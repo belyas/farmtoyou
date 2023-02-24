@@ -42,7 +42,8 @@ const Add = () => {
         .oneOf(daysOfWeek, 'Please select a delivery day')
         .notOneOf(['Select the day'], 'Please select a delivery day')
         .required('Please select a delivery day'),
-      subscription_frequency: Yup.number().required('Subscription Frequency is required')
+      subscription_frequency: Yup.number()
+        .required('Subscription Frequency is required')
         .notOneOf(['Select an option'], 'Please select an option')
         .required('Subscription frequency is required'),
       subscription_start: Yup.date()
@@ -87,9 +88,9 @@ const Add = () => {
         setShowSuccess(true);
 
         // Redirect to /products page
-          setTimeout(() => {
-            router.push('/products');
-          }, 500);
+        setTimeout(() => {
+          router.push('/products');
+        }, 500);
       } catch (error) {
         alert(error);
         // show error message
