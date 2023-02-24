@@ -1,5 +1,6 @@
-import { Formik, useFormik } from 'formik';
-import { useState, useCallback } from 'react';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useFormik } from 'formik';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/router';
@@ -9,7 +10,35 @@ import Snackbar from '@mui/material/Snackbar';
 import moment from 'moment';
 import { getURL } from '@/utils';
 
-const Add = () => {
+export async function getServerSideProps(ctx) {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    let { error, data } = await supabase.from('farmers').select('id').eq('profile_id', session.user.id);
+
+    if (error) {
+      throw typeof error === 'string' ? new Error(error) : error;
+    }
+
+    return { props: { data, initialSession: session } };
+  } catch (error) {
+    return { props: { data: 'Internal Server Error.', error, initialSession: session } };
+  }
+}
+
+const Add = ({ data, error }) => {
   const router = useRouter();
   const daysOfWeek = ['Select the day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
@@ -30,6 +59,9 @@ const Add = () => {
       photo: null,
       organic: false,
       category: [],
+      farmer_id: data?.length ? data[0].id : null,
+      quantity: 0,
+      delivery_method: '',
     },
     validationSchema: Yup.object({
       title: Yup.string().max(20, "Title mustn't be more than 20 Characters Long.").required('Title is required:*'),
@@ -61,7 +93,6 @@ const Add = () => {
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required'),
       category: Yup.array().min(1, 'Please select at least one category').required('Category is required'),
     }),
-
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
       formData.append('title', values.title);
@@ -73,10 +104,14 @@ const Add = () => {
       formData.append('subscription_start', values.subscription_start);
       formData.append('subscription_frequency', values.subscription_frequency);
       formData.append('category', values.category);
-      formData.append('organic', values.organic);
+      formData.append('organic', values.organic === 'Yes');
+      formData.append('farmer_id', values.farmer_id);
+      formData.append('quantity', values.quantity);
+      formData.append('delivery_method', values.delivery_method);
+
       // Uploading and submitting FIle
       try {
-        const response = await fetch(`${getURL}/api/products/add`, {
+        const response = await fetch(`${getURL()}api/products/add`, {
           method: 'POST',
           body: formData,
         });
@@ -93,7 +128,6 @@ const Add = () => {
           router.push('/products');
         }, 500);
       } catch (error) {
-        alert('Error submitting the data!');
         // show error message
         setShowError(true);
       }
@@ -123,17 +157,15 @@ const Add = () => {
   const handleFrequency = event => {
     formik.setFieldValue('subscription_frequency', parseInt(event.target.value));
   };
+  const handleDeliveryMethod = event => {
+    formik.setFieldValue('delivery_method', parseInt(event.target.value));
+  };
 
   //handle photo change
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-    // Binary data
-    const reader = new FileReader();
-    reader.onload = () => {
-      const binaryData = reader.result;
-      formik.setFieldValue('photo', binaryData);
-    };
-    reader.readAsBinaryString(file.slice(0, file.size));
+
+    formik.setFieldValue('photo', file);
   };
 
   return (
@@ -142,7 +174,22 @@ const Add = () => {
       method="post"
       onSubmit={formik.handleSubmit}
       encType="multipart/form-data"
+      noValidate
     >
+      <Snackbar
+        open={showError}
+        autoHideDuration={3000}
+        onClose={() => setShowError(false)}
+      >
+        <Alert severity="error">Failed to submit data</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccess(false)}
+      >
+        <Alert severity="success">Successfully submitted data</Alert>
+      </Snackbar>
       <div>
         <label
           htmlFor="title"
@@ -193,6 +240,23 @@ const Add = () => {
           name="price"
           required
           value={formik.values.price}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+      </div>
+      <div>
+        <label htmlFor="quantity">
+          {formik.touched.quantity && formik.errors.quantity ? (
+            <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
+          ) : (
+            'Quantity:'
+          )}
+        </label>
+        <input
+          type="number"
+          name="quantity"
+          required
+          value={formik.values.quantity}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
@@ -287,6 +351,27 @@ const Add = () => {
           <option value={1}>Once a week</option>
         </select>
       </div>
+      <div>
+        <label htmlFor="delivery_method">
+          Delivery method:
+          {formik.touched.delivery_method && formik.errors.delivery_method ? (
+            <span style={{ color: 'red' }}>{formik.errors.delivery_method}</span>
+          ) : (
+            ''
+          )}
+        </label>
+        <select
+          id="delivery_method"
+          name="delivery_method"
+          value={formik.values.delivery_method}
+          onChange={handleDeliveryMethod}
+          onBlur={formik.handleBlur}
+        >
+          <option value="Select an option">Select an option</option>
+          <option value={1}>Farmer delivery</option>
+          <option value={2}>Pick up place</option>
+        </select>
+      </div>
 
       <div>
         <Autocomplete
@@ -342,21 +427,6 @@ const Add = () => {
       <div>
         <button type="submit">Submit</button>
       </div>
-
-      <Snackbar
-        open={showError}
-        autoHideDuration={3000}
-        onClose={() => setShowError(false)}
-      >
-        <Alert severity="error">Failed to submit data</Alert>
-      </Snackbar>
-      <Snackbar
-        open={showSuccess}
-        autoHideDuration={3000}
-        onClose={() => setShowSuccess(false)}
-      >
-        <Alert severity="success">Successfully submitted data</Alert>
-      </Snackbar>
     </form>
   );
 };
