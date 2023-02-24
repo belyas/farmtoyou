@@ -159,7 +159,7 @@ export default async function add(req, res) {
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
-      return res.status(200).json({ data: 'Product created!' });
+      return res.status(201).json({ data: 'Product created!' });
     } catch (error) {
       return res.status(500).json({ data: 'Internal Server Error.', error });
     }
