@@ -9,15 +9,19 @@ import farmerFound from '@/utils/findFarmerById';
 import validDate from '@/utils/isValidDate';
 import isoDate from '@/utils/isIsoDate';
 
+const uploadDir = path.join(process.cwd(), 'src/assets/uploads/products');
+const removeUploadedPhoto = photoFile => {
+  fs.unlinkSync(`${uploadDir}/${photoFile}`);
+};
+
 export default async function add(req, res) {
   if (req.method != 'POST') {
     return res.status(405).json({ data: 'Request method must be POST.' });
   }
 
-  const uploadDir = path.join(process.cwd(), 'src/assets/uploads/products');
   //if directory does not exist, create one
   if (!fs.existsSync(uploadDir)) {
-    fs.mkdir(uploadDir, { recursive: true }, err => {
+    fs.mkdirSync(uploadDir, { recursive: true }, err => {
       if (err) throw err;
     });
   }
@@ -41,22 +45,18 @@ export default async function add(req, res) {
       });
     }
 
-    const hasFile = hasEmptyValue(Object.keys(files));
-    const hasPhoto = Object.keys(files).includes('photo');
-
-    if (!hasFile || !hasPhoto) {
+    if (!(files || {})['photo']?.newFilename) {
       return res.status(400).json({ data: 'Please upload a photo' });
     }
 
     const photo = files['photo'].newFilename;
-
-    const product = {};
-
-    product.photo = photo;
-
+    const product = {
+      photo,
+    };
     const isEmptyBody = Object.keys(fields).length === 0 ? true : false;
 
     if (isEmptyBody) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Request body must not be empty' });
     }
 
@@ -69,7 +69,6 @@ export default async function add(req, res) {
       'subscription_frequency',
       'subscription_start',
       'subscription_end',
-      'photo',
       'organic',
       'category',
       'description',
@@ -78,26 +77,29 @@ export default async function add(req, res) {
     ];
 
     if (!hasAllFields(Object.keys(fields), formFields)) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Need to have all required fields.' });
     }
 
     const emptyValue = hasEmptyValue(Object.values(fields));
 
     if (emptyValue) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'All fields must not be empty' });
     }
 
     //clean description, title and photo strings
     product.description = fields.description.trim();
     product.title = fields.title.trim();
-    product.photo = fields.photo.trim();
 
     //check date is in ISO format && is in future &&  end>start
-    if (!isoDate(fields.subscription_start) || isoDate(fields.subscription_end)) {
+    if (!isoDate(fields.subscription_start) || !isoDate(fields.subscription_end)) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Date must be in ISO format,e.g.,2023-01-01' });
     }
     const isValidDate = validDate(fields.subscription_start, fields.subscription_end);
     if (!isValidDate.valid) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: isValidDate.message });
     }
     product.subscription_start = fields.subscription_start;
@@ -108,9 +110,11 @@ export default async function add(req, res) {
     const quantityIsPositiveInt = Math.sign(fields.quantity) === 1;
 
     if (!priceIsPositiveInt) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Price must be a positive integer' });
     }
     if (!quantityIsPositiveInt) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Quantity must be a positive integer' });
     }
     product.price = parseInt(fields.price);
@@ -119,6 +123,7 @@ export default async function add(req, res) {
     //check farmer exists in db and parse id into Int
     const farmerExists = await farmerFound(parseInt(fields.farmer_id));
     if (!farmerExists) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Farmer id must be valid' });
     }
     product.farmer_id = parseInt(fields.farmer_id);
@@ -128,31 +133,25 @@ export default async function add(req, res) {
     const deliveryDateInWeek =
       daysOfWeek.findIndex(day => day.toLowerCase() === fields.delivery_date.toLowerCase()) !== -1;
     if (!deliveryDateInWeek) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Delivery date must be a day of a week' });
     }
     product.delivery_date = fields.delivery_date.toLowerCase();
 
     if (parseInt(fields.subscription_frequency) !== 1) {
+      removeUploadedPhoto(photo);
       return res.status(400).json({ data: 'Subscription frequency must be 1' });
     }
     product.subscription_frequency = parseInt(fields.subscription_frequency);
-
-    //check if organic field is boolean and parse it to boolean
-    if (fields.organic.toLowerCase() === 'true') {
-      fields.organic = true;
-    } else if (fields.organic.toLowerCase() === 'false') {
-      fields.organic = false;
-    } else {
-      return res.status(400).json({ data: 'Organic field must provide a boolean value' });
-    }
     product.organic = fields.organic;
 
-    product.delivery_method = correctDBArray(fields.delivery_method)
-      ? fields.delivery_method
-      : '{' + fields.delivery_method + '}';
-    product.category = correctDBArray(fields.category) ? fields.category : '{' + fields.category + '}';
+    if (Number.isNaN(parseInt(fields.delivery_method))) {
+      removeUploadedPhoto(photo);
+      return res.status(400).json({ data: 'Choose a delivery method' });
+    }
 
-    console.log(product);
+    product.delivery_method = parseInt(fields.delivery_method);
+    product.category = correctDBArray(fields.category) ? fields.category : '{' + fields.category + '}';
 
     try {
       const { error } = await supabase.from('products').insert(product);

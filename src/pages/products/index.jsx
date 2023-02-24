@@ -60,7 +60,7 @@ export default function Products({ products }) {
         throw new Error(`Failed to delete product with ${res.statusText}.`);
       }
 
-      route.push('/farmers');
+      route.push('/products');
     } catch (error) {
       console.error(error);
     }
@@ -69,6 +69,13 @@ export default function Products({ products }) {
   return (
     <>
       <h3>Products: </h3>
+      <Button
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={() => route.push('/products/add')}
+      >
+        Add new product
+      </Button>
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 650, maxWidth: 990 }}
