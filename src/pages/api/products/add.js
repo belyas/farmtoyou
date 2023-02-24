@@ -40,6 +40,14 @@ export default async function add(req, res) {
         error: err,
       });
     }
+
+    const hasFile = hasEmptyValue(Object.keys(files));
+    const hasPhoto = Object.keys(files).includes('photo');
+
+    if (!hasFile || !hasPhoto) {
+      return res.status(400).json({ data: 'Please upload a photo' });
+    }
+
     const photo = files['photo'].newFilename;
 
     const product = {};
