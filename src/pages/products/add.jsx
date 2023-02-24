@@ -90,9 +90,9 @@ const Add = ({ data, error }) => {
       category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
       delivery_method: Yup.string().required('Please select delivery method* '),
       quantity: Yup.number()
-        .typeError('Price must be a number')
-        .positive('Price must be greater than zero')
-        .required('Price is required'),
+        .typeError('Quantity must be a number')
+        .positive('Quantity must be greater than zero')
+        .required('Quantity is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
