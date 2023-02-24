@@ -50,7 +50,6 @@ const Add = () => {
         .test('valid-date', 'Please enter a valid date', value => {
           return moment(value, 'dd/MM/YYYY', true).isValid();
         }),
-
       subscription_end: Yup.date()
         .required('Subscription end date is required')
         .test('valid-date', 'Please enter a valid date', value => {
@@ -63,16 +62,21 @@ const Add = () => {
     }),
 
     onSubmit: async (values, { setSubmitting }) => {
-      // Uploading and submitting FIle
       const formData = new FormData();
       formData.append('photo', values.photo);
+      formData.append('category', values.category);
+      formData.append('delivery_date', values.delivery_date);
+      formData.append('description', values.description);
+      formData.append('organic', values.organic);
+      formData.append('price', values.price);
+      formData.append('subscription_end', values.subscription_end);
+      formData.append('subscription_start', values.subscription_start);
+      formData.append('title', values.title);
+      // Uploading and submitting FIle
       try {
         const response = await fetch(`${getURL}/products/add`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          body: JSON.stringify(values),
+          body: formData,
         });
 
         if (!response.ok) {
@@ -82,16 +86,15 @@ const Add = () => {
         // show success message
         setShowSuccess(true);
 
-        // Redirect to /products page after 2 seconds
-        setTimeout(() => {
-          router.push('/products');
-        }, 500);
+        // Redirect to /products page
+          setTimeout(() => {
+            router.push('/products');
+          }, 500);
       } catch (error) {
-        console.error(error);
+        alert(error);
         // show error message
         setShowError(true);
       }
-
       setSubmitting(false);
     },
   });
