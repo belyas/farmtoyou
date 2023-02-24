@@ -17,7 +17,11 @@ export default async function products(req, res) {
   //if no query params, return the latest 20 products
   if (!req.query || !req.query.id) {
     try {
-      const { data, error } = await supabase.from('products').select().order('created_at').limit(20);
+      const { data, error } = await supabase
+        .from('products')
+        .select()
+        .order('created_at', { ascending: false })
+        .limit(20);
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }

@@ -12,15 +12,24 @@ const Product = ({ product }) => {
         spacing={2}
       >
         <Grid
-          xs={12}
+          xs={6}
           md={6}
         >
-          <Image
-            src="/images/veggie-basket.jpg"
-            title="placeholder veggie-basket"
-            height={500}
-            width={500}
-          />
+          {product.photo && product.photo.endsWith('.jpg') ? (
+            <Image
+              src={`/uploads/products/${product.photo}`}
+              title="placeholder veggie-basket"
+              height={300}
+              width={300}
+            />
+          ) : (
+            <Image
+              src="/images/default-veggie.jpg"
+              title="placeholder veggie-basket"
+              height={300}
+              width={300}
+            />
+          )}
         </Grid>
         <Grid
           xs={12}

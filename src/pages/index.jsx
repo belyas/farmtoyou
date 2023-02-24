@@ -12,7 +12,7 @@ export async function getServerSideProps(ctx) {
   let error = {};
 
   try {
-    productsData = await fetch(`${getURL()}/api/products`).then(res => res.json());
+    productsData = await fetch(`${getURL()}api/products`).then(res => res.json());
   } catch (error) {
     error = error;
   }

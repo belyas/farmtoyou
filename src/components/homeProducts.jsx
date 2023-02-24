@@ -9,7 +9,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Link from 'next/link';
 import AddToCartButton from './elements/addToCartButton';
 
-//TODO add real route to each card
 const HomeProducts = ({ productsData }) => {
   const products = productsData.data;
 
@@ -24,12 +23,15 @@ const HomeProducts = ({ productsData }) => {
         <Card sx={{ maxWidth: 345 }}>
           <Link href={`/products/${product.id}`}>
             <CardMedia
-              sx={{ height: 140 }}
-              image="http://placekitten.com/200/300"
+              sx={{ height: 140, backgroundSize: 'contain' }}
+              image={
+                product.photo && product.photo.endsWith('.jpg')
+                  ? `/uploads/products/${product.photo}`
+                  : '/images/default-veggie.jpg'
+              }
               title="placeholder kitten"
             />
           </Link>
-
           <CardContent>
             <Link href={`/products/${product.id}`}>
               <Typography

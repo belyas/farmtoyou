@@ -9,7 +9,7 @@ import farmerFound from '@/utils/findFarmerById';
 import validDate from '@/utils/isValidDate';
 import isoDate from '@/utils/isIsoDate';
 
-const uploadDir = path.join(process.cwd(), 'src/assets/uploads/products');
+const uploadDir = path.join(process.cwd(), 'public/uploads/products');
 const removeUploadedPhoto = photoFile => {
   fs.unlinkSync(`${uploadDir}/${photoFile}`);
 };

@@ -1,7 +1,7 @@
 import { existsSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
-const uploadDir = join(process.cwd(), 'src/assets/uploads/products');
+const uploadDir = join(process.cwd(), 'public/uploads/products');
 
 export default async function remove(req, res, supabase) {
   if (req.method == 'DELETE') {
