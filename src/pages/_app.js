@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }) {
           >
             Sign Out
           </button>{' '}
-          | <Link href={'/profile'}>Profile</Link>{' '}
+          | <Link href={'/profile'}>Profile</Link> | <Link href={'/products'}>Products</Link>{' '}
         </>
       )}
       <Component {...pageProps} />

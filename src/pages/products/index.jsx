@@ -30,11 +30,11 @@ export async function getServerSideProps(ctx) {
   try {
     let { error, data: products = [] } = await supabase
       .from('products')
-      .select('*, farmers ( profile_id )')
+      .select('id, title, price, quantity, description, farmer_id, photo, farmers ( profile_id )')
       .eq('farmers.profile_id', session.user.id);
 
     // TODO: improve the above query to only return rows related to current farmer
-    if (products.length > 0) {
+    if (products?.length > 0) {
       products = products.filter(product => product.farmers?.profile_id === session.user.id);
     }
 
@@ -48,11 +48,11 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-export default function Products({ products }) {
+export default function Products({ products = [] }) {
   const route = useRouter();
-  const deleteHandler = async id => {
+  const deleteHandler = async ({ id, photo }) => {
     try {
-      const res = await fetch(`${getURL()}api/products?id=${id}`, {
+      const res = await fetch(`${getURL()}api/products?id=${id}&photo=${photo}`, {
         method: 'DELETE',
       });
 
@@ -69,16 +69,19 @@ export default function Products({ products }) {
   return (
     <>
       <h3>Products: </h3>
-      <Button
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={() => route.push('/products/add')}
+      <TableContainer
+        component={Paper}
+        sx={{ width: 900, margin: '0 auto' }}
       >
-        Add new product
-      </Button>
-      <TableContainer component={Paper}>
+        <Button
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={() => route.push('/products/add')}
+        >
+          Add new product
+        </Button>
         <Table
-          sx={{ minWidth: 650, maxWidth: 990 }}
+          sx={{ minWidth: 650 }}
           aria-label="products"
         >
           <TableHead>
@@ -114,7 +117,7 @@ export default function Products({ products }) {
                   >
                     <Button
                       onClick={() => {
-                        deleteHandler(product.id);
+                        deleteHandler(product);
                       }}
                     >
                       <DeleteIcon />
