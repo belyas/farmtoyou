@@ -196,10 +196,10 @@ const Add = ({ data, error }) => {
           htmlFor="title"
           id="title"
         >
-          {formik.touched.title && formik.errors.title ? (
+         Title: {formik.touched.title && formik.errors.title ? (
             <span style={{ color: 'red' }}>{formik.errors.title}</span>
           ) : (
-            'Title:'
+            ''
           )}
         </label>
         <input
@@ -213,10 +213,10 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="description">
-          {formik.touched.description && formik.errors.description ? (
+          Description: {formik.touched.description && formik.errors.description ? (
             <span style={{ color: 'red' }}>{formik.errors.description} </span>
           ) : (
-            'Description:'
+            ''
           )}
         </label>
         <input
@@ -247,10 +247,10 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="quantity">
-          {formik.touched.quantity && formik.errors.quantity ? (
+         Quantity: {formik.touched.quantity && formik.errors.quantity ? (
             <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
           ) : (
-            'Quantity:'
+            ''
           )}
         </label>
         <input
@@ -264,7 +264,11 @@ const Add = ({ data, error }) => {
       </div>
 
       <div>
-        <label htmlFor="subscription_start">Subscription Start:</label>
+        <label htmlFor="subscription_start">Subscription Start: {formik.touched.subscription_start && formik.errors.subscription_start ? (
+            <span style={{ color: 'red' }}>{formik.errors.subscription_start}</span>
+          ) : (
+            ''
+          )}</label>
         <input
           type="date"
           name="subscription_start"
