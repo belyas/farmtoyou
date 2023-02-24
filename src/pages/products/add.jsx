@@ -373,7 +373,12 @@ const Add = ({ data, error }) => {
           onChange={handleDeliveryMethod}
           onBlur={formik.handleBlur}
         >
-          <option value="" disabled>Select an option</option>
+          <option
+            value=""
+            disabled
+          >
+            Select an option
+          </option>
           <option value={1}>Farmer delivery</option>
           <option value={2}>Pick up place</option>
         </select>
