@@ -64,18 +64,19 @@ const Add = () => {
 
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
-      formData.append('photo', values.photo);
-      formData.append('category', values.category);
-      formData.append('delivery_date', values.delivery_date);
-      formData.append('description', values.description);
-      formData.append('organic', values.organic);
+      formData.append('title', values.title);
       formData.append('price', values.price);
+      formData.append('description', values.description);
+      formData.append('photo', values.photo);
+      formData.append('delivery_date', values.delivery_date);
       formData.append('subscription_end', values.subscription_end);
       formData.append('subscription_start', values.subscription_start);
-      formData.append('title', values.title);
+      formData.append('subscription_frequency', values.subscription_frequency);
+      formData.append('category', values.category);
+      formData.append('organic', values.organic);
       // Uploading and submitting FIle
       try {
-        const response = await fetch(`${getURL}/products/add`, {
+        const response = await fetch(`${getURL}/api/products/add`, {
           method: 'POST',
           body: formData,
         });
@@ -92,7 +93,7 @@ const Add = () => {
           router.push('/products');
         }, 500);
       } catch (error) {
-        alert(error);
+        alert('Error submitting the data!');
         // show error message
         setShowError(true);
       }
