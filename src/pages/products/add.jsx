@@ -235,10 +235,11 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="price">
+          Price:{' '}
           {formik.touched.price && formik.errors.price ? (
             <span style={{ color: 'red' }}>{formik.errors.price} </span>
           ) : (
-            'Price:'
+            ''
           )}
         </label>
         <input
