@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import moment from 'moment';
 import { getURL } from '@/utils';
 
 export async function getServerSideProps(ctx) {
@@ -40,7 +39,7 @@ export async function getServerSideProps(ctx) {
 
 const Add = ({ data, error }) => {
   const router = useRouter();
-  const daysOfWeek = ['Select the day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
@@ -76,22 +75,27 @@ const Add = ({ data, error }) => {
         .required('Please select a delivery day'),
       subscription_frequency: Yup.number()
         .required('Subscription Frequency is required')
-        .notOneOf(['Select an option'], 'Please select an option')
-        .required('Subscription frequency is required'),
+        .notOneOf(['Select an option'], 'Please select an option*'),
       subscription_start: Yup.date()
-        .required('Subscription start date is required')
+        .required('Subscription start date is required*')
         .test('valid-date', 'Please enter a valid date', value => {
-          return moment(value, 'dd/MM/YYYY', true).isValid();
+          const date = new Date(value);
+          return !isNaN(date) && date >= new Date();
         }),
       subscription_end: Yup.date()
-        .required('Subscription end date is required')
+        .required('Subscription end date is required*')
         .test('valid-date', 'Please enter a valid date', value => {
-          return moment(value, 'dd/MM/YYYY', true).isValid();
-        })
-        .required('Subscription end date is required'),
-      photo: Yup.mixed().required('Photo is required'),
-      organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required'),
-      category: Yup.array().min(1, 'Please select at least one category').required('Category is required'),
+          const date = new Date(value);
+          return !isNaN(date) && date >= new Date();
+        }),
+      photo: Yup.mixed().required('Photo is required*'),
+      organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required*'),
+      category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
+      delivery_method: Yup.string().required('Please select delivery method* '),
+      quantity: Yup.number()
+        .typeError('Quantity must be a number')
+        .positive('Quantity must be greater than zero')
+        .required('Quantity is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
@@ -195,10 +199,11 @@ const Add = ({ data, error }) => {
           htmlFor="title"
           id="title"
         >
+          Title:{' '}
           {formik.touched.title && formik.errors.title ? (
             <span style={{ color: 'red' }}>{formik.errors.title}</span>
           ) : (
-            'Title:'
+            ''
           )}
         </label>
         <input
@@ -212,10 +217,11 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="description">
+          Description:{' '}
           {formik.touched.description && formik.errors.description ? (
             <span style={{ color: 'red' }}>{formik.errors.description} </span>
           ) : (
-            'Description:'
+            ''
           )}
         </label>
         <input
@@ -229,10 +235,11 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="price">
+          Price:{' '}
           {formik.touched.price && formik.errors.price ? (
             <span style={{ color: 'red' }}>{formik.errors.price} </span>
           ) : (
-            'Price:'
+            ''
           )}
         </label>
         <input
@@ -246,10 +253,11 @@ const Add = ({ data, error }) => {
       </div>
       <div>
         <label htmlFor="quantity">
+          Quantity:{' '}
           {formik.touched.quantity && formik.errors.quantity ? (
             <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
           ) : (
-            'Quantity:'
+            ''
           )}
         </label>
         <input
@@ -263,7 +271,14 @@ const Add = ({ data, error }) => {
       </div>
 
       <div>
-        <label htmlFor="subscription_start">Subscription Start:</label>
+        <label htmlFor="subscription_start">
+          Subscription Start:{' '}
+          {formik.touched.subscription_start && formik.errors.subscription_start ? (
+            <span style={{ color: 'red' }}>{formik.errors.subscription_start}</span>
+          ) : (
+            ''
+          )}
+        </label>
         <input
           type="date"
           name="subscription_start"
@@ -299,6 +314,7 @@ const Add = ({ data, error }) => {
         <input
           type="file"
           name="photo"
+          onBlur={formik.handleBlur}
           onChange={handlePhotoChange}
         />
       </div>
@@ -316,11 +332,18 @@ const Add = ({ data, error }) => {
           name="dayOfWeek"
           value={formik.values.delivery_date}
           label="Select the Day"
+          onBlur={formik.handleBlur}
           onChange={event => {
             formik.setFieldValue('delivery_date', event.target.value);
           }}
-          onBlur={formik.handleBlur}
         >
+          {' '}
+          <option
+            value=""
+            disabled
+          >
+            Select the day
+          </option>
           {daysOfWeek.map(day => (
             <option
               key={day}
@@ -367,19 +390,28 @@ const Add = ({ data, error }) => {
           onChange={handleDeliveryMethod}
           onBlur={formik.handleBlur}
         >
-          <option value="Select an option">Select an option</option>
+          <option
+            value=""
+            disabled
+          >
+            Select an option
+          </option>
           <option value={1}>Farmer delivery</option>
           <option value={2}>Pick up place</option>
         </select>
       </div>
 
       <div>
+        {formik.touched.category && formik.errors.category && (
+          <div style={{ color: 'red' }}>{formik.errors.category}</div>
+        )}
         <Autocomplete
           multiple
           id="category"
           options={category}
           sx={{ width: 300, margin: 1 }}
           value={formik.values.category}
+          onBlur={formik.handleBlur}
           onChange={(event, value) => {
             formik.setFieldValue('category', value);
           }}
@@ -392,9 +424,6 @@ const Add = ({ data, error }) => {
             />
           )}
         />
-        {formik.touched.category && formik.errors.category && (
-          <div style={{ color: 'red' }}>{formik.errors.category}</div>
-        )}
       </div>
       <div>
         <label>Is it organic?</label>
@@ -406,6 +435,7 @@ const Add = ({ data, error }) => {
               value="Yes"
               checked={formik.values.organic === 'Yes'}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
             Yes
           </label>
