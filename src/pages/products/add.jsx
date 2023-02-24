@@ -70,9 +70,9 @@ const Add = ({ data, error }) => {
         .required('Price is required'),
       description: Yup.string().required('Description is required'),
       delivery_date: Yup.string()
-      .oneOf(daysOfWeek, 'Please select a delivery day')
-      .notOneOf(['Select the day'], 'Please select a delivery day')
-      .required('Please select a delivery day'),
+        .oneOf(daysOfWeek, 'Please select a delivery day')
+        .notOneOf(['Select the day'], 'Please select a delivery day')
+        .required('Please select a delivery day'),
       subscription_frequency: Yup.number()
         .required('Subscription Frequency is required')
         .notOneOf(['Select an option'], 'Please select an option*'),
