@@ -5,8 +5,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Link from 'next/link';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { getURL } from '@/utils';
+import { useRouter } from 'next/navigation';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -15,7 +19,12 @@ export async function getServerSideProps(ctx) {
   } = await supabase.auth.getSession();
 
   if (!session?.user) {
-    return { props: { products: [], initialSession: null } };
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 
   try {
@@ -40,6 +49,23 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function Products({ products }) {
+  const route = useRouter();
+  const deleteHandler = async id => {
+    try {
+      const res = await fetch(`${getURL()}api/products?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to delete product with ${res.statusText}.`);
+      }
+
+      route.push('/farmers');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <h3>Products: </h3>
@@ -74,7 +100,20 @@ export default function Products({ products }) {
                 <TableCell align="center">{product.description}</TableCell>
                 <TableCell align="center">{product.price}</TableCell>
                 <TableCell align="center">{product.quantity}</TableCell>
-                <TableCell align="center">&nbsp;</TableCell>
+                <TableCell align="center">
+                  <Grid
+                    item
+                    xs={4}
+                  >
+                    <Button
+                      onClick={() => {
+                        deleteHandler(product.id);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Grid>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
