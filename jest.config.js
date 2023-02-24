@@ -8,4 +8,7 @@ module.exports = createJestConfig({
   moduleFileExtensions: ['js', 'jsx'],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   clearMocks: true,
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 });
