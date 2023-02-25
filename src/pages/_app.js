@@ -4,6 +4,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { CartContext } from '@/cart/cartContext';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -14,21 +15,23 @@ export default function App({ Component, pageProps }) {
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}
     >
-      {!pageProps?.initialSession && <Link href={'/login'}>Login</Link>}
-      {pageProps?.initialSession && (
-        <>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-              route.push('/');
-            }}
-          >
-            Sign Out
-          </button>{' '}
-          | <Link href={'/profile'}>Profile</Link> | <Link href={'/products'}>Products</Link>{' '}
-        </>
-      )}
-      <Component {...pageProps} />
+      <CartContext.Provider value="cart">
+        {!pageProps?.initialSession && <Link href={'/login'}>Login</Link>}
+        {pageProps?.initialSession && (
+          <>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                route.push('/');
+              }}
+            >
+              Sign Out
+            </button>{' '}
+            | <Link href={'/profile'}>Profile</Link> | <Link href={'/products'}>Products</Link>{' '}
+          </>
+        )}
+        <Component {...pageProps} />
+      </CartContext.Provider>
     </SessionContextProvider>
   );
 }
