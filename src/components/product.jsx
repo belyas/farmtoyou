@@ -3,8 +3,10 @@ import Image from 'next/image';
 import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import AddToCartButton from './elements/addToCartButton';
 import SelectProductQuantity from './elements/selectProductQuantity';
+import { useState } from 'react';
 
 const Product = ({ product }) => {
+  const [quantity, SetQuantity] = useState(1);
   return (
     <>
       <Grid
@@ -53,8 +55,15 @@ const Product = ({ product }) => {
           >
             {product.description}
           </Typography>
-          <SelectProductQuantity stock={product.quantity} />
-          <AddToCartButton />
+          <SelectProductQuantity
+            stock={product.quantity}
+            setQuantity={SetQuantity}
+            quantity={quantity}
+          />
+          <AddToCartButton
+            product={product}
+            quantity={quantity}
+          />
         </Grid>
       </Grid>
     </>

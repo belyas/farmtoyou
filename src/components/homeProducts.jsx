@@ -53,7 +53,10 @@ const HomeProducts = ({ productsData }) => {
           </CardContent>
 
           <CardActions>
-            <AddToCartButton />
+            <AddToCartButton
+              product={product}
+              quantity={1}
+            />
           </CardActions>
         </Card>
       </Grid>
