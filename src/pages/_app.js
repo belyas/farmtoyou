@@ -4,7 +4,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CartContext } from '@/cart/cartContext';
+import { CartProvider } from '@/cart/cartContext';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}
     >
-      <CartContext.Provider value="cart">
+      <CartProvider>
         {!pageProps?.initialSession && <Link href={'/login'}>Login</Link>}
         {pageProps?.initialSession && (
           <>
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
           </>
         )}
         <Component {...pageProps} />
-      </CartContext.Provider>
+      </CartProvider>
     </SessionContextProvider>
   );
 }
