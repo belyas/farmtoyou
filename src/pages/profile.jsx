@@ -40,7 +40,7 @@ export const getServerSideProps = async ctx => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) {
+  if (!session || !session?.user) {
     return {
       redirect: {
         destination: '/login',
@@ -49,10 +49,12 @@ export const getServerSideProps = async ctx => {
     };
   }
 
+  const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+
   return {
     props: {
       initialSession: session,
-      user: session.user,
+      user: { ...session.user, ...data },
     },
   };
 };
