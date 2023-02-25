@@ -1,4 +1,4 @@
-import { CartContext } from '@/cart/cartContext';
+import { CartContext } from '@/components/cart/cartContext';
 import Button from '@mui/material/Button';
 import { useContext } from 'react';
 

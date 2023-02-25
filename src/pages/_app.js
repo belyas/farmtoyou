@@ -4,7 +4,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CartProvider } from '@/cart/cartContext';
+import { CartProvider } from '@/components/cart/cartContext';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());

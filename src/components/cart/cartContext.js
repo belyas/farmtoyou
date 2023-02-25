@@ -27,7 +27,25 @@ const CartProvider = ({ children }) => {
       setCart(newCart);
     }
   };
-  const remove = () => {};
+  const remove = (id, removeQuantity) => {
+    const itemIndex = itemIds.findIndex(i => i === parseInt(id));
+    const itemQuantity = cart[itemIndex].quantity;
+    if (removeQuantity >= itemQuantity) {
+      //delete item completely
+      const newCart = cart.filter(c => c.id !== id);
+      setCart(newCart);
+    } else {
+      //only modify quantity
+      const newCart = cart.map((c, index) => {
+        if (index === itemIndex) {
+          return { ...c, quantity: c.quantity - removeQuantity };
+        } else {
+          return c;
+        }
+      });
+      setCart(newCart);
+    }
+  };
   const clear = () => {};
 
   //   useEffect(() => {

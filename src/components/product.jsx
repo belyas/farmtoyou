@@ -4,6 +4,7 @@ import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/mate
 import AddToCartButton from './elements/addToCartButton';
 import SelectProductQuantity from './elements/selectProductQuantity';
 import { useState } from 'react';
+import RemoveFromCartButton from './cart/RemoveFromCartButton';
 
 const Product = ({ product }) => {
   const [quantity, SetQuantity] = useState(1);
@@ -63,6 +64,10 @@ const Product = ({ product }) => {
           <AddToCartButton
             product={product}
             quantity={quantity}
+          />
+          <RemoveFromCartButton
+            id={product.id}
+            quantity={2}
           />
         </Grid>
       </Grid>
