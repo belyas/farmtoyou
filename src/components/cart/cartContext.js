@@ -2,17 +2,15 @@ import { createContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
-const isBrowser = typeof window !== undefined;
+const isBrowser = typeof window != undefined;
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    if (isBrowser) {
-      const savedCart = localStorage.getItem('cart');
-      if (savedCart) {
-        setCart(cart => (cart = JSON.parse(savedCart)));
-      }
+    const savedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+    if (savedCart) {
+      setCart(savedCart);
     }
   }, []);
 
