@@ -8,9 +8,8 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-    if (savedCart) {
-      setCart(savedCart);
+    if (localStorage.getItem('cart')) {
+      setCart(JSON.parse(localStorage.getItem('cart')));
     }
   }, []);
 
@@ -63,12 +62,10 @@ const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isBrowser) {
-      try {
-        localStorage.setItem('cart', JSON.stringify(cart));
-      } catch (error) {
-        throw error;
-      }
+    try {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } catch (error) {
+      throw error;
     }
   }, [cart]);
 
