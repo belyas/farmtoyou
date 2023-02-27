@@ -16,12 +16,12 @@ const AddToCartButton = ({ product, quantity }) => {
       quantity: quantity,
     };
 
-    cart.add(product.id, cartItem);
+    cart.add(cartItem);
   };
   return (
     <Button
       variant="contained"
-      onClick={e => handleClick(e)}
+      onClick={handleClick}
     >
       Add to cart
     </Button>

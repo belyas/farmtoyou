@@ -12,23 +12,26 @@ const CartProvider = ({ children }) => {
     if (isBrowser) {
       const savedCart = localStorage.getItem('cart');
       if (savedCart) {
-        setCart(JSON.parse(savedCart));
+        setCart(cart => (cart = JSON.parse(savedCart)));
       } else {
-        localStorage.setItem('cart', cart);
+        try {
+          localStorage.setItem('cart', cart);
+        } catch (error) {
+          throw error;
+        }
       }
     }
   }, []);
 
-  const emptyCart = cart.length ? false : true;
+  const add = item => {
+    const emptyCart = cart.length ? false : true;
+    const itemIds = emptyCart ? [] : cart.map(item => item.id);
 
-  const itemIds = emptyCart ? [] : cart.map(item => item.id);
-
-  const add = (id, item) => {
-    const itemIndex = itemIds.findIndex(i => i === parseInt(id));
+    const itemIndex = itemIds.findIndex(i => i === parseInt(item.id));
 
     if (itemIndex === -1) {
       //not found, add new item
-      setCart([...cart, item]);
+      setCart(cart => (cart = [...cart, item]));
     } else {
       //if found,update quantity of the found item
       const newCart = cart.map((c, index) => {
@@ -38,7 +41,7 @@ const CartProvider = ({ children }) => {
           return c;
         }
       });
-      setCart(newCart);
+      setCart(cart => (cart = newCart));
     }
   };
   const remove = (id, removeQuantity) => {
@@ -47,7 +50,7 @@ const CartProvider = ({ children }) => {
     if (removeQuantity >= itemQuantity) {
       //delete item completely
       const newCart = cart.filter(c => c.id !== id);
-      setCart(newCart);
+      setCart(cart => (cart = newCart));
     } else {
       //only modify quantity
       const newCart = cart.map((c, index) => {
@@ -57,7 +60,7 @@ const CartProvider = ({ children }) => {
           return c;
         }
       });
-      setCart(newCart);
+      setCart(cart => (cart = newCart));
     }
   };
   const clear = () => {
