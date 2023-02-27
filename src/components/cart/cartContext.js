@@ -3,7 +3,6 @@ import { createContext, useState, useEffect } from 'react';
 const CartContext = createContext();
 
 const isBrowser = typeof window !== undefined;
-console.log('is browser?', isBrowser);
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
@@ -13,12 +12,6 @@ const CartProvider = ({ children }) => {
       const savedCart = localStorage.getItem('cart');
       if (savedCart) {
         setCart(cart => (cart = JSON.parse(savedCart)));
-      } else {
-        try {
-          localStorage.setItem('cart', cart);
-        } catch (error) {
-          throw error;
-        }
       }
     }
   }, []);
@@ -44,29 +37,30 @@ const CartProvider = ({ children }) => {
       setCart(cart => (cart = newCart));
     }
   };
-  const remove = (id, removeQuantity) => {
+  const remove = id => {
     const itemIndex = itemIds.findIndex(i => i === parseInt(id));
-    const itemQuantity = cart[itemIndex].quantity;
-    if (removeQuantity >= itemQuantity) {
-      //delete item completely
+    //if found, remove it
+    if (itemIndex !== -1) {
       const newCart = cart.filter(c => c.id !== id);
-      setCart(cart => (cart = newCart));
-    } else {
-      //only modify quantity
-      const newCart = cart.map((c, index) => {
-        if (index === itemIndex) {
-          return { ...c, quantity: c.quantity - removeQuantity };
-        } else {
-          return c;
-        }
-      });
       setCart(cart => (cart = newCart));
     }
   };
+
   const clear = () => {
     setCart([]);
     if (isBrowser) {
       localStorage.removeItem('cart');
+    }
+  };
+
+  const totalQuantity = () => {
+    if (cart.length) {
+      const itemQuantities = cart.map(i => i.quantity);
+      console.log('itemQuantities', itemQuantities);
+      const totalQuantity = itemQuantities.reduce((a, b) => a + b);
+      return totalQuantity;
+    } else {
+      return 0;
     }
   };
 
@@ -81,7 +75,9 @@ const CartProvider = ({ children }) => {
   }, [cart]);
 
   return (
-    <CartContext.Provider value={{ cart: { cart: cart, add: add, remove: remove, clear: clear } }}>
+    <CartContext.Provider
+      value={{ cart: { cart: cart, add: add, remove: remove, clear: clear, totalQuantity: totalQuantity } }}
+    >
       {children}
     </CartContext.Provider>
   );
