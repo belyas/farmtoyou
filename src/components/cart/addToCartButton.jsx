@@ -12,7 +12,7 @@ const AddToCartButton = ({ product, quantity }) => {
       id: product.id,
       title: product.title,
       price: product.price,
-      photo: product.title,
+      photo: product.photo,
       quantity: quantity,
     };
 

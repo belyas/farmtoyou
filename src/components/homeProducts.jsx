@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Link from 'next/link';
-import AddToCartButton from './elements/addToCartButton';
+import AddToCartButton from './cart/addToCartButton';
 import { useState, useEffect } from 'react';
 
 const HomeProducts = ({ productsData }) => {

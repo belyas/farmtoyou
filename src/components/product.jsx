@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import Image from 'next/image';
 import { Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
-import AddToCartButton from './elements/addToCartButton';
+import AddToCartButton from './cart/addToCartButton';
 import SelectProductQuantity from './elements/selectProductQuantity';
 import { useState } from 'react';
 import RemoveFromCartButton from './cart/RemoveFromCartButton';
