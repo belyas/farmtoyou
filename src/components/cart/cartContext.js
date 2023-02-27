@@ -2,12 +2,26 @@ import { createContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
+const isBrowser = typeof window !== undefined;
+console.log('is browser?', isBrowser);
+
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  console.log('cart', cart);
 
-  const itemIds = cart.length ? cart.map(item => item.id) : [];
-  console.log('item ids', itemIds);
+  useEffect(() => {
+    if (isBrowser) {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      } else {
+        localStorage.setItem('cart', cart);
+      }
+    }
+  }, []);
+
+  const emptyCart = cart.length ? false : true;
+
+  const itemIds = emptyCart ? [] : cart.map(item => item.id);
 
   const add = (id, item) => {
     const itemIndex = itemIds.findIndex(i => i === parseInt(id));
@@ -46,15 +60,27 @@ const CartProvider = ({ children }) => {
       setCart(newCart);
     }
   };
-  const clear = () => {};
+  const clear = () => {
+    setCart([]);
+    if (isBrowser) {
+      localStorage.removeItem('cart');
+    }
+  };
 
-  //   useEffect(() => {
-  //     const isCart = window.localStorage.getItem('cart');
-  //     console.log(isCart);
-  //   }, []);
+  useEffect(() => {
+    if (isBrowser) {
+      try {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      } catch (error) {
+        throw error;
+      }
+    }
+  }, [cart]);
 
   return (
-    <CartContext.Provider value={{ cart: { cart: cart, add: add, remove: remove } }}>{children}</CartContext.Provider>
+    <CartContext.Provider value={{ cart: { cart: cart, add: add, remove: remove, clear: clear } }}>
+      {children}
+    </CartContext.Provider>
   );
 };
 
