@@ -65,10 +65,7 @@ const Product = ({ product }) => {
             product={product}
             quantity={quantity}
           />
-          <RemoveFromCartButton
-            id={product.id}
-            quantity={2}
-          />
+          <RemoveFromCartButton id={product.id} />
         </Grid>
       </Grid>
     </>
