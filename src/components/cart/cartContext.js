@@ -14,8 +14,7 @@ const CartProvider = ({ children }) => {
   }, []);
 
   const add = item => {
-    const emptyCart = cart.length ? false : true;
-    const itemIds = emptyCart ? [] : cart.map(item => item.id);
+    const itemIds = cart.length ? [] : cart.map(item => item.id);
 
     const itemIndex = itemIds.findIndex(i => i === parseInt(item.id));
 
@@ -26,37 +25,34 @@ const CartProvider = ({ children }) => {
       //if found,update quantity of the found item
       const newCart = cart.map((c, index) => {
         if (index === itemIndex) {
-          return { ...c, quantity: c.quantity + item.quantity };
+          return { ...cartItem, quantity: cartItem.quantity + item.quantity };
         } else {
-          return c;
+          return cartItem;
         }
       });
-      setCart(cart => (cart = newCart));
+      setCart(_cart => (_cart = newCart));
     }
   };
   const remove = id => {
-    const emptyCart = cart.length ? false : true;
-    const itemIds = emptyCart ? [] : cart.map(item => item.id);
+    const itemIds = cart.length ? [] : cart.map(item => item.id);
     const itemIndex = itemIds.findIndex(i => i === parseInt(id));
     //if found, remove it
     if (itemIndex !== -1) {
-      const newCart = cart.filter(c => c.id !== id);
+      const newCart = cart.filter(cartItem => parseInt(cartItem.id) !== parseInt(id));
       setCart(cart => (cart = newCart));
     }
   };
 
   const clear = () => {
     setCart([]);
-    if (isBrowser) {
-      localStorage.removeItem('cart');
-    }
+
+    localStorage.removeItem('cart');
   };
 
   const totalQuantity = () => {
     if (cart.length) {
       const itemQuantities = cart.map(i => i.quantity);
-      console.log('itemQuantities', itemQuantities);
-      const totalQuantity = itemQuantities.reduce((a, b) => a + b);
+      const totalQuantity = itemQuantities.reduce((a, b) => a + b, 0);
       return totalQuantity;
     } else {
       return 0;
@@ -64,11 +60,7 @@ const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    try {
-      localStorage.setItem('cart', JSON.stringify(cart));
-    } catch (error) {
-      throw error;
-    }
+    localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   return (
