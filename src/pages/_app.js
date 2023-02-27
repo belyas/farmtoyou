@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CartProvider } from '@/components/cart/cartContext';
+import ShoppingCart from '@/components/cart/shoppingCart';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -27,10 +28,11 @@ export default function App({ Component, pageProps }) {
             >
               Sign Out
             </button>{' '}
-            | <Link href={'/profile'}>Profile</Link> | <Link href={'/products'}>Products</Link>{' '}
+            | <Link href={'/profile'}>Profile</Link> | <Link href={'/products'}>Products</Link>
           </>
         )}
         <Component {...pageProps} />
+        <ShoppingCart />
       </CartProvider>
     </SessionContextProvider>
   );

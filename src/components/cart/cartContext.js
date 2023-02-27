@@ -35,6 +35,8 @@ const CartProvider = ({ children }) => {
     }
   };
   const remove = id => {
+    const emptyCart = cart.length ? false : true;
+    const itemIds = emptyCart ? [] : cart.map(item => item.id);
     const itemIndex = itemIds.findIndex(i => i === parseInt(id));
     //if found, remove it
     if (itemIndex !== -1) {
