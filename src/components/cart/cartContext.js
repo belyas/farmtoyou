@@ -14,16 +14,17 @@ const CartProvider = ({ children }) => {
   }, []);
 
   const add = item => {
-    const itemIds = cart.length ? [] : cart.map(item => item.id);
+    const itemIds = cart.length ? cart.map(item => item.id) : [];
 
-    const itemIndex = itemIds.findIndex(i => i === parseInt(item.id));
+    const itemIndex = itemIds.findIndex(i => parseInt(i) === parseInt(item.id));
+    // console.log('item Index', itemIndex);
 
     if (itemIndex === -1) {
       //not found, add new item
       setCart(cart => (cart = [...cart, item]));
     } else {
       //if found,update quantity of the found item
-      const newCart = cart.map((c, index) => {
+      const newCart = cart.map((cartItem, index) => {
         if (index === itemIndex) {
           return { ...cartItem, quantity: cartItem.quantity + item.quantity };
         } else {
