@@ -8,6 +8,7 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
+    console.log('saved cart', localStorage.getItem('cart'));
     if (localStorage.getItem('cart')) {
       setCart(JSON.parse(localStorage.getItem('cart')));
     }
@@ -15,9 +16,7 @@ const CartProvider = ({ children }) => {
 
   const add = item => {
     const itemIds = cart.length ? cart.map(item => item.id) : [];
-
     const itemIndex = itemIds.findIndex(i => parseInt(i) === parseInt(item.id));
-    // console.log('item Index', itemIndex);
 
     if (itemIndex === -1) {
       //not found, add new item
@@ -35,8 +34,9 @@ const CartProvider = ({ children }) => {
     }
   };
   const remove = id => {
-    const itemIds = cart.length ? [] : cart.map(item => item.id);
-    const itemIndex = itemIds.findIndex(i => i === parseInt(id));
+    const itemIds = cart.length ? cart.map(item => item.id) : [];
+    const itemIndex = itemIds.findIndex(itemId => parseInt(itemId) === parseInt(id));
+
     //if found, remove it
     if (itemIndex !== -1) {
       const newCart = cart.filter(cartItem => parseInt(cartItem.id) !== parseInt(id));
@@ -46,7 +46,6 @@ const CartProvider = ({ children }) => {
 
   const clear = () => {
     setCart([]);
-
     localStorage.removeItem('cart');
   };
 
