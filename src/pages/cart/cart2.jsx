@@ -14,23 +14,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const theme = createTheme()
+const theme = createTheme();
 //const Items =localStorage.getItems('cart');
 
-
-export default function CartOverview( {Items} ) {
-    useEffect(() => {
-        localStorage.getItem('cart');
-      }, []);
-    // useEffect(() => {
-    //     // Perform localStorage action
-    //     const item = localStorage.getItem('cart')
-    //   }, [])
+export default function CartOverview({ Items }) {
+  useEffect(() => {
+    localStorage.getItem('cart');
+  }, []);
+  // useEffect(() => {
+  //     // Perform localStorage action
+  //     const item = localStorage.getItem('cart')
+  //   }, [])
 
   //const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
-  
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
