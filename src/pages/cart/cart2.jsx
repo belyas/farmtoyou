@@ -85,7 +85,7 @@ export default function CartOverview() {
                     >
                       <img
                         src={item.photo}
-                        // alt={item.title}
+                        alt={item.title}
                       />
                     </TableCell>
                     <TableCell>{item.title}</TableCell>
