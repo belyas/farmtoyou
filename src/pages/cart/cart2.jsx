@@ -15,8 +15,6 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
-
-
 const theme = createTheme();
 const Items = [
   {
@@ -33,17 +31,10 @@ const Items = [
     photo: 'please put some photo images inside /public/uploads/porducts folder',
     quantity: 4,
   },
-  { id: 3, 
-    title: 'Product 3', 
-    price: 24, 
-    photo: '', 
-    quantity: 1 },
+  { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
 ];
 export default function CartOverview() {
-
-    const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
-
-
+  const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
 
   return (
     <ThemeProvider theme={theme}>
@@ -73,7 +64,7 @@ export default function CartOverview() {
             Cart Overview
           </Typography>
 
-          <TableContainer component={Paper} >
+          <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -120,26 +111,23 @@ export default function CartOverview() {
               </TableBody>
             </Table>
           </TableContainer>
-         </Paper>
+        </Paper>
       </Container>
       <Container
-              component="child"
-              sx={{ width: 900, margin: '0 auto' }}
-
+        component="child"
+        sx={{ width: 900, margin: '0 auto' }}
       >
-                <Paper
+        <Paper
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
-      {/* <React.Fragment> */}
+          {/* <React.Fragment> */}
 
-      <h3>Total Price: {totalPrice}</h3>
-            <Button variant="contained">Go to Checkout!</Button>
+          <h3>Total Price: {totalPrice}</h3>
+          <Button variant="contained">Go to Checkout!</Button>
           {/* </React.Fragment> */}
-          </Paper>
-          </Container>
-
-
+        </Paper>
+      </Container>
     </ThemeProvider>
   );
 }

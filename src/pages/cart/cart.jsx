@@ -31,11 +31,7 @@ const Items = [
     photo: 'please put some photo images inside /public/uploads/porducts folder',
     quantity: 4,
   },
-  { id: 3, 
-    title: 'Product 3', 
-    price: 24, 
-    photo: '', 
-    quantity: 1 },
+  { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
 ];
 export default function CartOverview() {
   return (
@@ -118,7 +114,6 @@ export default function CartOverview() {
           <React.Fragment>
             <Button variant="contained">Go to Checkout!</Button>
           </React.Fragment>
-   
         </Paper>
       </Container>
     </ThemeProvider>
