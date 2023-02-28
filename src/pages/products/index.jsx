@@ -154,6 +154,8 @@ export default function Products({ products = [] }) {
                     >
                       <DeleteIcon />
                     </Button>
+
+                    <Button onClick={() => route.push(`/products/edit/?id=${product.id}`)}>Edit</Button>
                   </Grid>
                 </TableCell>
               </TableRow>
