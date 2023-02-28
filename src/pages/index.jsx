@@ -2,7 +2,6 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/homeProducts';
 import { getURL } from '@/utils';
-import ShoppingCart from '@/components/cart/shoppingCart';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
