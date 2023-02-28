@@ -12,10 +12,28 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Grid from '@mui/material/Grid';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 
 const theme = createTheme();
-
-export default function CartOverview({ Items }) {
+const Items = [
+  {id: 1,
+      title: "Product 1",
+      price: 12,
+      photo: "please put some photo images inside /public/uploads/porducts folder",
+      quantity: 2,},
+  {id: 2,
+      title: "Product 2",
+      price: 23,
+      photo: "please put some photo images inside /public/uploads/porducts folder",
+      quantity: 4,},
+  {id: 3,
+      title: "Product 3",
+      price: 24,
+      photo:"",
+      quantity: 1,}
+];
+export default function CartOverview() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -49,11 +67,12 @@ export default function CartOverview({ Items }) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Item Image</TableCell>
-                  <TableCell>Item Name</TableCell>
+                  <TableCell>Item Photo</TableCell>
+                  <TableCell>Title</TableCell>
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="right">Quantity</TableCell>
                   <TableCell align="right">Total</TableCell>
+                  <TableCell align="center">Options</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -64,14 +83,29 @@ export default function CartOverview({ Items }) {
                       scope="row"
                     >
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.photo}
+                        alt={item.title}
                       />
                     </TableCell>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.title}</TableCell>
                     <TableCell align="right">{item.price}</TableCell>
                     <TableCell align="right">{item.quantity}</TableCell>
                     <TableCell align="right">{item.price * item.quantity}</TableCell>
+                    <TableCell align="center">
+                  <Grid
+                    item
+                    xs={4}
+                  >
+                    <Button
+                      onClick={() => {
+                        deleteHandler(product);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Grid>
+                </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
