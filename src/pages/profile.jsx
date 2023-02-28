@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
-import { redirect, supabase } from '@/utils';
+import { redirect } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -18,33 +18,46 @@ export default function Profile({ user, data }) {
     try {
       setLoading(true);
 
-      const updates = {
-        id: user.id,
-        firstname: firstname,
-        lastname: lastname,
-      };
-
-      let { error } = await supabase.from('profiles').upsert(updates);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+  if (!session) {
+    redirect({ timer: 0 });
+    return null;
   }
-  // this logs user's information if needed to be passed down to Account component
-  console.log('user:', user);
-  console.log('data:', data);
-  //console.log('farmer', farmer)
-  console.log('data:', data);
-  //console.log('farmer', farmer)
-// import { Button, Form, Input, message } from 'antd';
-import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
-import React, { useState } from 'react';
-import isUserFarmer from '@/utils/getFarmerId';
+  const farmerId = user.id;
+  if (farmerId === user.profile_id) {
+    console.log(farmerId);
+  }
+
+  return (
+    <>
+      <Card>
+        <CardContent>
+          <AccountCircleIcon></AccountCircleIcon>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {user.firstname + ' ' + user.lastname}
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {user.email}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            {user.user_type}
+          </Typography>
+        </CardContent>
+      </Card>
+      {/* <Account session={session} /> */}
+    </>
+  );
+}
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
