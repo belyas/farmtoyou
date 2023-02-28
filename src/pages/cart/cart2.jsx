@@ -15,6 +15,8 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
+
+
 const theme = createTheme();
 const Items = [
   {
@@ -38,6 +40,11 @@ const Items = [
     quantity: 1 },
 ];
 export default function CartOverview() {
+
+    const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
+
+
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -52,8 +59,7 @@ export default function CartOverview() {
       ></AppBar>
       <Container
         component="main"
-        maxWidth="sm"
-        sx={{ mb: 4 }}
+        sx={{ width: 900, margin: '0 auto' }}
       >
         <Paper
           variant="outlined"
@@ -67,7 +73,7 @@ export default function CartOverview() {
             Cart Overview
           </Typography>
 
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} >
             <Table>
               <TableHead>
                 <TableRow>
@@ -102,7 +108,7 @@ export default function CartOverview() {
                       >
                         <Button
                           onClick={() => {
-                            deleteHandler(product);
+                            handleRemoveItem(item.id);
                           }}
                         >
                           <DeleteIcon />
@@ -114,13 +120,26 @@ export default function CartOverview() {
               </TableBody>
             </Table>
           </TableContainer>
-
-          <React.Fragment>
-            <Button variant="contained">Go to Checkout!</Button>
-          </React.Fragment>
-   
-        </Paper>
+         </Paper>
       </Container>
+      <Container
+              component="child"
+              sx={{ width: 900, margin: '0 auto' }}
+
+      >
+                <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+        >
+      {/* <React.Fragment> */}
+
+      <h3>Total Price: {totalPrice}</h3>
+            <Button variant="contained">Go to Checkout!</Button>
+          {/* </React.Fragment> */}
+          </Paper>
+          </Container>
+
+
     </ThemeProvider>
   );
 }
