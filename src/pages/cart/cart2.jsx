@@ -14,28 +14,23 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import { useEffect } from "react";
 
-const theme = createTheme();
-const Items = [
-  {
-    id: 1,
-    title: 'Product 1',
-    price: 12,
-    photo: 'please put some photo images inside /public/uploads/porducts folder',
-    quantity: 2,
-  },
-  {
-    id: 2,
-    title: 'Product 2',
-    price: 23,
-    photo: 'please put some photo images inside /public/uploads/porducts folder',
-    quantity: 4,
-  },
-  { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
-];
-export default function CartOverview() {
-  const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
+const theme = createTheme()
+//const Items =localStorage.getItems('cart');
 
+
+export default function CartOverview( {Items} ) {
+    useEffect(() => {
+        localStorage.getItem('cart');
+      }, []);
+    // useEffect(() => {
+    //     // Perform localStorage action
+    //     const item = localStorage.getItem('cart')
+    //   }, [])
+
+  //const totalPrice = Items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -123,7 +118,7 @@ export default function CartOverview() {
         >
           {/* <React.Fragment> */}
 
-          <h3>Total Price: {totalPrice} </h3>
+          {/* <h3>Total Price: {totalPrice} </h3> */}
           <Button variant="contained">Go to Checkout!</Button>
           {/* </React.Fragment> */}
         </Paper>
