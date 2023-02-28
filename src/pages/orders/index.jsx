@@ -61,7 +61,7 @@ const Orders = ({ orders }) => {
                   component="th"
                   scope="row"
                 >
-                  <Link href="/">{order.id}</Link>
+                  <Link href={`/orders/${order.id}`}>{order.id}</Link>
                 </TableCell>
 
                 <TableCell align="right">{order.created_at}</TableCell>
