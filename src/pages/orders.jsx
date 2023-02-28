@@ -1,5 +1,12 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useSessionContext } from '@supabase/auth-helpers-react';
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -29,7 +36,41 @@ export const getServerSideProps = async ctx => {
 
 const Orders = ({ orders }) => {
   console.log(orders);
-  return <>Orders </>;
+  return (
+    <>
+      <TableContainer component={Paper}>
+        <Table
+          sx={{ minWidth: 650 }}
+          aria-label="orders table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>Order id</TableCell>
+              <TableCell align="right">Created at</TableCell>
+              <TableCell align="right">Total Amount</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orders.map((order, index) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell
+                  component="th"
+                  scope="row"
+                >
+                  {order.id}
+                </TableCell>
+                <TableCell align="right">{order.created_at}</TableCell>
+                <TableCell align="right">{order.total_amount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
 };
 
 export default Orders;
