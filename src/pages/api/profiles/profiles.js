@@ -1,8 +1,8 @@
 import { supabase } from '../../../utils/supabaseClient';
 
 export default async function getProfile(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).send({ data: 'Request must be GET' });
+  if (req.method !== 'PUT') {
+  return res.status(405).send({ data: 'Request must be PUT' });
   }
   if (!req.body) {
     return res.status(400).send({ data: 'Request must not be empty.' });

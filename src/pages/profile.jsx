@@ -2,44 +2,20 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
-import { redirect, supabase } from '@/utils';
+import { redirect } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { Button, Form, Input, message } from 'antd';
-import { Button, Input } from '@mui/material';
-import { FormControl } from '@mui/material';
-import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
+import Typography from '@mui/material/Typography';
+
+
 
 import React, { useState } from 'react';
 
 export default function Profile({ user, data }) {
   const session = useSession();
-  const [loading, setLoading] = useState(false);
-  const [firstname, setFirstName] = useState(null);
-  const [lastname, setLastName] = useState(null);
-
-  async function updateProfile() {
-    try {
-      setLoading(true);
-
-      const updates = {
-        id: user.id,
-        firstname: firstname,
-        lastname: lastname,
-      };
-
-      let { error } = await supabase.from('profiles').upsert(updates);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  
+ 
   // this logs user's information if needed to be passed down to Account component
   console.log('user:', user);
   console.log('data:', data);
@@ -49,13 +25,13 @@ export default function Profile({ user, data }) {
     redirect({ timer: 0 });
     return null;
   }
+  const farmerId = user.id;
+  if(farmerId === user.profile_id){
+    console.log(farmerId)
+  }
 
-  const handleSave = () => {
-    updateProfile({ firstname, lastname });
-    window.location.reload(false);
-  };
 
-  return (
+  return ( 
     <>
       <Head>
         <title>Your Profile</title>
@@ -71,90 +47,19 @@ export default function Profile({ user, data }) {
         <Card>
           <CardContent>
             <AccountCircleIcon></AccountCircleIcon>
-            <div>
-              <h3>NAME : {user.user_metadata.firstname}</h3>
-              <h3>SURNAME : {user.user_metadata.lastname}</h3>
-            </div>
-            <div>
-              <h5>Email: {user.email}</h5>
-              <h5>Type: {user.user_metadata.user_type}</h5>
-              <h5>{data.shop_name}</h5>
-              <h5>{data.shop_description}</h5>
-              <h5>{data.shop_logo}</h5>
-            </div>
+            <Typography gutterBottom variant="h5" component="div">
+              {user.firstname + " " + user.lastname}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="div">
+              {user.email}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {user.user_type}
+            
+            </Typography>
           </CardContent>
         </Card>
-        <UpdateProfileForm />
-        {/* <FormControl
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={{
-            remember: true,
-          }}
-          autoComplete="off"
-        >
-          <Form.Item label={'Update your profile'}></Form.Item>
-          <Form.Item
-            htmlFor="firstname"
-            name="firstname"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your First name!',
-              },
-            ]}
-          >
-            Set your First name
-            <Input
-              id="firstname"
-              value={firstname || ''}
-              onChange={e => setFirstName(e.target.value)}
-            />
-          </Form.Item>
-
-          <Form.Item
-            htmlFor="lastname"
-            name="lastname"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Last name!',
-              },
-            ]}
-          >
-            Set your Last name
-            <Input
-              id="lastname"
-              value={lastname || ''}
-              onChange={e => setLastName(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={handleSave}
-              disabled={loading}
-            >
-              {loading ? 'Loading ...' : 'Update'}
-            </Button>
-          </Form.Item>
-        </Form> */}
-
-        <Account session={session} />
+        {/* <Account session={session} /> */}
       </main>
     </>
   );
