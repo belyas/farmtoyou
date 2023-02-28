@@ -3,6 +3,10 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
 import { redirect } from '@/utils';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Typography from '@mui/material/Typography';
 
 export default function Profile({ user }) {
   const session = useSession();
@@ -14,10 +18,39 @@ export default function Profile({ user }) {
     redirect({ timer: 0 });
     return null;
   }
+  const farmerId = user.id;
+  if (farmerId === user.profile_id) {
+    console.log(farmerId);
+  }
 
   return (
     <>
-      <Account session={session} />
+      <Card>
+        <CardContent>
+          <AccountCircleIcon></AccountCircleIcon>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {user.firstname + ' ' + user.lastname}
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {user.email}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            {user.user_type}
+          </Typography>
+        </CardContent>
+      </Card>
+      {/* <Account session={session} /> */}
     </>
   );
 }
