@@ -123,7 +123,7 @@ export default function CartOverview() {
         >
           {/* <React.Fragment> */}
 
-          <h3>Total Price: { totalPrice }  </h3>
+          <h3>Total Price: {totalPrice} </h3>
           <Button variant="contained">Go to Checkout!</Button>
           {/* </React.Fragment> */}
         </Paper>
