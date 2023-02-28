@@ -15,8 +15,7 @@ const CartProvider = ({ children }) => {
   }, []);
 
   const add = item => {
-    const itemIds = cart.length ? cart.map(item => item.id) : [];
-    const itemIndex = itemIds.findIndex(i => parseInt(i) === parseInt(item.id));
+    const itemIndex = !cart.length ? -1 : cart.findIndex(_item => parseInt(_item.id) === parseInt(item.id));
 
     if (itemIndex === -1) {
       //not found, add new item
@@ -34,8 +33,7 @@ const CartProvider = ({ children }) => {
     }
   };
   const remove = id => {
-    const itemIds = cart.length ? cart.map(item => item.id) : [];
-    const itemIndex = itemIds.findIndex(itemId => parseInt(itemId) === parseInt(id));
+    const itemIndex = !cart.length ? -1 : cart.findIndex(_item => parseInt(_item.id) === parseInt(item.id));
 
     //if found, remove it
     if (itemIndex !== -1) {
