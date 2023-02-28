@@ -133,8 +133,6 @@ export default function CartOverview() {
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
           {/* <React.Fragment> */}
-
-          <h3>Total Price: {totalPrice}</h3>
           <Button variant="contained">Go to Checkout!</Button>
           {/* </React.Fragment> */}
         </Paper>
