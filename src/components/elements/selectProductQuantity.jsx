@@ -1,14 +1,13 @@
 import { Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { useState } from 'react';
 
-const SelectProductQuantity = ({ stock }) => {
-  const [quantity, SetQuantity] = useState(1);
+const SelectProductQuantity = ({ stock, setQuantity, quantity }) => {
   const maxQuantity = stock < 10 ? stock : 10;
 
   const quantityOptions = [...Array(maxQuantity).keys()].map(n => n + 1);
 
   const handleChange = event => {
-    SetQuantity(event.target.value);
+    setQuantity(event.target.value);
   };
 
   return (
