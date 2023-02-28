@@ -17,21 +17,21 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 
 const theme = createTheme();
 const Items = [
-  {id: 1,
-      title: "Product 1",
-      price: 12,
-      photo: "please put some photo images inside /public/uploads/porducts folder",
-      quantity: 2,},
-  {id: 2,
-      title: "Product 2",
-      price: 23,
-      photo: "please put some photo images inside /public/uploads/porducts folder",
-      quantity: 4,},
-  {id: 3,
-      title: "Product 3",
-      price: 24,
-      photo:"",
-      quantity: 1,}
+  {
+    id: 1,
+    title: 'Product 1',
+    price: 12,
+    photo: 'please put some photo images inside /public/uploads/porducts folder',
+    quantity: 2,
+  },
+  {
+    id: 2,
+    title: 'Product 2',
+    price: 23,
+    photo: 'please put some photo images inside /public/uploads/porducts folder',
+    quantity: 4,
+  },
+  { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
 ];
 export default function CartOverview() {
   return (
@@ -92,20 +92,19 @@ export default function CartOverview() {
                     <TableCell align="right">{item.quantity}</TableCell>
                     <TableCell align="right">{item.price * item.quantity}</TableCell>
                     <TableCell align="center">
-                  <Grid
-                    item
-                    xs={4}
-                  >
-                    <Button
-                      onClick={() => {
-                        deleteHandler(product);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </Grid>
-                </TableCell>
-
+                      <Grid
+                        item
+                        xs={4}
+                      >
+                        <Button
+                          onClick={() => {
+                            deleteHandler(product);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Grid>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
