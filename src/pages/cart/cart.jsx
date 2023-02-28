@@ -12,6 +12,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
@@ -34,6 +35,12 @@ const Items = [
   { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
 ];
 export default function CartOverview() {
+
+
+const theme = createTheme();
+
+//port default function CartOverview({ Items }) {
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -67,14 +74,24 @@ export default function CartOverview() {
             <Table>
               <TableHead>
                 <TableRow>
+
                   <TableCell>Item Photo</TableCell>
                   <TableCell>Title</TableCell>
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="right">Quantity</TableCell>
                   <TableCell align="right">Total</TableCell>
                   <TableCell align="center">Options</TableCell>
+
+                  <TableCell>Item Image</TableCell>
+                  <TableCell>Item Name</TableCell>
+                  <TableCell align="right">Price</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Total</TableCell>
+
                 </TableRow>
               </TableHead>
+
+
               <TableBody>
                 {Items.map(item => (
                   <TableRow key={item.id}>
@@ -84,7 +101,7 @@ export default function CartOverview() {
                     >
                       <img
                         src={item.photo}
-                        // alt={item.title}
+                        alt={item.title}
                       />
                     </TableCell>
                     <TableCell>{item.title}</TableCell>
@@ -98,7 +115,7 @@ export default function CartOverview() {
                       >
                         <Button
                           onClick={() => {
-                            deleteHandler(product);
+                            handleRemoveItem(item.id);
                           }}
                         >
                           <DeleteIcon />
@@ -110,12 +127,25 @@ export default function CartOverview() {
               </TableBody>
             </Table>
           </TableContainer>
+        </Paper>
+      </Container>
+      <Container
+        component="child"
+        sx={{ width: 900, margin: '0 auto' }}
+      >
+        <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+        >
+          {/* <React.Fragment> */}
 
-          <React.Fragment>
-            <Button variant="contained">Go to Checkout!</Button>
-          </React.Fragment>
+          <h3>Total Price: {totalPrice}</h3>
+          <Button variant="contained">Go to Checkout!</Button>
+          {/* </React.Fragment> */}
         </Paper>
       </Container>
     </ThemeProvider>
   );
 }
+
+
