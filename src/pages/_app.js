@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CartProvider } from '@/components/cart/cartContext';
 import ShoppingCart from '@/components/cart/shoppingCart';
+import ClearCartButton from '@/components/cart/clearCart';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -33,6 +34,7 @@ export default function App({ Component, pageProps }) {
         )}
         <Component {...pageProps} />
         <ShoppingCart />
+        <ClearCartButton />
       </CartProvider>
     </SessionContextProvider>
   );
