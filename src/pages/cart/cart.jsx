@@ -35,11 +35,9 @@ const Items = [
   { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
 ];
 export default function CartOverview() {
+  const theme = createTheme();
 
-
-const theme = createTheme();
-
-//port default function CartOverview({ Items }) {
+  //port default function CartOverview({ Items }) {
 
   return (
     <ThemeProvider theme={theme}>
@@ -74,7 +72,6 @@ const theme = createTheme();
             <Table>
               <TableHead>
                 <TableRow>
-
                   <TableCell>Item Photo</TableCell>
                   <TableCell>Title</TableCell>
                   <TableCell align="right">Price</TableCell>
@@ -87,10 +84,8 @@ const theme = createTheme();
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="right">Quantity</TableCell>
                   <TableCell align="right">Total</TableCell>
-
                 </TableRow>
               </TableHead>
-
 
               <TableBody>
                 {Items.map(item => (
@@ -147,5 +142,3 @@ const theme = createTheme();
     </ThemeProvider>
   );
 }
-
-
