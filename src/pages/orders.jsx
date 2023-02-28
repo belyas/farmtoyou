@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Link from 'next/link';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -60,8 +61,9 @@ const Orders = ({ orders }) => {
                   component="th"
                   scope="row"
                 >
-                  {order.id}
+                  <Link href="/">{order.id}</Link>
                 </TableCell>
+
                 <TableCell align="right">{order.created_at}</TableCell>
                 <TableCell align="right">{order.total_amount}</TableCell>
               </TableRow>
