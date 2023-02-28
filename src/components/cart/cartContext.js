@@ -19,7 +19,7 @@ const CartProvider = ({ children }) => {
 
     if (itemIndex === -1) {
       //not found, add new item
-      setCart(cart => (cart = [...cart, item]));
+      setCart(_cart => (_cart = [...cart, item]));
     } else {
       //if found,update quantity of the found item
       const newCart = cart.map((cartItem, index) => {
@@ -38,7 +38,7 @@ const CartProvider = ({ children }) => {
     //if found, remove it
     if (itemIndex !== -1) {
       const newCart = cart.filter(cartItem => parseInt(cartItem.id) !== parseInt(id));
-      setCart(cart => (cart = newCart));
+      setCart(_cart => (_cart = newCart));
     }
   };
 
