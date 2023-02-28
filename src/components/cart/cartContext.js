@@ -8,7 +8,6 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    console.log('saved cart', localStorage.getItem('cart'));
     if (localStorage.getItem('cart')) {
       setCart(JSON.parse(localStorage.getItem('cart')));
     }
@@ -19,7 +18,7 @@ const CartProvider = ({ children }) => {
 
     if (itemIndex === -1) {
       //not found, add new item
-      setCart(_cart => (_cart = [...cart, item]));
+      setCart(_cart => [..._cart, item]);
     } else {
       //if found,update quantity of the found item
       const newCart = cart.map((cartItem, index) => {
@@ -29,21 +28,21 @@ const CartProvider = ({ children }) => {
           return cartItem;
         }
       });
-      setCart(_cart => (_cart = newCart));
+      setCart(_cart => newCart);
     }
   };
   const remove = id => {
-    const itemIndex = !cart.length ? -1 : cart.findIndex(_item => parseInt(_item.id) === parseInt(item.id));
+    const itemIndex = !cart.length ? -1 : cart.findIndex(_item => parseInt(_item.id) === parseInt(id));
 
     //if found, remove it
     if (itemIndex !== -1) {
       const newCart = cart.filter(cartItem => parseInt(cartItem.id) !== parseInt(id));
-      setCart(_cart => (_cart = newCart));
+      setCart(_cart => newCart);
     }
   };
 
   const clear = () => {
-    setCart([]);
+    setCart(_cart => []);
     localStorage.removeItem('cart');
   };
 
