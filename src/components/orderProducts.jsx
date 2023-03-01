@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import OrderSummary from './oderSummary';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,6 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function OrderProducts({ order }) {
   console.log('order in orderProducts', order);
   console.log('type of order', typeof order);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       {order.map((_order, index) => (
@@ -29,7 +31,23 @@ export default function OrderProducts({ order }) {
             xs={12}
             lg={4}
           >
-            <Item>Product photo</Item>
+            <Item>
+              {_order.products.photo && _order.products.photo.endsWith('.jpg') ? (
+                <Image
+                  src={`/uploads/products/${_order.products.photo}`}
+                  title="placeholder veggie-basket"
+                  height={300}
+                  width={300}
+                />
+              ) : (
+                <Image
+                  src="/images/default-veggie.jpg"
+                  title="placeholder veggie-basket"
+                  height={300}
+                  width={300}
+                />
+              )}
+            </Item>
           </Grid>
           <Grid
             container
