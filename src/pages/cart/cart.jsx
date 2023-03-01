@@ -16,24 +16,22 @@ import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { useState, useEffect } from 'react';
 
-
-
 const theme = createTheme();
 
 export default function CartOverview() {
-    const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]);
   useEffect(() => {
-    if(localStorage.getItem('cart')){
-      setCart(JSON.parse(localStorage.getItem('cart')))
+    if (localStorage.getItem('cart')) {
+      setCart(JSON.parse(localStorage.getItem('cart')));
     }
- }, []);
+  }, []);
 
- //WIP
-//  const handleRemoveItem = () => { 
-//     cart.remove(item.id);
-//  }
- 
-const totalPrice = cart.reduce((accumulator, cart) => accumulator + cart.price * cart.quantity, 0);
+  //WIP
+  //  const handleRemoveItem = () => {
+  //     cart.remove(item.id);
+  //  }
+
+  const totalPrice = cart.reduce((accumulator, cart) => accumulator + cart.price * cart.quantity, 0);
 
   return (
     <ThemeProvider theme={theme}>
@@ -82,7 +80,6 @@ const totalPrice = cart.reduce((accumulator, cart) => accumulator + cart.price *
                       component="th"
                       scope="row"
                     >
-                      
                       <img
                         src={item.photo}
                         alt={item.title}
