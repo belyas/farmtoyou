@@ -4,6 +4,7 @@ import ListItem from '@mui/material/ListItem';
 const OrderSummary = ({ order }) => {
   return (
     <List>
+      <ListItem>{order.product_title}</ListItem>
       <ListItem>Order ID:{order.id}</ListItem>
       <ListItem>Created at:{order.created_at}</ListItem>
       <ListItem>Product Price:{order.product_price}</ListItem>

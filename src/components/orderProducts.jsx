@@ -2,9 +2,9 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
+import OrderSummary from './oderSummary';
 import Link from 'next/link';
-import { Typography } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,39 +15,53 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function OrderProducts({ order }) {
+  console.log('order in orderProducts', order);
+  console.log('type of order', typeof order);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid
-        container
-        spacing={2}
-      >
+      {order.map((_order, index) => (
         <Grid
-          item
-          xs={12}
+          container
+          spacing={2}
+          key={index}
         >
-          <Item>
-            <Typography variant="h4">Order arrives on Friday 02/02/2023</Typography>
-          </Item>
+          <Grid
+            xs={12}
+            lg={4}
+          >
+            <Item>Product photo</Item>
+          </Grid>
+          <Grid
+            container
+            xs={12}
+            lg={8}
+            spacing={4}
+          >
+            <Grid
+              xs={6}
+              lg={12}
+            >
+              <Item>
+                <Box
+                  id="category-a"
+                  sx={{ fontSize: '12px', textTransform: 'uppercase' }}
+                >
+                  Product delivery info
+                </Box>
+                <Box
+                  component="ul"
+                  aria-labelledby="category-a"
+                  sx={{ pl: 2 }}
+                >
+                  <Link href={`/product/${_order.product_id}`}>
+                    <OrderSummary order={_order} />
+                  </Link>
+                </Box>
+              </Item>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={2}
-        >
-          <Item>
-            <img src="http://placekitten.com/100/100" />
-          </Item>
-        </Grid>
-        <Grid
-          item
-          xs={8}
-        >
-          <Item>
-            <Link href={`/products/${order.product_id}`}>
-              <p>product title and description,click on link go to product page{order.product_title}</p>
-            </Link>
-          </Item>
-        </Grid>
-      </Grid>
+      ))}
     </Box>
   );
 }

@@ -28,23 +28,17 @@ const Order = ({ order }) => {
             <Typography variant="h2">Order Details</Typography>
           </Item>
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={6}>
           <Item>
             <Typography variant="h5">Shipping Address</Typography>
           </Item>
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={6}>
           <Item>
             <Typography variant="h5">Payment Method</Typography>
           </Item>
         </Grid>
-        <Grid xs={4}>
-          <Item>
-            <Typography variant="h5">Order Summary</Typography>
 
-            <OrderSummary order={order} />
-          </Item>
-        </Grid>
         <Grid xs={12}>
           <Item>
             <OrderProducts order={order} />
