@@ -12,32 +12,28 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import { useState, useEffect } from 'react';
+
+
 
 const theme = createTheme();
-const Items = [
-  {
-    id: 1,
-    title: 'Product 1',
-    price: 12,
-    photo: 'please put some photo images inside /public/uploads/porducts folder',
-    quantity: 2,
-  },
-  {
-    id: 2,
-    title: 'Product 2',
-    price: 23,
-    photo: 'please put some photo images inside /public/uploads/porducts folder',
-    quantity: 4,
-  },
-  { id: 3, title: 'Product 3', price: 24, photo: '', quantity: 1 },
-];
-export default function CartOverview() {
-  const theme = createTheme();
 
-  //port default function CartOverview({ Items }) {
+export default function CartOverview() {
+    const [cart, setCart] = useState([]);
+  useEffect(() => {
+    if(localStorage.getItem('cart')){
+      setCart(JSON.parse(localStorage.getItem('cart')))
+    }
+ }, []);
+
+ //WIP
+//  const handleRemoveItem = () => { 
+//     cart.remove(item.id);
+//  }
+ 
+const totalPrice = cart.reduce((accumulator, cart) => accumulator + cart.price * cart.quantity, 0);
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,8 +49,7 @@ export default function CartOverview() {
       ></AppBar>
       <Container
         component="main"
-        maxWidth="sm"
-        sx={{ mb: 4 }}
+        sx={{ width: 900, margin: '0 auto' }}
       >
         <Paper
           variant="outlined"
@@ -78,22 +73,16 @@ export default function CartOverview() {
                   <TableCell align="right">Quantity</TableCell>
                   <TableCell align="right">Total</TableCell>
                   <TableCell align="center">Options</TableCell>
-
-                  <TableCell>Item Image</TableCell>
-                  <TableCell>Item Name</TableCell>
-                  <TableCell align="right">Price</TableCell>
-                  <TableCell align="right">Quantity</TableCell>
-                  <TableCell align="right">Total</TableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
-                {Items.map(item => (
+                {cart.map(item => (
                   <TableRow key={item.id}>
                     <TableCell
                       component="th"
                       scope="row"
                     >
+                      
                       <img
                         src={item.photo}
                         alt={item.title}
@@ -132,9 +121,8 @@ export default function CartOverview() {
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
-          {/* <React.Fragment> */}
+          <h3>Total Price: {totalPrice} </h3>
           <Button variant="contained">Go to Checkout!</Button>
-          {/* </React.Fragment> */}
         </Paper>
       </Container>
     </ThemeProvider>
