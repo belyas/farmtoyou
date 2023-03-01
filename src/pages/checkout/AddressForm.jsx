@@ -11,7 +11,6 @@ class AddressForm extends React.Component {
     });
   };
 
-  
   render() {
     const { setAddressData, addressData } = this.props;
     return (
@@ -41,7 +40,6 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.firstName}
               onChange={this.handleChange}
-              
             />
           </Grid>
           <Grid
@@ -59,7 +57,6 @@ class AddressForm extends React.Component {
               variant="standard"
               onChange={this.handleChange}
               value={addressData.lastName}
-             
             />
           </Grid>
           <Grid
@@ -76,7 +73,6 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.address1}
               onChange={this.handleChange}
-          
             />
           </Grid>
           <Grid
@@ -109,7 +105,6 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.city}
               onChange={this.handleChange}
-              
             />
           </Grid>
           <Grid
@@ -123,7 +118,6 @@ class AddressForm extends React.Component {
               label="State/Province/Region"
               fullWidth
               variant="standard"
-             
             />
           </Grid>
           <Grid
@@ -141,7 +135,6 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.code_postal}
               onChange={this.handleChange}
-             
             />
           </Grid>
           <Grid
@@ -159,8 +152,6 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.country}
               onChange={this.handleChange}
-
-     
             />
           </Grid>
           {/* <Grid item xs={12}>
