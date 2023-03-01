@@ -7,7 +7,6 @@ import Checkbox from '@mui/material/Checkbox';
 import { useState } from 'react';
 
 class PaymentForm extends React.Component {
-
   handleChange = event => {
     this.props.setPaymentData({
       ...this.props.paymentData,
@@ -101,8 +100,7 @@ class PaymentForm extends React.Component {
           <Grid
             item
             xs={12}
-          >
-          </Grid>
+          ></Grid>
         </Grid>
       </React.Fragment>
     );
