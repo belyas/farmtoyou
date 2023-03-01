@@ -15,7 +15,7 @@ const products = [
     name: 'Product 2',
     desc: 'Another thing',
     price: '$3.45',
-  },  
+  },
   {
     name: 'Product 3',
     desc: 'Something else',
@@ -31,67 +31,105 @@ const products = [
 
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 
- class Review extends React.Component {
-
-   
-   render(){
-     const {paymentData } = this.props;
-     const payment = [paymentData]
-     const formattedPayments = [
-      { name: 'Card holder', detail: payment[0].cardName  }, 
+class Review extends React.Component {
+  render() {
+    const { paymentData } = this.props;
+    const payment = [paymentData];
+    const formattedPayments = [
+      { name: 'Card holder', detail: payment[0].cardName },
       { name: 'Card number', detail: `xxxx-xxxx-xxxx-${payment[0].cardNumber.slice(-4)}` },
       { name: 'Expiry date', detail: payment[0].expireDate },
     ];
-    
-  return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Order summary
-      </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
 
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {Array.isArray(formattedPayments) && formattedPayments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
+    return (
+      <React.Fragment>
+        <Typography
+          variant="h6"
+          gutterBottom
+        >
+          Order summary
+        </Typography>
+        <List disablePadding>
+          {products.map(product => (
+            <ListItem
+              key={product.name}
+              sx={{ py: 1, px: 0 }}
+            >
+              <ListItemText
+                primary={product.name}
+                secondary={product.desc}
+              />
+              <Typography variant="body2">{product.price}</Typography>
+            </ListItem>
+          ))}
+
+          <ListItem sx={{ py: 1, px: 0 }}>
+            <ListItemText primary="Total" />
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 700 }}
+            >
+              $34.06
+            </Typography>
+          </ListItem>
+        </List>
+        <Grid
+          container
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ mt: 2 }}
+            >
+              Shipping
+            </Typography>
+            <Typography gutterBottom>John Smith</Typography>
+            <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            direction="column"
+            xs={12}
+            sm={6}
+          >
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ mt: 2 }}
+            >
+              Payment details
+            </Typography>
+            <Grid container>
+              {Array.isArray(formattedPayments) &&
+                formattedPayments.map(payment => (
+                  <React.Fragment key={payment.name}>
+                    <Grid
+                      item
+                      xs={6}
+                    >
+                      <Typography gutterBottom>{payment.name}</Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={6}
+                    >
+                      <Typography gutterBottom>{payment.detail}</Typography>
+                    </Grid>
+                  </React.Fragment>
+                ))}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </React.Fragment>
+      </React.Fragment>
+    );
+  }
+}
 
-  );
-}}
-
-export default Review
+export default Review;
