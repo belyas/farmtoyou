@@ -5,41 +5,20 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
-const products = [
-  {
-    name: 'Product 1',
-    desc: 'A nice thing',
-    price: '$9.99',
-  },
-  {
-    name: 'Product 2',
-    desc: 'Another thing',
-    price: '$3.45',
-  },
-  {
-    name: 'Product 3',
-    desc: 'Something else',
-    price: '$6.51',
-  },
-  {
-    name: 'Product 4',
-    desc: 'Best thing of all',
-    price: '$14.11',
-  },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
-
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-
 class Review extends React.Component {
   render() {
-    const { paymentData } = this.props;
+    const { paymentData, cart, addressData } = this.props;
+
+    //Payment Data
     const payment = [paymentData];
     const formattedPayments = [
       { name: 'Card holder', detail: payment[0].cardName },
       { name: 'Card number', detail: `xxxx-xxxx-xxxx-${payment[0].cardNumber.slice(-4)}` },
       { name: 'Expiry date', detail: payment[0].expireDate },
     ];
+
+    // Total Amount
+    const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
     return (
       <React.Fragment>
@@ -50,26 +29,25 @@ class Review extends React.Component {
           Order summary
         </Typography>
         <List disablePadding>
-          {products.map(product => (
+          {cart.cart.map(product => (
             <ListItem
-              key={product.name}
+              key={product.id}
               sx={{ py: 1, px: 0 }}
             >
               <ListItemText
-                primary={product.name}
-                secondary={product.desc}
+                primary={product.title}
+                secondary={product.quantity}
               />
-              <Typography variant="body2">{product.price}</Typography>
+              <Typography variant="body2">${product.price * product.quantity}</Typography>
             </ListItem>
           ))}
-
           <ListItem sx={{ py: 1, px: 0 }}>
             <ListItemText primary="Total" />
             <Typography
               variant="subtitle1"
               sx={{ fontWeight: 700 }}
             >
-              $34.06
+              ${total}
             </Typography>
           </ListItem>
         </List>
@@ -89,8 +67,10 @@ class Review extends React.Component {
             >
               Shipping
             </Typography>
-            <Typography gutterBottom>John Smith</Typography>
-            <Typography gutterBottom>{addresses.join(', ')}</Typography>
+            <Typography gutterBottom>{`${addressData.firstName} ${addressData.lastName}`}</Typography>
+            <Typography
+              gutterBottom
+            >{`${addressData.address1},${addressData.code_postal},  ${addressData.country}`}</Typography>
           </Grid>
           <Grid
             item

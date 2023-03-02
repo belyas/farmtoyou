@@ -21,6 +21,9 @@ import { Alert } from '@mui/material';
 import { useState } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { CartProvider } from '@/components/cart/cartContext';
+import { CartContext } from '@/components/cart/cartContext';
+import { useContext } from 'react';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -72,7 +75,8 @@ function Copyright() {
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
-function getStepContent(step, { setAddressData, addressData, paymentData, setPaymentData }) {
+function GetStepContent(step, { setAddressData, addressData, paymentData, setPaymentData }) {
+  const { cart } = useContext(CartContext);
   switch (step) {
     case 0:
       return (
@@ -89,7 +93,15 @@ function getStepContent(step, { setAddressData, addressData, paymentData, setPay
         />
       );
     case 2:
-      return <Review paymentData={paymentData} />;
+      return (
+        <CartProvider>
+          <Review
+            paymentData={paymentData}
+            cart={cart}
+            addressData={addressData}
+          />{' '}
+        </CartProvider>
+      );
     default:
       throw new Error('Unknown step');
   }
@@ -300,7 +312,7 @@ export default function Checkout() {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {getStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
+              {GetStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
                   <Button
