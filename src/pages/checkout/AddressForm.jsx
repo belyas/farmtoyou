@@ -157,19 +157,22 @@ class AddressForm extends React.Component {
               onChange={this.handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
-          <TextField
+          <Grid
+            item
+            xs={12}
+          >
+            <TextField
               required
               id="phone"
               name="phone"
-              label="Phone"   
+              label="Phone"
               fullWidth
               autoComplete="phone"
               variant="standard"
               value={addressData.phone}
               onChange={this.handleChange}
             />
-        </Grid>
+          </Grid>
         </Grid>
       </React.Fragment>
     );
