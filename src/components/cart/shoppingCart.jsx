@@ -10,7 +10,9 @@ const ShoppingCart = () => {
   return (
     <div>
       <Badge badgeContent={cart.totalQuantity()}>
-      <Link href={'/cart/overview'}><ShoppingCartIcon /></Link>
+        <Link href={'/cart/overview'}>
+          <ShoppingCartIcon />
+        </Link>
       </Badge>
     </div>
   );

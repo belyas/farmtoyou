@@ -1,23 +1,23 @@
-import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
-import RemoveFromCartButton from "@/components/cart/RemoveFromCartButton";
-import { CartContext } from "@/components/cart/cartContext";
-import { useContext } from "react";
-import { CardMedia } from "@mui/material";
-import Link from "next/link";
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Grid from '@mui/material/Grid';
+import RemoveFromCartButton from '@/components/cart/RemoveFromCartButton';
+import { CartContext } from '@/components/cart/cartContext';
+import { useContext } from 'react';
+import { CardMedia } from '@mui/material';
+import Link from 'next/link';
 const theme = createTheme();
 
 const CartOverview = () => {
@@ -35,16 +35,23 @@ const CartOverview = () => {
         color="default"
         elevation={0}
         sx={{
-          position: "relative",
-          borderBottom: (t) => `1px solid ${t.palette.divider}`
+          position: 'relative',
+          borderBottom: t => `1px solid ${t.palette.divider}`,
         }}
       ></AppBar>
-      <Container component="main" sx={{ width: 900, margin: "0 auto" }}>
+      <Container
+        component="main"
+        sx={{ width: 900, margin: '0 auto' }}
+      >
         <Paper
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
-          <Typography component="h1" variant="h4" align="center">
+          <Typography
+            component="h1"
+            variant="h4"
+            align="center"
+          >
             Cart Overview
           </Typography>
 
@@ -62,29 +69,33 @@ const CartOverview = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cart.cart.map((item) => (
+                {cart.cart.map(item => (
                   <TableRow key={item.id}>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                    >
                       {/* <img src={item.photo} alt={item.title} /> */}
                       <CardMedia
-              sx={{ height: 50, backgroundSize: 'contain' }}
-              image={
-                item.photo && item.photo.endsWith('.jpg')
-                  ? `/uploads/products/${item.photo}`
-                  : '/images/default-veggie.jpg'
-              }
-              title="placeholder kitten"
-            />
+                        sx={{ height: 50, backgroundSize: 'contain' }}
+                        image={
+                          item.photo && item.photo.endsWith('.jpg')
+                            ? `/uploads/products/${item.photo}`
+                            : '/images/default-veggie.jpg'
+                        }
+                        title="placeholder kitten"
+                      />
                     </TableCell>
                     <TableCell align="right">{item.id}</TableCell>
                     <TableCell align="right">{item.title}</TableCell>
                     <TableCell align="right">{item.price}</TableCell>
                     <TableCell align="right">{item.quantity}</TableCell>
-                    <TableCell align="right">
-                      {item.price * item.quantity}
-                    </TableCell>
+                    <TableCell align="right">{item.price * item.quantity}</TableCell>
                     <TableCell align="center">
-                      <Grid item xs={4}>
+                      <Grid
+                        item
+                        xs={4}
+                      >
                         <RemoveFromCartButton id={item.id} />
                       </Grid>
                     </TableCell>
@@ -95,7 +106,10 @@ const CartOverview = () => {
           </TableContainer>
         </Paper>
       </Container>
-      <Container component="child" sx={{ width: 900, margin: "0 auto" }}>
+      <Container
+        component="child"
+        sx={{ width: 900, margin: '0 auto' }}
+      >
         <Paper
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
@@ -103,8 +117,13 @@ const CartOverview = () => {
           <h3>Total quantity: {cart.totalQuantity()}</h3>
           <h3>Total Price: {totalPrice} </h3>
           <Button onClick={cart.clear}>Clear cart</Button>
-        
-          <Link href={'/checkout/Checkout'} style={{ textDecoration: 'none' }}><Button variant="contained">Go to Checkout!</Button></Link>
+
+          <Link
+            href={'/checkout/Checkout'}
+            style={{ textDecoration: 'none' }}
+          >
+            <Button variant="contained">Go to Checkout!</Button>
+          </Link>
         </Paper>
       </Container>
     </ThemeProvider>
