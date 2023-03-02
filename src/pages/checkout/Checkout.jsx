@@ -22,7 +22,6 @@ import { useState } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
-
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
   const {
@@ -50,8 +49,6 @@ export async function getServerSideProps(ctx) {
     return { props: { data: 'Internal Server Error.', error, initialSession: session } };
   }
 }
-
-
 
 function Copyright() {
   return (
@@ -217,7 +214,7 @@ export default function Checkout() {
       // Handle any errors that occur during the fetch requests
       console.error(error);
       // Show error message
-      setShowError(true)
+      setShowError(true);
     }
   };
 
