@@ -49,7 +49,11 @@ const HomeProducts = ({ productsData }) => {
           </CardContent>
 
           <CardActions>
-            <Button variant="contained">Add to cart</Button>
+            <Button
+              variant="contained"
+            >
+              Add to cart
+            </Button>
           </CardActions>
         </Card>
       </Grid>
