@@ -18,12 +18,12 @@ import Review from './Review';
 import * as Yup from 'yup';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { CartProvider } from '@/components/cart/cartContext';
 import { CartContext } from '@/components/cart/cartContext';
-import { useContext } from 'react';
+
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -118,6 +118,7 @@ const initialAddressState = {
   province: '',
   code_postal: '',
   country: '',
+  phone: '',
 };
 
 const initialPaymentState = {
@@ -127,6 +128,11 @@ const initialPaymentState = {
   cvv: '',
 };
 
+
+
+
+
+
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
@@ -134,8 +140,16 @@ export default function Checkout() {
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorPaymentMessage, setErrorPaymentMessage] = useState(false);
+  const [successPaymentMessage, setSuccessPaymentMessage] = useState(false);
 
   const handleNext = () => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear().toString().substr(-2);
+    const currentMonth = currentDate.getMonth() + 1;
+
     // Address Validation
     const addressValidationSchema = Yup.object().shape({
       firstName: Yup.string().required('First name is required'),
@@ -144,6 +158,10 @@ export default function Checkout() {
       city: Yup.string().required('City is required'),
       country: Yup.string().required('Country is required'),
       code_postal: Yup.string().required('Postal/Zip code is required'),
+      province: Yup.string().required('Province is required'),
+      phone: Yup.string()
+        .required('Phone number is required')
+        .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number'),
     });
 
     // Payment Validation
@@ -155,7 +173,15 @@ export default function Checkout() {
         .matches(/^\d{16}$/, 'Card number must be 16 digits'),
       expireDate: Yup.string()
         .required('Expiration date is required')
-        .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiration date must be in the format MM/YY'),
+        .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiration date must be in the format MM/YY')
+        .test('future-date', 'Expiration date must be in the future', function (value) {
+          if (!value) return false;
+          const [month, year] = value.split('/');
+          return (
+            parseInt(year) > parseInt(currentYear) ||
+            (parseInt(year) === parseInt(currentYear) && parseInt(month) >= currentMonth)
+          );
+        }),
       cvv: Yup.string()
         .required('CVV is required')
         .matches(/^\d{3}$/, 'CVV must be 3 digits'),
@@ -164,22 +190,24 @@ export default function Checkout() {
     if (activeStep === 0) {
       addressValidationSchema
         .validate(addressData, { abortEarly: false })
-        .then(() => {
+        .then((success) => {
+          setSuccessMessage(success)
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
-          const errorMessage = error.errors.join('\n');
-          alert(errorMessage);
+          const errorrMessage = error.errors.join('\n');
+          setErrorMessage(true);
         });
     } else if (activeStep === 1) {
       paymentSchema
         .validate(paymentData, { abortEarly: false })
         .then(() => {
+          setSuccessPaymentMessage(true)
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
-          const errorMessage = error.errors.join('\n');
-          alert(errorMessage);
+          const errorrMessage = error.errors ? error.errors.join('\n') : 'Unknown error';
+          setErrorPaymentMessage(true);
         });
     }
   };
@@ -191,6 +219,9 @@ export default function Checkout() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      // Get cart data from local storage
+      // const cartData = JSON.parse(localStorage.getItem('cart'));
+
       // Submit payment data to payment API
       const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
         method: 'POST',
@@ -218,6 +249,9 @@ export default function Checkout() {
       if (!addressResponse.ok) {
         throw new Error('Error submitting address data');
       }
+
+      // Remove cart data from local storage
+      localStorage.removeItem('cart');
 
       // Both API calls were successful, update the active step
       setShowSuccess(true);
@@ -270,6 +304,38 @@ export default function Checkout() {
         onClose={() => setShowSuccess(false)}
       >
         <Alert severity="success">Successfully submitted data</Alert>
+      </Snackbar>
+
+
+      <Snackbar
+        open={errorMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (Phone contains 10 to 13 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
+      </Snackbar>
+      
+
+      <Snackbar
+        open={errorPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorPaymentMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (card:16 digits && ExpDate: MM/YY && Cvv: 3 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessPaymentMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
       </Snackbar>
       <Container
         component="main"
