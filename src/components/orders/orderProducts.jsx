@@ -35,6 +35,7 @@ export default function OrderProducts({ order }) {
               {_order.products.photo && _order.products.photo.endsWith('.jpg') ? (
                 <Image
                   src={`/uploads/products/${_order.products.photo}`}
+                  alt="placeholder veggie-basket"
                   title="placeholder veggie-basket"
                   height={300}
                   width={300}
@@ -43,6 +44,7 @@ export default function OrderProducts({ order }) {
                 <Image
                   src="/images/default-veggie.jpg"
                   title="placeholder veggie-basket"
+                  alt="placeholder veggie-basket"
                   height={300}
                   width={300}
                 />

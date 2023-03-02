@@ -1,5 +1,4 @@
-import { supabase } from '@/utils';
-import Order from '@/components/order';
+import Order from '@/components/orders/order';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export async function getServerSideProps(context) {
