@@ -26,8 +26,37 @@ export const getServerSideProps = async ctx => {
     };
   }
 
+  //check user type
+  try {
+    const { data, error } = await supabase.from('profiles').select('user_type').eq('id', session.user.id).single();
+    console.log('user type', data);
+    if (data.user_type.toUpperCase() === 'FARMER') {
+      //get farmer id
+      try {
+        const { data, error } = await supabase.from('farmers').select('id').eq('profile_id', session.user.id).single();
+
+        const farmerId = data.id;
+        console.log('farmer id ', farmerId);
+        //query orders data with farmer id
+        if (data) {
+          const { data } = await supabase.from('orders').select('*').eq('farmer_id', farmerId);
+          console.log('farmer orders', data);
+          return {
+            props: {
+              orders: data,
+            },
+          };
+        }
+      } catch (error) {
+        return { props: { data: 'Internal Server Error.', error } };
+      }
+    }
+  } catch (error) {
+    return { props: { data: 'Internal Server Error.', error } };
+  }
+
   const { data } = await supabase.from('orders').select('*').eq('profile_id', session.user.id);
-  console.log('orders', data);
+  console.log('customer orders', data);
 
   return {
     props: {
@@ -37,8 +66,6 @@ export const getServerSideProps = async ctx => {
 };
 
 const Orders = ({ orders }) => {
-  console.log(orders);
-
   return (
     <>
       {orders.length ? (

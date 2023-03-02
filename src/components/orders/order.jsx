@@ -29,14 +29,23 @@ const Order = ({ order }) => {
           <Grid
             container
             spacing={2}
+            rowSpacing={1}
+            divider={true}
           >
             (
-            <Grid xs={12}>
+            <Grid
+              xs={12}
+              rowSpacing={2}
+              divider={true}
+            >
               <Item>
                 <Typography variant="h2">Order Details</Typography>
               </Item>
             </Grid>
-            <Grid xs={6}>
+            <Grid
+              xs={6}
+              rowSpacing={2}
+            >
               <Item>
                 <Typography variant="h5">Shipping Address</Typography>
                 <ShippingAddress address={order.address} />
