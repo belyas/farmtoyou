@@ -316,6 +316,50 @@ export default function Checkout() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Snackbar
+        open={showError}
+        autoHideDuration={3000}
+        onClose={() => setShowError(false)}
+      >
+        <Alert severity="error">Failed to submit data</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccess(false)}
+      >
+        <Alert severity="success">Successfully submitted data</Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={errorMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (Phone contains 10 to 13 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={errorPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorPaymentMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (card:16 digits && ExpDate: MM/YY && Cvv: 3 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessPaymentMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
+      </Snackbar>
       <Container
         component="main"
         maxWidth="sm"
@@ -354,10 +398,17 @@ export default function Checkout() {
                 Your order number is #2001539. We have emailed your order confirmation, and will send you an update when
                 your order has shipped.
               </Typography>
+              <Link
+                href="/"
+                style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}
+              >
+                {' '}
+                <Button variant="contained">Continue Shopping </Button>
+              </Link>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {getStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
+              {GetStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
                   <Button
