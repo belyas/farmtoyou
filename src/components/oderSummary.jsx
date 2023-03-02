@@ -9,7 +9,7 @@ const OrderSummary = ({ order }) => {
       <ListItem>Created at:{order.created_at}</ListItem>
       <ListItem>Product Price:{order.product_price}</ListItem>
       <ListItem>Product Quantity:{order.product_quantity}</ListItem>
-      <ListItem>Shpping: free farmer delivery</ListItem>
+      <ListItem>Delivery: {order.products.delivery_method}</ListItem>
       <ListItem>Total:{order.total_price}</ListItem>
     </List>
   );

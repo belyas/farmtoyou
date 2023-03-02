@@ -28,6 +28,8 @@ export async function getServerSideProps(context) {
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error } };
   }
+
+  //get order data by query id
   const orderId = context.query.id;
   console.log('order id', orderId);
 

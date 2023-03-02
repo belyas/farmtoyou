@@ -6,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import OrderSummary from './oderSummary';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Typography } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,7 +18,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function OrderProducts({ order }) {
   console.log('order in orderProducts', order);
-  console.log('type of order', typeof order);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,7 +64,9 @@ export default function OrderProducts({ order }) {
                   id="category-a"
                   sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
-                  Product delivery info
+                  <Typography variant="h5">
+                    Product will be delivered on {_order.products.delivery_date} by {_order.products.delivery_method}
+                  </Typography>
                 </Box>
                 <Box
                   component="ul"
