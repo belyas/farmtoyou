@@ -16,6 +16,42 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import * as Yup from 'yup';
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from '@mui/material';
+import { useState } from 'react';
+import { getURL } from '@/utils';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+
+
+export async function getServerSideProps(ctx) {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    let { error, data } = await supabase.from('customer').select('id').eq('profile_id', session.user.id);
+
+    if (error) {
+      throw typeof error === 'string' ? new Error(error) : error;
+    }
+
+    return { props: { data, initialSession: session } };
+  } catch (error) {
+    return { props: { data: 'Internal Server Error.', error, initialSession: session } };
+  }
+}
+
+
 
 function Copyright() {
   return (
@@ -86,6 +122,9 @@ export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
   const [paymentData, setPaymentData] = React.useState(initialPaymentState);
+  // For showing error or success messages
+  const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleNext = () => {
     // Address Validation
@@ -121,7 +160,6 @@ export default function Checkout() {
         })
         .catch(error => {
           const errorMessage = error.errors.join('\n');
-          console.log(errorMessage);
           alert(errorMessage);
         });
     } else if (activeStep === 1) {
@@ -132,7 +170,6 @@ export default function Checkout() {
         })
         .catch(error => {
           const errorMessage = error.errors.join('\n');
-          console.log(errorMessage);
           alert(errorMessage);
         });
     }
@@ -142,11 +179,46 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log(addressData);
-    console.log(paymentData);
-    setActiveStep(activeStep + 1);
+    try {
+      // Submit payment data to payment API
+      const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      // Check the response status of the payment API call
+      if (!paymentResponse.ok) {
+        throw new Error('Error submitting payment data');
+      }
+
+      // Submit address data to address API
+      const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addressData),
+      });
+
+      // Check the response status of the address API call
+      if (!addressResponse.ok) {
+        throw new Error('Error submitting address data');
+      }
+
+      // Both API calls were successful, update the active step
+      setShowSuccess(true);
+      setActiveStep(activeStep + 1);
+    } catch (error) {
+      // Handle any errors that occur during the fetch requests
+      console.error(error);
+      // Show error message
+      setShowError(true)
+    }
   };
 
   return (
@@ -176,6 +248,20 @@ export default function Checkout() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Snackbar
+        open={showError}
+        autoHideDuration={3000}
+        onClose={() => setShowError(false)}
+      >
+        <Alert severity="error">Failed to submit data</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccess(false)}
+      >
+        <Alert severity="success">Successfully submitted data</Alert>
+      </Snackbar>
       <Container
         component="main"
         maxWidth="sm"
