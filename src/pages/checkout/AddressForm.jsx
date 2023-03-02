@@ -113,11 +113,14 @@ class AddressForm extends React.Component {
             sm={6}
           >
             <TextField
+              required
               id="province"
               name="province"
               label="State/Province/Region"
               fullWidth
               variant="standard"
+              value={addressData.province}
+              onChange={this.handleChange}
             />
           </Grid>
           <Grid
@@ -154,9 +157,19 @@ class AddressForm extends React.Component {
               onChange={this.handleChange}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-          <PhoneInput />
-        </Grid> */}
+          <Grid item xs={12}>
+          <TextField
+              required
+              id="phone"
+              name="phone"
+              label="Phone"   
+              fullWidth
+              autoComplete="phone"
+              variant="standard"
+              value={addressData.phone}
+              onChange={this.handleChange}
+            />
+        </Grid>
         </Grid>
       </React.Fragment>
     );
