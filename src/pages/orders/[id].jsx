@@ -1,6 +1,5 @@
 import Order from '@/components/orders/order';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import typeOfUser from '@/utils/typeOfUser';
 import getFarmerId from '@/utils/getFarmerId';
 
 export async function getServerSideProps(context) {
@@ -26,13 +25,10 @@ export async function getServerSideProps(context) {
 
   let orders = [];
 
-  //check if the use is farmer or customer
-  const userType = await typeOfUser(session.user.id);
+  //check if the use is farmer, if so, get farmer's orders by farmer id
+  const farmerId = await getFarmerId(session.user.id);
 
-  //get farmer's orders
-  if (userType.toUpperCase() === 'FARMER') {
-    const farmerId = await getFarmerId(session.user.id);
-
+  if (farmerId) {
     try {
       const { data, error } = await supabase.from('orders').select('id').eq('farmer_id', farmerId);
       if (error) {
@@ -53,7 +49,7 @@ export async function getServerSideProps(context) {
   }
 
   //get customer's orders
-  if (userType.toUpperCase() === 'CUSTOMER') {
+  if (!farmerId) {
     try {
       const { data, error } = await supabase.from('orders').select('id').eq('profile_id', session.user.id);
       if (error) {
@@ -75,7 +71,6 @@ export async function getServerSideProps(context) {
 
   //check if requested order in orders
   const ordersId = orders.map(_order => _order.id);
-
   const orderFound = ordersId.findIndex(_id => parseInt(_id) === parseInt(orderId)) !== -1;
 
   if (!orderFound) {

@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import OrderSummary from './oderSummary';
 import OrderProducts from './orderProducts';
 import Typography from '@mui/material/Typography';
 import ShippingAddress from './shippingAddress';
@@ -16,11 +15,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-//Todo for orders  that are not the signed up user's order, should not show order page
-
 const Order = ({ order }) => {
   console.log('order in Order', order);
-  console.log('order length', order.details.length);
 
   return (
     <>
