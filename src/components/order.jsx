@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import OrderSummary from './oderSummary';
 import OrderProducts from './orderProducts';
 import Typography from '@mui/material/Typography';
+import ShippingAddress from './shippingAddress';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -31,17 +32,7 @@ const Order = ({ order }) => {
         <Grid xs={6}>
           <Item>
             <Typography variant="h5">Shipping Address</Typography>
-            <Typography variant="subtitle1">
-              {order.address.firstname} {order.address.lastname}
-            </Typography>
-            <Typography variant="body1">
-              {order.address.address_1} {order.address.address_2}
-            </Typography>
-            <Typography variant="body1">Postcode:{order.address.code_postal} </Typography>
-            <Typography variant="body1">
-              {order.address.city} {order.address.country}
-            </Typography>
-            <Typography variant="body1">{order.address.phone} </Typography>
+            <ShippingAddress address={order.address} />
           </Item>
         </Grid>
         <Grid xs={6}>
