@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 export async function getServerSideProps(context) {
   let orderInfo = {};
 
-  //get user address
+  //get session
   const supabase = createServerSupabaseClient(context);
   const {
     data: { session },
@@ -18,6 +18,38 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  //get order data by query id
+  const orderId = context.query.id;
+
+  //check if this user has the requested order
+  try {
+    const { data, error } = await supabase.from('orders').select('id').eq('profile_id', session.user.id);
+    if (error) {
+      throw typeof error === 'string' ? new Error(error) : error;
+    }
+    if (!data.length) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+    const orderFound = data.findIndex(_order => _order === orderId) !== -1;
+
+    if (!orderFound) {
+      return {
+        redirect: {
+          destination: '/orders',
+          permanent: false,
+        },
+      };
+    }
+  } catch (error) {
+    return { props: { data: 'Internal Server Error.', error } };
+  }
+
+  //get user address
   try {
     const { data, error } = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
     if (error) {
@@ -28,10 +60,7 @@ export async function getServerSideProps(context) {
     return { props: { data: 'Internal Server Error.', error } };
   }
 
-  //get order data by query id
-  const orderId = context.query.id;
-  console.log('order id', orderId);
-
+  //get order details
   try {
     const { data, error } = await supabase
       .from('order_details')
@@ -44,7 +73,6 @@ export async function getServerSideProps(context) {
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-
     return { props: { order: orderInfo } };
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error } };
