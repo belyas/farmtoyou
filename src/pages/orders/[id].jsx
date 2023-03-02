@@ -35,7 +35,9 @@ export async function getServerSideProps(context) {
         },
       };
     }
-    const orderFound = data.findIndex(_order => _order === orderId) !== -1;
+    const ordersId = data.map(_data => _data.id);
+
+    const orderFound = ordersId.findIndex(_id => parseInt(_id) === parseInt(orderId)) !== -1;
 
     if (!orderFound) {
       return {
