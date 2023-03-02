@@ -128,6 +128,11 @@ const initialPaymentState = {
   cvv: '',
 };
 
+
+
+
+
+
 export default function Checkout() {
   const user = useUser();
   const { cart } = useContext(CartContext);
