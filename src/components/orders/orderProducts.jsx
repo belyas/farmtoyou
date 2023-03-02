@@ -75,7 +75,7 @@ export default function OrderProducts({ order }) {
                   aria-labelledby="category-a"
                   sx={{ pl: 2 }}
                 >
-                  <Link href={`/product/${_order.product_id}`}>
+                  <Link href={`/products/${_order.product_id}`}>
                     <OrderSummary order={_order} />
                   </Link>
                 </Box>
