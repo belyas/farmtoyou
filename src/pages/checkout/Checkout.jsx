@@ -18,12 +18,11 @@ import Review from './Review';
 import * as Yup from 'yup';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
-import { useState,useContext } from 'react';
+import { useState, useContext } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { CartProvider } from '@/components/cart/cartContext';
 import { CartContext } from '@/components/cart/cartContext';
-
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -128,11 +127,6 @@ const initialPaymentState = {
   cvv: '',
 };
 
-
-
-
-
-
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
@@ -190,8 +184,8 @@ export default function Checkout() {
     if (activeStep === 0) {
       addressValidationSchema
         .validate(addressData, { abortEarly: false })
-        .then((success) => {
-          setSuccessMessage(success)
+        .then(success => {
+          setSuccessMessage(success);
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
@@ -202,7 +196,7 @@ export default function Checkout() {
       paymentSchema
         .validate(paymentData, { abortEarly: false })
         .then(() => {
-          setSuccessPaymentMessage(true)
+          setSuccessPaymentMessage(true);
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
@@ -306,7 +300,6 @@ export default function Checkout() {
         <Alert severity="success">Successfully submitted data</Alert>
       </Snackbar>
 
-
       <Snackbar
         open={errorMessage}
         autoHideDuration={3000}
@@ -321,7 +314,6 @@ export default function Checkout() {
       >
         <Alert severity="success">Next</Alert>
       </Snackbar>
-      
 
       <Snackbar
         open={errorPaymentMessage}
