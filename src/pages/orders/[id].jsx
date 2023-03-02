@@ -95,13 +95,7 @@ export async function getServerSideProps(context) {
 
   //get order details
   try {
-    const { data, error } = await supabase
-      .from('order_details')
-      .select('*,products(photo,delivery_date,delivery_method)')
-      .eq('order_id', orderId);
-
-    console.log('data', data);
-    console.log('error', error);
+    const { data, error } = await supabase.from('order_details_extension').select('*').eq('order_id', orderId);
     orderInfo.details = data;
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;

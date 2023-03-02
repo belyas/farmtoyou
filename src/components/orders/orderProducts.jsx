@@ -32,9 +32,9 @@ export default function OrderProducts({ order }) {
             lg={4}
           >
             <Item>
-              {_order.products.photo && _order.products.photo.endsWith('.jpg') ? (
+              {_order.photo && _order.photo.endsWith('.jpg') ? (
                 <Image
-                  src={`/uploads/products/${_order.products.photo}`}
+                  src={`/uploads/products/${_order.photo}`}
                   alt="placeholder veggie-basket"
                   title="placeholder veggie-basket"
                   height={300}
@@ -67,7 +67,7 @@ export default function OrderProducts({ order }) {
                   sx={{ fontSize: '12px', textTransform: 'uppercase' }}
                 >
                   <Typography variant="h5">
-                    Product will be delivered on {_order.products.delivery_date} by {_order.products.delivery_method}
+                    Product will be delivered on {_order.delivery_date} by {_order.delivery_method}
                   </Typography>
                 </Box>
                 <Box
