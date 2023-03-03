@@ -10,7 +10,11 @@ const RemoveFromCartButton = ({ id }) => {
     //pass id and quantity to cartContext
     cart.remove(id);
   };
-  return <Button onClick={handleClick}><DeleteIcon /></Button>;
+  return (
+    <Button onClick={handleClick}>
+      <DeleteIcon />
+    </Button>
+  );
 };
 
 export default RemoveFromCartButton;
