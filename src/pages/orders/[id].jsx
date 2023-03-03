@@ -23,84 +23,60 @@ export async function getServerSideProps(context) {
   //get order id by in query
   const orderId = context.query.id;
 
-  let orders = [];
-
-  //check if the use is farmer, if so, get farmer's orders by farmer id
+  //check if the use is farmer
   const farmerId = await getFarmerId(session.user.id);
 
+  //if farmer, check if the requested order id belongs to this farmer
   if (farmerId) {
     try {
-      const { data, error } = await supabase.from('orders').select('id').eq('farmer_id', farmerId);
+      const { data, error } = await supabase.from('orders').select('*').match({ farmer_id: farmerId, id: orderId });
+
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
       if (!data.length) {
         return {
           redirect: {
-            destination: '/',
+            destination: '/orders',
             permanent: false,
           },
         };
       }
-      orders = data;
     } catch (error) {
       return { props: { data: 'Internal Server Error.', error } };
     }
   }
 
-  //get customer's orders
+  //See if this customer has the order
   if (!farmerId) {
     try {
-      const { data, error } = await supabase.from('orders').select('id').eq('profile_id', session.user.id);
+      const { data, error } = await supabase
+        .from('orders')
+        .select('id')
+        .match({ profile_id: session.user.id, id: orderId });
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
       if (!data.length) {
         return {
           redirect: {
-            destination: '/',
+            destination: '/orders',
             permanent: false,
           },
         };
       }
-      orders = data;
     } catch (error) {
       return { props: { data: 'Internal Server Error.', error } };
     }
   }
 
-  //check if requested order in orders
-  const ordersId = orders.map(_order => _order.id);
-  const orderFound = ordersId.findIndex(_id => parseInt(_id) === parseInt(orderId)) !== -1;
-
-  if (!orderFound) {
-    return {
-      redirect: {
-        destination: '/orders',
-        permanent: false,
-      },
-    };
-  }
-
-  //get user address
-  try {
-    const { data, error } = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
-    if (error) {
-      throw typeof error === 'string' ? new Error(error) : error;
-    }
-    orderInfo.address = data;
-  } catch (error) {
-    return { props: { data: 'Internal Server Error.', error } };
-  }
-
-  //get order details
+  //get the order information
   try {
     const { data, error } = await supabase.from('order_details_extension').select('*').eq('order_id', orderId);
-    orderInfo.details = data;
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-    return { props: { order: orderInfo } };
+    return { props: { order: data } };
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error } };
   }

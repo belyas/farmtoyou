@@ -2,19 +2,16 @@ import { supabase } from './supabaseClient';
 
 export default async function isUserFarmer(id) {
   try {
-    const { data, error } = await supabase.from('profiles').select('farmers(id)').eq('id', id).single();
+    const { data, error } = await supabase.from('farmer_profile').select('id').eq('profile_id', id).single();
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-    console.log('farmer Id query:', data);
+    //if not found in db, an error will be thrown
+    //if found, db returns {id:15}(example)
 
-    if (!data.farmers.length) {
-      return false;
-    } else {
-      return data.farmers[0].id;
-    }
+    return data.id;
   } catch (error) {
-    return error;
+    return false;
   }
 }

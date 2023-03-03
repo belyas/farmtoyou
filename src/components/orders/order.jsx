@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import OrderProducts from './orderProducts';
 import Typography from '@mui/material/Typography';
 import ShippingAddress from './shippingAddress';
+import PaymentMethod from './paymentMethod';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,7 +21,7 @@ const Order = ({ order }) => {
 
   return (
     <>
-      {order.details.length ? (
+      {order.length ? (
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
@@ -44,17 +45,18 @@ const Order = ({ order }) => {
             >
               <Item>
                 <Typography variant="h5">Shipping Address</Typography>
-                <ShippingAddress address={order.address} />
+                <ShippingAddress order={order[0]} />
               </Item>
             </Grid>
             <Grid xs={6}>
               <Item>
                 <Typography variant="h5">Payment Method</Typography>
+                <PaymentMethod order={order[0]} />
               </Item>
             </Grid>
             <Grid xs={12}>
               <Item>
-                <OrderProducts order={order.details} />
+                <OrderProducts order={order} />
               </Item>
             </Grid>
             )
