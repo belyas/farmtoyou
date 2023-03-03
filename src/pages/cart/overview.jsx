@@ -59,8 +59,8 @@ const CartOverview = () => {
             <Table>
               <TableHead>
                 <TableRow>
+                <TableCell align="right">ID</TableCell>
                   <TableCell align="right">Item Photo</TableCell>
-                  <TableCell align="right">ID</TableCell>
                   <TableCell align="right">Title</TableCell>
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="right">Quantity</TableCell>
@@ -71,11 +71,11 @@ const CartOverview = () => {
               <TableBody>
                 {cart.cart.map(item => (
                   <TableRow key={item.id}>
+                       <TableCell align="right">{item.id}</TableCell>
                     <TableCell
                       component="th"
                       scope="row"
                     >
-                      {/* <img src={item.photo} alt={item.title} /> */}
                       <CardMedia
                         sx={{ height: 50, backgroundSize: 'contain' }}
                         image={
@@ -86,7 +86,6 @@ const CartOverview = () => {
                         title="placeholder kitten"
                       />
                     </TableCell>
-                    <TableCell align="right">{item.id}</TableCell>
                     <TableCell align="right">{item.title}</TableCell>
                     <TableCell align="right">{item.price}</TableCell>
                     <TableCell align="right">{item.quantity}</TableCell>
