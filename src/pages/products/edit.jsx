@@ -108,7 +108,22 @@ const Edit = ({ data, farmers }) => {
         .required('Quantity is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-
+      // i have comented the formData method if you want to use it you can:
+      //const formData = new FormData();
+      //   formData.append('title', values.title);
+      //   formData.append('price', values.price);
+      //   formData.append('description', values.description);
+      //   formData.append('photo', values.photo);
+      //   formData.append('delivery_date', values.delivery_date);
+      //   formData.append('subscription_end', values.subscription_end);
+      //   formData.append('subscription_start', values.subscription_start);
+      //   formData.append('subscription_frequency', values.subscription_frequency);
+      //   formData.append('category', values.category);
+      //   formData.append('organic', values.organic === 'Yes');
+      //   formData.append('farmer_id', values.farmer_id);
+      //   formData.append('quantity', values.quantity);
+      //   formData.append('delivery_method', values.delivery_method);
+      //   formData.append('id', values.id);
 
       const dataToUpdateProduct = {
         title: values.title,
@@ -124,15 +139,14 @@ const Edit = ({ data, farmers }) => {
         farmer_id: values.farmer_id,
         quantity: values.quantity,
         delivery_method: values.delivery_method,
-        id: values.id
+        id: values.id,
       };
 
-      // Uploading and submitting FIle
       try {
         const response = await fetch(`${getURL()}api/products`, {
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
           method: 'PUT',
           body: JSON.stringify(dataToUpdateProduct),
@@ -141,31 +155,31 @@ const Edit = ({ data, farmers }) => {
         if (!response.ok) {
           throw new Error('Failed to submit data');
         }
-const updateProduct = async (dataToUpdateProduct) => {
-  // Create a new FormData object
-  const formData = new FormData();
+        const updateProduct = async dataToUpdateProduct => {
+          // Create a new FormData object
+          const formData = new FormData();
 
-  // Add all fields except the photo to the FormData object
-  for (const key in dataToUpdateProduct) {
-    if (key !== 'photo') {
-      formData.append(key, dataToUpdateProduct[key]);
-    }
-  }
+          // Add all fields except the photo to the FormData object
+          for (const key in dataToUpdateProduct) {
+            if (key !== 'photo') {
+              formData.append(key, dataToUpdateProduct[key]);
+            }
+          }
 
-  // Append the photo to the FormData object
-  formData.append('photo', dataToUpdateProduct.photo, dataToUpdateProduct.photo.name);
+          // Append the photo to the FormData object
+          formData.append('photo', dataToUpdateProduct.photo, dataToUpdateProduct.photo.name);
 
-  try {
-    const response = await fetch(`${getURL()}api/products`, {
-      method: 'PUT',
-      body: formData
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
+          try {
+            const response = await fetch(`${getURL()}api/products`, {
+              method: 'PUT',
+              body: formData,
+            });
+            const data = await response.json();
+            return data;
+          } catch (error) {
+            console.error(error);
+          }
+        };
 
         // show success message
         setShowSuccess(true);
@@ -370,24 +384,27 @@ const updateProduct = async (dataToUpdateProduct) => {
           )}
         </InputLabel>
         <Select
-  id="dayOfWeek"
-  name="dayOfWeek"
-  value={formik.values.delivery_date.charAt(0).toUpperCase() + formik.values.delivery_date.slice(1)}
-  onBlur={formik.handleBlur}
-  onChange={event => {
-    formik.setFieldValue('delivery_date', event.target.value);
-  }}
-  label="Select the Day"
->
-  <MenuItem value="">
-    <em>Select the day</em>
-  </MenuItem>
-  {daysOfWeek.map(day => (
-    <MenuItem key={day} value={day}>
-      {day}
-    </MenuItem>
-  ))}
-</Select>
+          id="dayOfWeek"
+          name="dayOfWeek"
+          value={formik.values.delivery_date.charAt(0).toUpperCase() + formik.values.delivery_date.slice(1)}
+          onBlur={formik.handleBlur}
+          onChange={event => {
+            formik.setFieldValue('delivery_date', event.target.value);
+          }}
+          label="Select the Day"
+        >
+          <MenuItem value="">
+            <em>Select the day</em>
+          </MenuItem>
+          {daysOfWeek.map(day => (
+            <MenuItem
+              key={day}
+              value={day}
+            >
+              {day}
+            </MenuItem>
+          ))}
+        </Select>
       </Grid>
       <Grid>
         <InputLabel htmlFor="subscription_frequency">
@@ -424,40 +441,40 @@ const updateProduct = async (dataToUpdateProduct) => {
           value={formik.values.delivery_method}
           onChange={handleDeliveryMethod}
           onBlur={formik.handleBlur}
-        >  
+        >
           <MenuItem value="">
             <em>Select an option</em>
           </MenuItem>
-            <MenuItem value={1}>Farmer delivery</MenuItem>
-            <MenuItem value={2}>Pick up place</MenuItem>
+          <MenuItem value={1}>Farmer delivery</MenuItem>
+          <MenuItem value={2}>Pick up place</MenuItem>
         </Select>
       </Grid>
 
       <Grid>
         {formik.touched.category && formik.errors.category && (
-  <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
-)}
+          <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
+        )}
 
-<Autocomplete
-  multiple
-  id="category"
-  options={category}
-  sx={{ width: 300, margin: 1 }}
-  value={formik.values.category}
-  onBlur={formik.handleBlur}
-  onChange={(event, value) => {
-    formik.setFieldValue('category', value);
-  }}
-  renderInput={params => (
-    <TextField
-      {...params}
-      label="category"
-      variant="outlined"
-      fullWidth
-    />
-  )}
-/>
-    </Grid>
+        <Autocomplete
+          multiple
+          id="category"
+          options={category}
+          sx={{ width: 300, margin: 1 }}
+          value={formik.values.category}
+          onBlur={formik.handleBlur}
+          onChange={(event, value) => {
+            formik.setFieldValue('category', value);
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="category"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+      </Grid>
       <Grid>
         <InputLabel>Is it organic?</InputLabel>
         <Grid>
@@ -488,11 +505,16 @@ const updateProduct = async (dataToUpdateProduct) => {
         ) : null}
       </Grid>
       <Grid>
-        <Button variant="contained" color="primary" type="submit">Submit</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
+          Submit
+        </Button>
       </Grid>
     </form>
   );
 };
 
 export default Edit;
-
