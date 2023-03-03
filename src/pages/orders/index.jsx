@@ -45,6 +45,7 @@ export const getServerSideProps = async ctx => {
   return {
     props: {
       orders: data,
+      initialSession: session,
     },
   };
 };
