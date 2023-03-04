@@ -2,7 +2,11 @@
 
 :root {
   --custom-font-family: 'Lato', Helvetica Neue, sans-serif;
+<<<<<<< HEAD
   --custom-bg-color: #ffffff;
+=======
+  --custom-bg-color: #fff9f9;
+>>>>>>> f42cb81 (feat: add layout)
   --custom-panel-color: #c9c5c5;
   --custom-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.8);
   --custom-color: #252525;
@@ -38,6 +42,7 @@ body,
   overflow-x: hidden;
 }
 
+<<<<<<< HEAD
 /* link */
 a {
   text-decoration: none;
@@ -46,6 +51,8 @@ a:hover {
   text-decoration: underline;
 }
 
+=======
+>>>>>>> f42cb81 (feat: add layout)
 /* Grid */
 .container {
   width: 90%;
@@ -465,7 +472,10 @@ button.primary,
 .addToCartIconTop path {
   color: var(--custom-bg-color);
 }
+<<<<<<< HEAD
 
 .nextjs-link {
   text-decoration: none;
 }
+=======
+>>>>>>> f42cb81 (feat: add layout)
