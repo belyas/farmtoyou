@@ -117,10 +117,14 @@ const CartOverview = () => {
           <h3>Total Price: {totalPrice} </h3>
           <Button onClick={cart.clear}>Clear cart</Button>
 
-           {cart.cart.length > 0 && (
-          <Link href="/checkout/Checkout" style={{ textDecoration: 'none' }}> <Button variant="contained">
-              Go to Checkout!
-            </Button> </Link>
+          {cart.cart.length > 0 && (
+            <Link
+              href="/checkout/Checkout"
+              style={{ textDecoration: 'none' }}
+            >
+              {' '}
+              <Button variant="contained">Go to Checkout!</Button>{' '}
+            </Link>
           )}
         </Paper>
       </Container>
