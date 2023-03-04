@@ -7,11 +7,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Button, Checkbox, Form, Input } from 'antd';
-import React, { useState } from 'react'
-
-
-
-
+import React, { useState } from 'react';
 
 import React, { useState } from 'react';
 
@@ -88,8 +84,8 @@ export default function Profile({ user, data }) {
           <CardContent>
             <AccountCircleIcon></AccountCircleIcon>
             <div>
-              <h3>NAME :  {user.firstname}</h3>
-              <h3>SURNAME :  {user.lastname}</h3>
+              <h3>NAME : {user.firstname}</h3>
+              <h3>SURNAME : {user.lastname}</h3>
             </div>
             <div>
               <h5>{user.email}</h5>
@@ -125,9 +121,10 @@ export default function Profile({ user, data }) {
           >
             Set new first name
             <Input
-              id='firstname'
+              id="firstname"
               value={firstname || ''}
-              onChange={e => setFirstName(e.target.value)} />
+              onChange={e => setFirstName(e.target.value)}
+            />
           </Form.Item>
 
           <Form.Item
@@ -142,9 +139,10 @@ export default function Profile({ user, data }) {
           >
             Set new last name
             <Input
-              id='lastname'
+              id="lastname"
               value={lastname || ''}
-              onChange={e => setLastName(e.target.value)} />
+              onChange={e => setLastName(e.target.value)}
+            />
           </Form.Item>
           <Form.Item
             wrapperCol={{
@@ -152,9 +150,12 @@ export default function Profile({ user, data }) {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit"
+            <Button
+              type="primary"
+              htmlType="submit"
               onClick={() => updateProfile({ firstname, lastname })}
-              disabled={loading}>
+              disabled={loading}
+            >
               {loading ? 'Loading ...' : 'Update'}
             </Button>
           </Form.Item>
@@ -200,7 +201,3 @@ export const getServerSideProps = async ctx => {
     },
   };
 };
-
-
-
-
