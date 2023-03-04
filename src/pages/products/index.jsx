@@ -67,68 +67,65 @@ export default function Products({ products = [] }) {
   };
 
   return (
-    <>
-      <h3>Products: </h3>
-      <TableContainer
-        component={Paper}
-        sx={{ width: 900, margin: '0 auto' }}
+    <TableContainer
+      component={Paper}
+      sx={{ width: 900, margin: '0 auto' }}
+    >
+      <Button
+        variant="contained"
+        sx={{ mt: 3, mb: 2, mr: 1, float: 'right' }}
+        onClick={() => route.push('/products/add')}
       >
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => route.push('/products/add')}
-        >
-          Add new product
-        </Button>
-        <Table
-          sx={{ minWidth: 650 }}
-          aria-label="products"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Price</TableCell>
-              <TableCell align="center">Quantity</TableCell>
-              <TableCell align="center">Options</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {products.map(product => (
-              <TableRow
-                key={product.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        Add new product
+      </Button>
+      <Table
+        sx={{ minWidth: 650 }}
+        aria-label="products"
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell align="center">Name</TableCell>
+            <TableCell align="center">Description</TableCell>
+            <TableCell align="center">Price</TableCell>
+            <TableCell align="center">Quantity</TableCell>
+            <TableCell align="center">Options</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {products.map(product => (
+            <TableRow
+              key={product.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell
+                component="th"
+                scope="row"
               >
-                <TableCell
-                  component="th"
-                  scope="row"
+                {product.id}
+              </TableCell>
+              <TableCell align="center">{product.title}</TableCell>
+              <TableCell align="center">{product.description}</TableCell>
+              <TableCell align="center">{product.price}</TableCell>
+              <TableCell align="center">{product.quantity}</TableCell>
+              <TableCell align="center">
+                <Grid
+                  item
+                  xs={4}
                 >
-                  {product.id}
-                </TableCell>
-                <TableCell align="center">{product.title}</TableCell>
-                <TableCell align="center">{product.description}</TableCell>
-                <TableCell align="center">{product.price}</TableCell>
-                <TableCell align="center">{product.quantity}</TableCell>
-                <TableCell align="center">
-                  <Grid
-                    item
-                    xs={4}
+                  <Button
+                    onClick={() => {
+                      deleteHandler(product);
+                    }}
                   >
-                    <Button
-                      onClick={() => {
-                        deleteHandler(product);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </Grid>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+                    <DeleteIcon />
+                  </Button>
+                </Grid>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
