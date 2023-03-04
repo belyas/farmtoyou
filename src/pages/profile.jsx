@@ -6,10 +6,7 @@ import { redirect, supabase } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { Button, Checkbox, Form, Input } from 'antd';
-import React, { useState } from 'react'
-
-
+import React, { useState } from 'react';
 
 export default function Profile({ user, data }) {
   const session = useSession();
@@ -81,19 +78,85 @@ export default function Profile({ user, data }) {
         <Card>
           <CardContent>
             <AccountCircleIcon></AccountCircleIcon>
-            <Typography gutterBottom variant="h5" component="div">
-              {user.firstname + " " + user.lastname}
-            </Typography>
-            <Typography gutterBottom variant="h5" component="div">
-              {user.email}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {user.user_type}
-            
-            </Typography>
+            <div>
+              <h3>NAME : {user.firstname}</h3>
+              <h3>SURNAME : {user.lastname}</h3>
+            </div>
+            <div>
+              <h5>{user.email}</h5>
+              <h5>{user.user_type}</h5>
+            </div>
           </CardContent>
         </Card>
-        {/* <Account session={session} /> */}
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          style={{
+            maxWidth: 600,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="off"
+        >
+          <Form.Item
+            htmlFor="firstname"
+            name="firstname"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your First name!',
+              },
+            ]}
+          >
+            Set new first name
+            <Input
+              id="firstname"
+              value={firstname || ''}
+              onChange={e => setFirstName(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            htmlFor="lastname"
+            name="lastname"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Last name!',
+              },
+            ]}
+          >
+            Set new last name
+            <Input
+              id="lastname"
+              value={lastname || ''}
+              onChange={e => setLastName(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={() => updateProfile({ firstname, lastname })}
+              disabled={loading}
+            >
+              {loading ? 'Loading ...' : 'Update'}
+            </Button>
+          </Form.Item>
+        </Form>
+
+        <Account session={session} />
       </main>
     </>
   );
@@ -145,7 +208,3 @@ export const getServerSideProps = async ctx => {
     },
   };
 };
-
-
-
-
