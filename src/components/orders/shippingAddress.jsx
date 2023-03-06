@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 
 const ShippingAddress = ({ order }) => {
-  console.log('order in shipping', order);
   return (
     <>
       <Typography variant="subtitle1">

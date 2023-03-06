@@ -17,8 +17,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Order = ({ order }) => {
-  console.log('order in Order', order);
-
   return (
     <>
       {order.length ? (

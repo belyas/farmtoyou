@@ -32,7 +32,6 @@ export const getServerSideProps = async ctx => {
 
   if (farmerId) {
     const { data } = await supabase.from('orders').select('*').eq('farmer_id', farmerId);
-    console.log('farmer orders', data);
     return {
       props: {
         orders: data,

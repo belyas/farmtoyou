@@ -2,7 +2,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
 const OrderSummary = ({ order }) => {
-  console.log('order in ordersummay', order);
   return (
     <List>
       <ListItem>{order.product_title}</ListItem>
