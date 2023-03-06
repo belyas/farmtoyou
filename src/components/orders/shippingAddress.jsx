@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 
 const ShippingAddress = ({ order }) => {
   return (
-    <>
+    <address>
       <Typography variant="subtitle1">
         {order.firstname} {order.lastname}
       </Typography>
@@ -14,7 +14,7 @@ const ShippingAddress = ({ order }) => {
         {order.city} {order.province} {order.country}
       </Typography>
       <Typography variant="body1">Contact Number:{order.phone} </Typography>
-    </>
+    </address>
   );
 };
 
