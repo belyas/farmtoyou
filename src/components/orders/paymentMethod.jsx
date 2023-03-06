@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material';
 
 const PaymentMethod = ({ order }) => {
-  console.log(typeof order.card_number);
-  const cardNumber = '*'.repeat(12) + order.card_number.toString().substring(12);
+  const cardNumber = '*'.repeat(12) + order.card_number;
   return (
     <>
       <Typography variant="subtitle1">{order.card_holder.toUpperCase()}</Typography>
