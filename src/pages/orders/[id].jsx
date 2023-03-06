@@ -76,7 +76,7 @@ export async function getServerSideProps(context) {
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-    return { props: { order: data } };
+    return { props: { order: data, initialSession: session } };
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error } };
   }
