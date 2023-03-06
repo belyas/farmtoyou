@@ -115,7 +115,7 @@ const CartOverview = () => {
         >
           <h3>Total quantity: {cart.totalQuantity()}</h3>
           <h3>Total Price: {totalPrice} </h3>
-          <Button onClick={cart.clear}>Clear cart</Button>
+          
 
           {cart.cart.length > 0 && (
             <Link
@@ -123,6 +123,7 @@ const CartOverview = () => {
               style={{ textDecoration: 'none' }}
             >
               {' '}
+              <Button onClick={cart.clear}>Clear cart</Button>
               <Button variant="contained">Go to Checkout!</Button>{' '}
             </Link>
           )}
