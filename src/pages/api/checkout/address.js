@@ -3,22 +3,27 @@ import { supabase } from '../../../utils/supabaseClient';
 export default async function address(req, res) {
   try {
     const addressDetail = req.body;
-    if(!addressDetail.profile_id){
-      res.status(400).json({ success: false, error: "Profile not found" });
-      return res
-    } 
+    if (!addressDetail.profile_id) {
+      res.status(400).json({ success: false, error: 'Profile not found' });
+      return res;
+    }
 
-    const { data, error } = await supabase.from('addresses')
-      .select().eq('profile_id', addressDetail.profile_id).maybeSingle();
-
+    const { data, error } = await supabase
+      .from('addresses')
+      .select()
+      .eq('profile_id', addressDetail.profile_id)
+      .maybeSingle();
+    
+      
     if (data) {
       addressDetail.id = data.id;
+    } else {
+      addressDetail.id = null;
     }
 
     const result = await supabase.from('addresses').upsert(
       {
         id: addressDetail.id,
-        created_at: new Date(),
         profile_id: addressDetail.profile_id,
         address_1: addressDetail.address_1,
         address_2: addressDetail.address_2,
