@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/products';
 import { getURL } from '@/utils';
+import HomeLayout from '@/components/layout/homeLayout';
 import React from 'react';
 
 export async function getServerSideProps(ctx) {
@@ -49,7 +50,7 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        <HomeProducts productsData={productsData.data} />
+        <HomeLayout productsData={productsData.data} />
       </main>
     </>
   );
