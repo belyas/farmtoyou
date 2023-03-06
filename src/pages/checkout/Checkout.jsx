@@ -40,7 +40,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    let { error, data } = await supabase.from('customer').single('id')
+    let { error, data } = await supabase.from('customer').single('id');
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
@@ -49,7 +49,6 @@ export async function getServerSideProps(ctx) {
     return { props: { data, initialSession: session } };
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
-
   }
 }
 
