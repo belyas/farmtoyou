@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HomeProducts from '../homeProducts';
+import { Footer } from './Footer';
 
 export default function HomeLayout({ productsData }) {
   return (
@@ -77,8 +78,9 @@ export default function HomeLayout({ productsData }) {
           </Grid>
         </Container>
       </main>
+
       {/* Footer */}
-      <Box
+      {/* <Box
         sx={{ bgcolor: 'background.paper', p: 6 }}
         component="footer"
       >
@@ -97,7 +99,7 @@ export default function HomeLayout({ productsData }) {
         >
           Something here to give the footer a purpose!
         </Typography>
-      </Box>
+      </Box> */}
       {/* End footer */}
     </>
   );
