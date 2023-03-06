@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { CartProvider } from '@/components/cart/cartContext';
 import { Header } from '@/components/layout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Footer } from '@/components/layout';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +26,9 @@ export default function App({ Component, pageProps }) {
       >
         <CartProvider>
           <Header />
+
           <Component {...pageProps} />
+          {/* <Footer /> */}
         </CartProvider>
       </SessionContextProvider>
     </ThemeProvider>
