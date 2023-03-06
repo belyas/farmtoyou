@@ -115,7 +115,6 @@ const CartOverview = () => {
         >
           <h3>Total quantity: {cart.totalQuantity()}</h3>
           <h3>Total Price: {totalPrice} </h3>
-          
 
           {cart.cart.length > 0 && (
             <Link
