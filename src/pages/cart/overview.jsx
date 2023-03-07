@@ -117,12 +117,20 @@ const CartOverview = () => {
           <h3>Total Price: {totalPrice} </h3>
 
           {cart.cart.length > 0 && (
+        <Button
+          style={{ textDecoration: 'none' }}
+          onClick={cart.clear}
+        >
+          Clear cart
+        </Button>
+      )}
+          {cart.cart.length > 0 && (
             <Link
               href="/checkout/Checkout"
               style={{ textDecoration: 'none' }}
             >
               {' '}
-              <Button onClick={cart.clear}>Clear cart</Button>
+              {/* <Button onClick={cart.clear}>Clear cart</Button> */}
               <Button variant="contained">Go to Checkout!</Button>{' '}
             </Link>
           )}
