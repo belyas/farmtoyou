@@ -48,7 +48,7 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        <HomeProducts productsData={productsData} />
+        <HomeProducts productsData={productsData.data} />
       </main>
     </>
   );
