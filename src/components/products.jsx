@@ -10,7 +10,7 @@ import Link from 'next/link';
 import AddToCartButton from './cart/addToCartButton';
 import { useState, useEffect } from 'react';
 
-const HomeProducts = ({ productsData }) => {
+const Products = ({ productsData }) => {
   const products = productsData;
 
   const productItems = products.map((product, index) => {
@@ -75,4 +75,4 @@ const HomeProducts = ({ productsData }) => {
   );
 };
 
-export default HomeProducts;
+export default Products;
