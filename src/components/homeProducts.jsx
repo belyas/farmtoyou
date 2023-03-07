@@ -11,7 +11,7 @@ import AddToCartButton from './cart/addToCartButton';
 import { useState, useEffect } from 'react';
 
 const HomeProducts = ({ productsData }) => {
-  const products = productsData.data;
+  const products = productsData;
 
   const productItems = products.map((product, index) => {
     return (
