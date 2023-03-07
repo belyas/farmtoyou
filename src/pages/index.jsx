@@ -3,7 +3,6 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/products';
 import { getURL } from '@/utils';
 import React from 'react';
-import CategoryDrawer from '@/components/categoryDrawer';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
