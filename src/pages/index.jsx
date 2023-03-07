@@ -2,10 +2,7 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/products';
 import { getURL } from '@/utils';
-import CategoryMenu from '@/components/categoryMenu';
-import { useState } from 'react';
 import React from 'react';
-import Drawer from '@mui/material/Drawer';
 import CategoryDrawer from '@/components/categoryDrawer';
 
 export async function getServerSideProps(ctx) {
@@ -53,8 +50,6 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        <CategoryDrawer />
-
         <HomeProducts productsData={productsData.data} />
       </main>
     </>

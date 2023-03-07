@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 export default function CategoryDrawer() {
   const [open, setOpen] = useState(false);
-  console.log('is open', open);
 
   const toggleDrawer = () => {
     setOpen(open => !open);
