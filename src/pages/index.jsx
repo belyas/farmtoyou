@@ -4,22 +4,9 @@ import HomeProducts from '@/components/products';
 import { getURL } from '@/utils';
 import CategoryMenu from '@/components/categoryMenu';
 import { useState } from 'react';
-
-const categories = [
-  'Bakery',
-  'Meat',
-  'Dairy',
-  'Fruits',
-  'Vegetables',
-  'Flour',
-  'Rice and pasta',
-  'Oil',
-  'Coffee and tea',
-  'Wine and beer',
-  'Salt and spices',
-  'Seeds',
-  'Beans and Legumes',
-];
+import React from 'react';
+import Drawer from '@mui/material/Drawer';
+import CategoryDrawer from '@/components/categoryDrawer';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -66,7 +53,8 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        <CategoryMenu categories={categories} />
+        <CategoryDrawer />
+
         <HomeProducts productsData={productsData.data} />
       </main>
     </>
