@@ -7,8 +7,7 @@ import { useRouter } from 'next/router';
 import { CartProvider } from '@/components/cart/cartContext';
 import ShoppingCart from '@/components/cart/shoppingCart';
 import ClearCartButton from '@/components/cart/clearCart';
-import CategoryDrawer from '@/components/categoryDrawer';
-import { CategoryRounded } from '@mui/icons-material';
+import CategoryMenu from '@/components/categoryMenu';
 
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
@@ -35,7 +34,7 @@ export default function App({ Component, pageProps }) {
             <Link href={'/orders'}>Orders</Link>
           </>
         )}
-        <CategoryDrawer />
+        <CategoryMenu />
         <ShoppingCart />
         <ClearCartButton />
         <Component {...pageProps} />

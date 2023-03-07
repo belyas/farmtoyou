@@ -1,54 +1,43 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import Link from 'next/link';
-
-const categories = [
-  'Bakery',
-  'Meat',
-  'Dairy',
-  'Fruits',
-  'Vegetables',
-  'Flour',
-  'Rice and pasta',
-  'Oil',
-  'Coffee and tea',
-  'Wine and beer',
-  'Salt and spices',
-  'Seeds',
-  'Beans and Legumes',
-];
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
+import CategoryList from './categoryList';
 
 export default function CategoryMenu() {
-  console.log(categories);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <nav aria-label="main mailbox folders">
-        <List>
-          {categories.map((category, index) => {
-            return (
-              <Link
-                href={`/categories/${category.toLowerCase()}`}
-                key={index}
-              >
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText
-                      primary={category}
-                      value={category}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            );
-          })}
-        </List>
-      </nav>
-      <Divider />
-    </Box>
+    <div>
+      <Button
+        id="fade-button"
+        aria-controls={open ? 'fade-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        Category
+      </Button>
+      <Menu
+        id="category-menu"
+        MenuListProps={{
+          'aria-labelledby': 'category-button',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Fade}
+      >
+        <CategoryList />
+      </Menu>
+    </div>
   );
 }
