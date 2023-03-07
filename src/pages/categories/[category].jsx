@@ -1,37 +1,23 @@
 import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/products';
-import { getURL } from '@/utils';
-import CategoryMenu from '@/components/categoryMenu';
-import { useState } from 'react';
-
-const categories = [
-  'Bakery',
-  'Meat',
-  'Dairy',
-  'Fruits',
-  'Vegetables',
-  'Flour',
-  'Rice and pasta',
-  'Oil',
-  'Coffee and tea',
-  'Wine and beer',
-  'Salt and spices',
-  'Seeds',
-  'Beans and Legumes',
-];
 
 export async function getServerSideProps(ctx) {
+  const category = ctx.query.category;
   const supabase = createServerSupabaseClient(ctx);
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
   let productsData = {};
   let error = {};
 
   try {
-    productsData = await fetch(`${getURL()}api/products`).then(res => res.json());
+    const { data, error } = await supabase.from('products').select('*').contains('category', [category]);
+    console.log('category data', data);
+    productsData = data;
   } catch (error) {
+    console.log('category error', error);
     error = error;
   }
 
@@ -44,7 +30,9 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-export default function Home({ productsData }) {
+const CategoryPage = ({ productsData }) => {
+  console.log('products data in category page', productsData);
+
   return (
     <>
       <Head>
@@ -66,9 +54,10 @@ export default function Home({ productsData }) {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
-        <CategoryMenu categories={categories} />
-        <HomeProducts productsData={productsData.data} />
+        <HomeProducts productsData={productsData} />
       </main>
     </>
   );
-}
+};
+
+export default CategoryPage;
