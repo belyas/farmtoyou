@@ -130,7 +130,6 @@ const CartOverview = () => {
               style={{ textDecoration: 'none' }}
             >
               {' '}
-              {/* <Button onClick={cart.clear}>Clear cart</Button> */}
               <Button variant="contained">Go to Checkout!</Button>{' '}
             </Link>
           )}
