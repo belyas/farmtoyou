@@ -151,7 +151,9 @@ export default async function add(req, res) {
     }
 
     product.delivery_method = parseInt(fields.delivery_method);
-    product.category = correctDBArray(fields.category) ? fields.category : '{' + fields.category + '}';
+    product.category = correctDBArray(fields.category)
+      ? fields.category.toLowerCase()
+      : '{' + fields.category.toLowerCase() + '}';
 
     try {
       const { error } = await supabase.from('products').insert(product);
