@@ -126,6 +126,7 @@ const initialPaymentState = {
   cardNumber: '',
   expireDate: '',
   cvv: '',
+  focus: false,
 };
 
 export default function Checkout() {
@@ -230,6 +231,14 @@ export default function Checkout() {
   }
 
   const handleSubmit = async e => {
+    const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
+    const id= cart.cart.farmer_id
+
+    const orderData ={
+      total_amount:total,
+      farmer_id:id,
+    }
+    
     e.preventDefault();
     try {
       // Submit orders data to orders API
@@ -259,6 +268,8 @@ export default function Checkout() {
       if (!paymentResponse.ok) {
         throw new Error('Error submitting payment data');
       }
+
+      
 
       // Submit address data to address API
       const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
@@ -292,30 +303,6 @@ export default function Checkout() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        color="default"
-        elevation={0}
-        sx={{
-          position: 'relative',
-          borderBottom: t => `1px solid ${t.palette.divider}`,
-        }}
-      >
-        <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            noWrap
-          >
-            <Link
-              color="inherit"
-              href="https://www.google.com"
-            >
-              Farm to you
-            </Link>
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Snackbar
         open={showError}
         autoHideDuration={3000}
@@ -362,32 +349,33 @@ export default function Checkout() {
       </Snackbar>
       <Container
         component="main"
-        maxWidth="sm"
+        maxWidth="md"
         sx={{ mb: 4 }}
       >
         <Paper
           variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, background:"#F0FDF0"}}
         >
           <Typography
             component="h1"
             variant="h4"
             align="center"
+            sx={{fontFamily:"Inter",fontStyle:"normal",fontWeight:500,fontSize:34,letterSpacing:0.25, color:"#263238"}}
           >
             Checkout
           </Typography>
           <Stepper
             activeStep={activeStep}
-            sx={{ pt: 3, pb: 5 }}
+            sx={{ pt: 3, pb: 5}}
           >
             {steps.map(label => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel > {label}</StepLabel>
               </Step>
             ))}
           </Stepper>
           {activeStep === steps.length ? (
-            <React.Fragment>
+            <React.Fragment >
               <Typography
                 variant="h5"
                 gutterBottom
@@ -407,13 +395,14 @@ export default function Checkout() {
               </Link>
             </React.Fragment>
           ) : (
-            <React.Fragment>
+            <React.Fragment >
               {GetStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
                   <Button
                     onClick={handleBack}
-                    sx={{ mt: 3, ml: 1 }}
+                    sx={{ mt: 3, ml: 1 , color:"#206530"}}
+                   
                   >
                     Back
                   </Button>
@@ -422,7 +411,7 @@ export default function Checkout() {
                 <Button
                   variant="contained"
                   onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
-                  sx={{ mt: 3, ml: 1 }}
+                  sx={{ mt: 3, ml: 1 , backgroundColor:"#206530"}}
                 >
                   {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>

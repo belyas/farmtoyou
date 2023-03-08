@@ -18,12 +18,14 @@ class AddressForm extends React.Component {
         <Typography
           variant="h6"
           gutterBottom
+          sx={{fontFamily:"Inter",fontStyle:"normal",fontWeight:400,fontSize:"1y0px",letterSpacing:0.25, color:"#206530"}}
         >
           Shipping address
         </Typography>
         <Grid
           container
           spacing={3}
+
         >
           <Grid
             item

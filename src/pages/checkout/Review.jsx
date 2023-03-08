@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
+import { Box, maxHeight, maxWidth } from '@mui/system';
 
 class Review extends React.Component {
   render() {
@@ -23,14 +24,25 @@ class Review extends React.Component {
     console.log(cart.cart);
 
     return (
-      <React.Fragment>
+      <React.Fragment >
+        <Box >
         <Typography
           variant="h6"
           gutterBottom
+          sx={{
+            mt: 2,
+            fontFamily: 'Inter',
+            fontStyle: 'normal',
+            fontWeight: 500,
+            fontSize: 28,
+            letterSpacing: 0.25,
+            color: '#206530',
+          }}
+          
         >
           Order summary
         </Typography>
-        <List disablePadding>
+        <List disablePadding >
           {cart.cart.map(product => (
             <ListItem
               key={product.id}
@@ -47,7 +59,7 @@ class Review extends React.Component {
             <ListItemText primary="Total" />
             <Typography
               variant="subtitle1"
-              sx={{ fontWeight: 700 }}
+              sx={{ fontWeight: 700, mb:2}}
             >
               ${total}
             </Typography>
@@ -56,16 +68,29 @@ class Review extends React.Component {
         <Grid
           container
           spacing={2}
+          sx={{display:"flex"}}
         >
           <Grid
             item
+            container
+            direction="column"
             xs={12}
             sm={6}
+            sx={{border:"1px solid  #206530", borderRadius:"20px"}}
+            
           >
             <Typography
               variant="h6"
               gutterBottom
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                fontFamily: 'Inter',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                fontSize: 27,
+                letterSpacing: 0.25,
+                color: '#206530',
+              }}
             >
               Shipping
             </Typography>
@@ -83,15 +108,32 @@ class Review extends React.Component {
             direction="column"
             xs={12}
             sm={6}
+            sx={{border:"1px solid #206530", borderRadius:"20px"}}
           >
             <Typography
               variant="h6"
               gutterBottom
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                fontFamily: 'Inter',
+                fontStyle: 'normal',
+                fontWeight: 500,
+                fontSize: 27,
+                letterSpacing: 0.25,
+                color: '#206530',
+              }}
             >
               Payment details
             </Typography>
-            <Grid container>
+            <Grid container  sx={{
+                mt: 2,
+                fontFamily: 'Inter',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: 24,
+                letterSpacing: 0.25,
+                color: '#206530',
+              }}>
               {Array.isArray(formattedPayments) &&
                 formattedPayments.map(payment => (
                   <React.Fragment key={payment.name}>
@@ -112,6 +154,7 @@ class Review extends React.Component {
             </Grid>
           </Grid>
         </Grid>
+        </Box>
       </React.Fragment>
     );
   }
