@@ -4,9 +4,9 @@ import Products from '@/components/products';
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
   const query = ctx.query.q;
-  console.log(query);
-  const { data, error } = await supabase.from('products').select('*').textSearch('title', query);
-  console.log(data, error);
+
+  const { data } = await supabase.from('products').select('*').textSearch('fts', query).limit(12);
+
   return {
     props: { data: data },
   };
