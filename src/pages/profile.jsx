@@ -6,15 +6,19 @@ import { redirect, supabase } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
 
 export default function Profile({ user }) {
   const session = useSession();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [firstname, setFirstName] = useState(null);
   const [lastname, setLastName] = useState(null);
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
-  async function updateProfile({ firstname, lastname }) {
+  async function updateProfile() {
     try {
       setLoading(true);
 
@@ -22,38 +26,19 @@ export default function Profile({ user }) {
         id: user.id,
         firstname: firstname,
         lastname: lastname,
-        website,
-        avatar_url,
-        updated_at: new Date().toISOString(),
       };
 
       let { error } = await supabase.from('profiles').upsert(updates);
 
-      if (error) throw error;
-
-      alert('Profile updated!');
+      if (error) {
+        throw error;
+      }
     } catch (error) {
-      alert('Error updating the data!');
-      console.log(error);
+      //console.log(error);
     } finally {
       setLoading(false);
     }
   }
-  // const onFinish = async (values) => {
-  //   // const { valuesUpdated } = await supabase
-  //   //   .from('profiles')
-  //   //   .update({
-  //   //     firstname: values.firstname,
-  //   //     lastname: values.lastname
-  //   //   }
-  //   //   )
-  //   //   .match({ id: session.user.id })
-  //   updateProfile({ firstname, lastname })
-  //   console.log('Success:', values);
-  // };
-  // const onFinishFailed = (errorInfo) => {
-  //   console.log('Failed:', errorInfo);
-  // };
   // this logs user's information if needed to be passed down to Account component
   console.log('user:', user);
 
@@ -61,6 +46,11 @@ export default function Profile({ user }) {
     redirect({ timer: 0 });
     return null;
   }
+
+  const handleSave = () => {
+    updateProfile({ firstname, lastname });
+    window.location.reload(false);
+  };
 
   return (
     <>
@@ -83,8 +73,8 @@ export default function Profile({ user }) {
               <h3>SURNAME : {user.lastname}</h3>
             </div>
             <div>
-              <h5>{user.email}</h5>
-              <h5>{user.user_type}</h5>
+              <h5>Email: {user.email}</h5>
+              <h5>Type: {user.user_type}</h5>
             </div>
           </CardContent>
         </Card>
@@ -114,7 +104,7 @@ export default function Profile({ user }) {
               },
             ]}
           >
-            Set new first name
+            Set your First name
             <Input
               id="firstname"
               value={firstname || ''}
@@ -132,7 +122,7 @@ export default function Profile({ user }) {
               },
             ]}
           >
-            Set new last name
+            Set your Last name
             <Input
               id="lastname"
               value={lastname || ''}
@@ -148,7 +138,7 @@ export default function Profile({ user }) {
             <Button
               type="primary"
               htmlType="submit"
-              onClick={() => updateProfile({ firstname, lastname })}
+              onClick={handleSave}
               disabled={loading}
             >
               {loading ? 'Loading ...' : 'Update'}
