@@ -431,3 +431,7 @@ button.primary,
   margin-bottom: 10px;
   text-decoration: none;
 }
+
+.nextjs-link {
+  text-decoration: none;
+}

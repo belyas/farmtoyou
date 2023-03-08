@@ -39,6 +39,7 @@ function CategoryListParts({ c }) {
               <Link
                 href={`/categories/${category.toLowerCase()}`}
                 key={index}
+                className="nextjs-link"
               >
                 <ListItem disablePadding>
                   <ListItemButton>
@@ -53,8 +54,6 @@ function CategoryListParts({ c }) {
           })}
         </List>
       </Grid>
-
-      <Divider />
     </Box>
   );
 }
@@ -74,18 +73,18 @@ export default function CategoryList() {
         container
         spacing={3}
       >
-        <Grid xs="auto">
-          <Item>
+        <Grid xs={4}>
+          <Item sx={{ boxShadow: '0 0 0 0 ' }}>
             <CategoryListParts c={categories.slice(0, 4)} />
           </Item>
         </Grid>
         <Grid xs={4}>
-          <Item>
+          <Item sx={{ boxShadow: '0 0 0 0 ' }}>
             <CategoryListParts c={categories.slice(4, 8)} />
           </Item>
         </Grid>
-        <Grid xs>
-          <Item>
+        <Grid xs={4}>
+          <Item sx={{ boxShadow: '0 0 0 0 ' }}>
             <CategoryListParts c={categories.slice(8)} />
           </Item>
         </Grid>
