@@ -32,8 +32,9 @@ export default function Profile({ user, data }) {
 
       let { error } = await supabase.from('profiles').upsert(updates);
 
-      if (error) {throw error;}
-     
+      if (error) {
+        throw error;
+      }
     } catch (error) {
       //console.log(error);
     } finally {
@@ -50,10 +51,10 @@ export default function Profile({ user, data }) {
     return null;
   }
 
-  const handleSave=()=>{
-    updateProfile({ firstname, lastname})
+  const handleSave = () => {
+    updateProfile({ firstname, lastname });
     window.location.reload(false);
-  }
+  };
 
   return (
     <>
