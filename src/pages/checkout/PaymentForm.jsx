@@ -14,7 +14,7 @@ class PaymentForm extends React.Component {
   };
 
   render() {
-    const {  paymentData } = this.props;
+    const { paymentData } = this.props;
 
     return (
       <React.Fragment>
@@ -41,7 +41,7 @@ class PaymentForm extends React.Component {
         <Grid
           container
           spacing={3}
-          sx={{mt:3}}
+          sx={{ mt: 3 }}
         >
           <Grid
             item
