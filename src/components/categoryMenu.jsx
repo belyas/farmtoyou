@@ -35,6 +35,11 @@ export default function CategoryMenu() {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
+        PaperProps={{
+          style: {
+            width: 600,
+          },
+        }}
       >
         <CategoryList />
       </Menu>
