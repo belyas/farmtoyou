@@ -1,11 +1,6 @@
 import { supabase } from '../../../utils/supabaseClient';
-import { update } from '../profiles/updateProfile';
 
 export default async function getProfile(req, res) {
-  if (req.method == 'PUT') {
-    return update(req, res, supabase);
-  }
-
   if (req.method !== 'GET') {
     return res.status(405).send({ data: 'Request must be GET' });
   }
