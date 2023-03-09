@@ -6,7 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { Box, maxHeight, maxWidth } from '@mui/system';
 
-
 class Review extends React.Component {
   render() {
     const { paymentData, cart, addressData } = this.props;
@@ -55,11 +54,11 @@ class Review extends React.Component {
                 <Typography variant="body2">${product.price * product.quantity}</Typography>
               </ListItem>
             ))}
-            <ListItem sx={{ py: 1, px: 0, borderBottom:"1px solid #bdbdbd" }}>
+            <ListItem sx={{ py: 1, px: 0, borderBottom: '1px solid #bdbdbd' }}>
               <ListItemText primary="Total" />
               <Typography
                 variant="subtitle1"
-                sx={{ fontWeight: 700, mb: 2}}
+                sx={{ fontWeight: 700, mb: 2 }}
               >
                 ${total}
               </Typography>
@@ -68,7 +67,7 @@ class Review extends React.Component {
           <Grid
             container
             spacing={2}
-            sx={{ display: 'flex', flexDirection:"column"}}
+            sx={{ display: 'flex', flexDirection: 'column' }}
             className="shipping-grid"
           >
             <Grid
@@ -77,7 +76,6 @@ class Review extends React.Component {
               direction="column"
               xs={12}
               sm={6}
-              
             >
               <Typography
                 variant="h6"
@@ -100,7 +98,12 @@ class Review extends React.Component {
               <Typography gutterBottom>{addressData.city}</Typography>
               <Typography gutterBottom>{addressData.country}</Typography>
               <Typography gutterBottom>{addressData.code_postal}</Typography>
-              <Typography gutterBottom sx={{borderBottom:"1px solid #bdbdbd"}}>{addressData.phone}</Typography>
+              <Typography
+                gutterBottom
+                sx={{ borderBottom: '1px solid #bdbdbd' }}
+              >
+                {addressData.phone}
+              </Typography>
             </Grid>
             <Grid
               item
