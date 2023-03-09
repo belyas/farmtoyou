@@ -21,7 +21,7 @@ export default async function products(req, res) {
         .from('products')
         .select()
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(12);
       if (error) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
