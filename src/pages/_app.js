@@ -6,6 +6,7 @@ import { CartProvider } from '@/components/cart/cartContext';
 import { Header } from '@/components/layout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Footer } from '@/components/layout';
+import Layout from '@/components/layout/layout';
 
 const theme = createTheme({
   palette: {
@@ -25,10 +26,9 @@ export default function App({ Component, pageProps }) {
         initialSession={pageProps.initialSession}
       >
         <CartProvider>
-          <Header />
-
-          <Component {...pageProps} />
-          <Footer />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </CartProvider>
       </SessionContextProvider>
     </ThemeProvider>
