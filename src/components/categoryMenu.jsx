@@ -14,8 +14,7 @@ export default function CategoryMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  //todo how to add category to header
-  //todo show category when hovering
+
   return (
     <>
       <Button
@@ -42,6 +41,8 @@ export default function CategoryMenu() {
         PaperProps={{
           style: {
             width: 600,
+            overflowX: 'auto',
+            overflowY: 'hidden',
           },
         }}
       >
