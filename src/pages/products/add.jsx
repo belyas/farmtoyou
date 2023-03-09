@@ -177,7 +177,7 @@ const Add = ({ data, error }) => {
   return (
     <TableContainer
       component={Paper}
-      sx={{ width: 900, margin: '0 auto' }}
+      sx={{ maxWidth: 900, margin: 'auto' }}
     >
       <form
         action="/api/products/add"
