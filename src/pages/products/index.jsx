@@ -11,6 +11,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/navigation';
+import { Typography } from '@mui/material';
+import Link from 'next/link';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -68,18 +70,24 @@ export default function Products({ products = [] }) {
 
   return (
     <>
-      <h3>Products: </h3>
+      <Button
+        variant="contained"
+        sx={{ mt: 3, mb: 2, mr: 1 }}
+        onClick={() => route.push('/products/add')}
+      >
+        Add new product
+      </Button>
+      <Typography
+        variant="h5"
+        component="div"
+        sx={{ paddingY: 2 }}
+      >
+        Your products
+      </Typography>
       <TableContainer
         component={Paper}
-        sx={{ width: 900, margin: '0 auto' }}
+        sx={{ maxWidth: 900, margin: 'auto', justifyContent: 'center', alignItems: 'center' }}
       >
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => route.push('/products/add')}
-        >
-          Add new product
-        </Button>
         <Table
           sx={{ minWidth: 650 }}
           aria-label="products"
@@ -104,8 +112,14 @@ export default function Products({ products = [] }) {
                   component="th"
                   scope="row"
                 >
-                  {product.id}
+                  <Link
+                    className="nextjs-link"
+                    href={`/products/${product.id}`}
+                  >
+                    {product.id}
+                  </Link>
                 </TableCell>
+
                 <TableCell align="center">{product.title}</TableCell>
                 <TableCell align="center">{product.description}</TableCell>
                 <TableCell align="center">{product.price}</TableCell>

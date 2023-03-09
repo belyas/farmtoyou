@@ -11,7 +11,10 @@ const SelectProductQuantity = ({ stock, setQuantity, quantity }) => {
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
+    <FormControl
+      sx={{ m: 1, minWidth: 120 }}
+      size="small"
+    >
       <InputLabel id="product-amount-select-label">Quantity</InputLabel>
       <Select
         labelId="product-quantity-select-label"
