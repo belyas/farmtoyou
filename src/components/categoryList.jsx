@@ -31,7 +31,7 @@ function CategoryListParts({ c }) {
     <Box sx={{ width: '100%', maxWidth: 540, bgcolor: 'background.paper' }}>
       <Grid
         container
-        spacing={3}
+        spacing={2}
       >
         <List>
           {c.map((category, index) => {
@@ -41,7 +41,10 @@ function CategoryListParts({ c }) {
                 key={index}
                 className="nextjs-link"
               >
-                <ListItem disablePadding>
+                <ListItem
+                  disablePadding
+                  sx={{ whiteSpace: 'nowrap' }}
+                >
                   <ListItemButton>
                     <ListItemText
                       primary={category}
@@ -68,10 +71,10 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function CategoryList() {
   return (
-    <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+    <Box sx={{ flexGrow: 1, overflowX: 'auto', overflowY: 'hidden' }}>
       <Grid
         container
-        spacing={0}
+        spacing={1}
       >
         <Grid xs={4}>
           <Item sx={{ boxShadow: '0 0 0 0 ' }}>
