@@ -20,7 +20,7 @@ class Review extends React.Component {
     // Total Amount
     const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
-    console.log(cart.cart)
+    console.log(cart.cart);
 
     return (
       <React.Fragment>
