@@ -127,7 +127,7 @@ const initialPaymentState = {
   cvv: '',
 };
 
-export default function Checkout({data}) {
+export default function Checkout({ data }) {
   const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
@@ -215,7 +215,7 @@ export default function Checkout({data}) {
   const id = cart.cart.farmer_id;
   const orders = {
     total: total,
-    farmer_id:data?.length ? data[0].id : null,
+    farmer_id: data?.length ? data[0].id : null,
   };
 
   const handleSubmit = async e => {
