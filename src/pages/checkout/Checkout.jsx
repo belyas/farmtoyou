@@ -40,7 +40,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    let { error, data } = await supabase.from('customer').single('id');
+    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);;
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
@@ -128,6 +128,7 @@ const initialPaymentState = {
 };
 
 export default function Checkout() {
+  const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
   const [paymentData, setPaymentData] = React.useState(initialPaymentState);
@@ -210,11 +211,30 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
+  const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
+  const id= cart.cart.farmer_id
+  const orders = {
+    total: total,
+    farmer_id: id,
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Get cart data from local storage
-      // const cartData = JSON.parse(localStorage.getItem('cart'));
+
+      // Submit orders data to orders API
+      const ordersResponse = await fetch(`${getURL()}api/checkout/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orders),
+      });
+
+      // Check the response status of the orders API call
+      if (!ordersResponse.ok) {
+        throw new Error('Error submitting orders data');
+      }
 
       // Submit payment data to payment API
       const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
@@ -255,6 +275,7 @@ export default function Checkout() {
       console.error(error);
       // Show error message
       setShowError(true);
+      console.log(orders)
     }
   };
 
