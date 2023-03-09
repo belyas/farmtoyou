@@ -40,7 +40,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);;
+    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
@@ -212,7 +212,7 @@ export default function Checkout() {
   };
 
   const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
-  const id= cart.cart.farmer_id
+  const id = cart.cart.farmer_id;
   const orders = {
     total: total,
     farmer_id: id,
@@ -221,7 +221,6 @@ export default function Checkout() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-
       // Submit orders data to orders API
       const ordersResponse = await fetch(`${getURL()}api/checkout/orders`, {
         method: 'POST',
@@ -275,7 +274,7 @@ export default function Checkout() {
       console.error(error);
       // Show error message
       setShowError(true);
-      console.log(orders)
+      console.log(orders);
     }
   };
 
