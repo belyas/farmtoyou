@@ -47,13 +47,15 @@ const Product = ({ product }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <Typography
-          gutterBottom
-          variant="h3"
-        >
-          {product.title}
-        </Typography>
-        <Grid />
+        <Grid xs={12}>
+          <Typography
+            gutterBottom
+            variant="h3"
+          >
+            {product.title}
+          </Typography>
+        </Grid>
+
         <Grid xs={12}>
           <Typography
             gutterBottom
@@ -62,6 +64,7 @@ const Product = ({ product }) => {
             € {product.price}
           </Typography>
         </Grid>
+
         <Grid xs={12}>
           <Typography
             gutterBottom
@@ -70,20 +73,25 @@ const Product = ({ product }) => {
             {product.description}
           </Typography>
         </Grid>
-        <Grid
-          xs={12}
-          sx={{ pb: 2 }}
-        >
-          <SelectProductQuantity
-            stock={product.quantity}
-            setQuantity={SetQuantity}
-            quantity={quantity}
-          />
+
+        <Grid xs={12}>
+          <Grid
+            xs={12}
+            sx={{ pb: 2 }}
+          >
+            <SelectProductQuantity
+              stock={product.quantity}
+              setQuantity={SetQuantity}
+              quantity={quantity}
+            />
+          </Grid>
+          <Grid>
+            <AddToCartButton
+              product={product}
+              quantity={quantity}
+            />
+          </Grid>
         </Grid>
-        <AddToCartButton
-          product={product}
-          quantity={quantity}
-        />
       </Grid>
     </Grid>
   );
