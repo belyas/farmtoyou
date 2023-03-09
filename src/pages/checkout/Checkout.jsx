@@ -40,7 +40,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
+    let { error, data } = await supabase.from('products').select('farmer_id').eq('profile_id', session.user.id);
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
@@ -127,7 +127,7 @@ const initialPaymentState = {
   cvv: '',
 };
 
-export default function Checkout() {
+export default function Checkout({data}) {
   const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
@@ -215,7 +215,7 @@ export default function Checkout() {
   const id = cart.cart.farmer_id;
   const orders = {
     total: total,
-    farmer_id: id,
+    farmer_id:data?.length ? data[0].id : null,
   };
 
   const handleSubmit = async e => {
