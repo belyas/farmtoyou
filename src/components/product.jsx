@@ -12,12 +12,11 @@ const Product = ({ product }) => {
     <Grid
       container
       // spacing={2}
-      xs={12}
-      md={6}
-      lg={6}
+      justifyContent="center"
+      alignItems="center"
     >
       <Grid
-        xs={6}
+        xs={12}
         md={6}
       >
         {product.photo && product.photo.endsWith('.jpg') ? (
@@ -41,6 +40,8 @@ const Product = ({ product }) => {
       <Grid
         xs={12}
         md={6}
+        justifyContent="center"
+        alignItems="center"
       >
         <Typography
           gutterBottom
