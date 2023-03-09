@@ -17,19 +17,7 @@ export default function Profile({ user }) {
 
   return (
     <>
-      <Head>
-        <title>Your Profile</title>
-        <meta
-          name="description"
-          content="Connect farmers with locals for fresh food"
-        />
-      </Head>
-      <main
-        className="container"
-        style={{ padding: '50px 0 100px 0' }}
-      >
-        <Account session={session} />
-      </main>
+      <Account session={session} />
     </>
   );
 }
