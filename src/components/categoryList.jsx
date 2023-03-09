@@ -68,10 +68,10 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function CategoryList() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
       <Grid
         container
-        spacing={3}
+        spacing={0}
       >
         <Grid xs={4}>
           <Item sx={{ boxShadow: '0 0 0 0 ' }}>
