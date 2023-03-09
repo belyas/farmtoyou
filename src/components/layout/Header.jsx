@@ -17,7 +17,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Products', 'Contact us', 'About us', 'Blog'];
+const pages = ['Products', 'Contact us', 'About us', 'Blog', 'Orders', 'Cateogries'];
 const settings = ['Profile'];
 
 export const Header = () => {
@@ -142,11 +142,11 @@ export const Header = () => {
               </Button>
             ))}
           </Box>
+          <ShoppingCart />
 
           <Box sx={{ flexGrow: 0 }}>
             {session ? (
               <>
-                <ShoppingCart />
                 <Tooltip title="Open settings">
                   <IconButton
                     onClick={handleOpenUserMenu}
