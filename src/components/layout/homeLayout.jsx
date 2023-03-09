@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import HomeProducts from '../homeProducts';
+import Products from '@/components/products';
 import { Footer } from './Footer';
 
 export default function HomeLayout({ productsData }) {
@@ -63,7 +63,7 @@ export default function HomeLayout({ productsData }) {
           >
             Best product for you
           </Typography>
-          <HomeProducts productsData={productsData} />
+          <Products productsData={productsData.data} />
         </Grid>
       </Container>
     </>
