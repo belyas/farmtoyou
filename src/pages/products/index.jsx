@@ -11,6 +11,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/navigation';
+import { Typography } from '@mui/material';
+import Link from 'next/link';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -67,65 +69,80 @@ export default function Products({ products = [] }) {
   };
 
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ width: 900, margin: '0 auto' }}
-    >
+    <>
       <Button
         variant="contained"
-        sx={{ mt: 3, mb: 2, mr: 1, float: 'right' }}
+        sx={{ mt: 3, mb: 2, mr: 1 }}
         onClick={() => route.push('/products/add')}
       >
         Add new product
       </Button>
-      <Table
-        sx={{ minWidth: 650 }}
-        aria-label="products"
+      <Typography
+        variant="h5"
+        component="div"
+        sx={{ paddingY: 2 }}
       >
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Description</TableCell>
-            <TableCell align="center">Price</TableCell>
-            <TableCell align="center">Quantity</TableCell>
-            <TableCell align="center">Options</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {products.map(product => (
-            <TableRow
-              key={product.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell
-                component="th"
-                scope="row"
-              >
-                {product.id}
-              </TableCell>
-              <TableCell align="center">{product.title}</TableCell>
-              <TableCell align="center">{product.description}</TableCell>
-              <TableCell align="center">{product.price}</TableCell>
-              <TableCell align="center">{product.quantity}</TableCell>
-              <TableCell align="center">
-                <Grid
-                  item
-                  xs={4}
-                >
-                  <Button
-                    onClick={() => {
-                      deleteHandler(product);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                </Grid>
-              </TableCell>
+        Your products
+      </Typography>
+      <TableContainer
+        component={Paper}
+        sx={{ maxWidth: 900, margin: 'auto', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Table
+          sx={{ minWidth: 650 }}
+          aria-label="products"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Price</TableCell>
+              <TableCell align="center">Quantity</TableCell>
+              <TableCell align="center">Options</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {products.map(product => (
+              <TableRow
+                key={product.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell
+                  component="th"
+                  scope="row"
+                >
+                  <Link
+                    className="nextjs-link"
+                    href={`/products/${product.id}`}
+                  >
+                    {product.id}
+                  </Link>
+                </TableCell>
+
+                <TableCell align="center">{product.title}</TableCell>
+                <TableCell align="center">{product.description}</TableCell>
+                <TableCell align="center">{product.price}</TableCell>
+                <TableCell align="center">{product.quantity}</TableCell>
+                <TableCell align="center">
+                  <Grid
+                    item
+                    xs={4}
+                  >
+                    <Button
+                      onClick={() => {
+                        deleteHandler(product);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Grid>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
