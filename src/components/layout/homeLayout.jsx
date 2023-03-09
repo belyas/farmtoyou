@@ -59,6 +59,7 @@ export default function HomeLayout({ productsData }) {
             align="center"
             color="text.primary"
             gutterBottom
+            sx={{ pb: 4 }}
           >
             Best product for you
           </Typography>
