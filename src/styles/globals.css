@@ -457,3 +457,13 @@ button.primary,
 .addToCartIconTop path {
   color: var(--custom-bg-color);
 }
+
+.next-image {
+  border-radius: 4px;
+}
+
+.next-image-wrapper {
+  height: 300px;
+  position: 'relative';
+  overflow: 'hidden';
+}

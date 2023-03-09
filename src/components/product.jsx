@@ -11,7 +11,6 @@ const Product = ({ product }) => {
   return (
     <Grid
       container
-      // spacing={2}
       justifyContent="center"
       alignItems="center"
     >
@@ -19,23 +18,28 @@ const Product = ({ product }) => {
         xs={12}
         md={6}
       >
-        {product.photo && product.photo.endsWith('.jpg') ? (
-          <Image
-            src={`/uploads/products/${product.photo}`}
-            title="placeholder veggie-basket"
-            height={300}
-            width={300}
-            alt={product.title}
-          />
-        ) : (
-          <Image
-            src="/images/default-veggie.jpg"
-            title="placeholder veggie-basket"
-            alt="placeholder veggie-basket"
-            height={300}
-            width={300}
-          />
-        )}
+        <div
+          className="next-image-wrapper"
+          style={{ position: 'relative' }}
+        >
+          {product.photo && product.photo.endsWith('.jpg') ? (
+            <Image
+              src={`/uploads/products/${product.photo}`}
+              title="placeholder veggie-basket"
+              fill={true}
+              alt={product.title}
+              style={{ objectFit: 'cover' }}
+            />
+          ) : (
+            <Image
+              src="/images/default-veggie.jpg"
+              title="placeholder veggie-basket"
+              alt="placeholder veggie-basket"
+              fill={true}
+              style={{ objectFit: 'cover' }}
+            />
+          )}
+        </div>
       </Grid>
       <Grid
         xs={12}
@@ -49,23 +53,33 @@ const Product = ({ product }) => {
         >
           {product.title}
         </Typography>
-        <Typography
-          gutterBottom
-          variant="h5"
+        <Grid />
+        <Grid xs={12}>
+          <Typography
+            gutterBottom
+            variant="h5"
+          >
+            € {product.price}
+          </Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+          >
+            {product.description}
+          </Typography>
+        </Grid>
+        <Grid
+          xs={12}
+          sx={{ pb: 2 }}
         >
-          € {product.price}
-        </Typography>
-        <Typography
-          gutterBottom
-          variant="subtitle1"
-        >
-          {product.description}
-        </Typography>
-        <SelectProductQuantity
-          stock={product.quantity}
-          setQuantity={SetQuantity}
-          quantity={quantity}
-        />
+          <SelectProductQuantity
+            stock={product.quantity}
+            setQuantity={SetQuantity}
+            quantity={quantity}
+          />
+        </Grid>
         <AddToCartButton
           product={product}
           quantity={quantity}
