@@ -13,6 +13,7 @@ const AddToCartButton = ({ product, quantity }) => {
       title: product.title,
       price: product.price,
       photo: product.photo,
+      farmer_id: product.farmer_id,
       quantity: quantity,
     };
 
