@@ -1,0 +1,238 @@
+.formGrid {
+  display: grid;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  margin: 30px;
+  background-color: #F0FDF0;
+}
+
+.label {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 25px;
+  color: #000000;
+  padding-top: 20px;
+}
+
+.input {
+  width: 569px;
+  height: 42px;
+}
+
+.radioButton{
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+
+.selectTag{
+    width: 689px;
+    height: 39px;
+    color: black;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    background-color: var(--custom-bg-color);
+}
+
+.submit{
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
+    padding-bottom: 30px;
+   
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .formGrid {
+        display: grid;
+        border: 1px solid #d9d9d9;
+        border-radius: 20px;
+        margin: 15px;
+        background-color: #F0FDF0;
+      }
+
+      .input {
+        width: 469px;
+        height: 42px;
+      }
+
+      .selectTag{
+        width: 469px;
+        height: 39px;
+        color: black;
+        font-size: 15px;
+        border-radius: 5px;
+        border: 1px solid #000000;
+        background-color: var(--custom-bg-color);
+    }
+    .autocomplete{
+        width: 469px;
+        height: 42px;
+    }
+    .label {
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 25px;
+        color: #000000;
+        padding-top: 20px;
+    }
+    .submit{
+        display: flex;
+        align-content: center;
+        justify-content: flex-end;
+        padding-bottom: 30px;
+       
+    }
+}
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+    .formGrid {
+        display: grid;
+        justify-items: center;
+        border: 1px solid #d9d9d9;
+        border-radius: 20px;
+        margin: 10px;
+        background-color: #F0FDF0;
+      }
+
+      .input {
+        width: 269px;
+        height: 42px;
+      }
+
+      .selectTag{
+        width: 269px;
+        height: 39px;
+        color: black;
+        font-size: 15px;
+        border-radius: 5px;
+        border: 1px solid #000000;
+        background-color: var(--custom-bg-color);
+        
+    }
+    .autocomplete{
+        width: 269px;
+        height: 42px;
+    }
+    .label {
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 25px;
+        color: #000000;
+        padding-top: 20px;
+        white-space: pre;
+    }
+    .submit{
+        display: flex;
+        align-content: center;
+        justify-content: flex-end;
+        padding-bottom: 30px;
+       
+    }
+      
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .formGrid {
+        display: grid;
+        border: 1px solid #d9d9d9;
+        border-radius: 20px;
+        margin: 20px;
+        background-color: #F0FDF0;
+      }
+
+      .input {
+        width: 669px;
+        height: 42px;
+      }
+
+      .selectTag{
+        width: 669px;
+        height: 39px;
+        color: black;
+        font-size: 15px;
+        border-radius: 5px;
+        border: 1px solid #000000;
+        background-color: var(--custom-bg-color);
+    }
+    .autocomplete{
+        width: 669px;
+        height: 42px;
+    }
+    .label {
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 25px;
+        color: #000000;
+        padding-top: 20px;
+    }
+    .submit{
+        display: flex;
+        align-content: center;
+        justify-content: flex-end;
+        padding-bottom: 30px;
+       
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+    .formGrid {
+        display: grid;
+        border: 1px solid #d9d9d9;
+        border-radius: 20px;
+        margin: 20px;
+        background-color: #F0FDF0;
+      }
+
+      .input {
+        width: 769px;
+        height: 42px;
+      }
+
+      .selectTag{
+        width: 769px;
+        height: 39px;
+        color: black;
+        font-size: 15px;
+        border-radius: 5px;
+        border: 1px solid #000000;
+        background-color: var(--custom-bg-color);
+    }
+    .autocomplete{
+        width: 769px;
+        height: 42px;
+    }
+    .label {
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 25px;
+        color: #000000;
+        padding-top: 20px;
+    }
+    .submit{
+        display: flex;
+        align-content: center;
+        justify-content: flex-end;
+        padding-bottom: 30px;
+       
+    }
+
+}
