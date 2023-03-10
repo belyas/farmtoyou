@@ -174,7 +174,7 @@ const Add = ({ data, error }) => {
   };
 
   return (
-    <div >
+    <div>
       <form
         action="/api/products/add"
         method="post"
@@ -450,7 +450,7 @@ const Add = ({ data, error }) => {
             )}
           </label>
           <Autocomplete
-          className={styles.autocomplete}
+            className={styles.autocomplete}
             multiple
             id="category"
             options={category}
@@ -466,7 +466,7 @@ const Add = ({ data, error }) => {
                 label="category"
                 variant="outlined"
                 fullWidth
-                sx={{backgroundColor:"var(--custom-bg-color)"}}
+                sx={{ backgroundColor: 'var(--custom-bg-color)' }}
               />
             )}
           />
