@@ -30,12 +30,15 @@ const Layout = ({ children }) => {
         <Box
           sx={{
             bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
             textAlign: 'center',
           }}
         >
-          <Container maxWidth="md">{children}</Container>
+          <Container
+            maxWidth="lg"
+            sx={{ p: 0 }}
+          >
+            {children}
+          </Container>
         </Box>
       </main>
       <Footer />

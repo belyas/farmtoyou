@@ -20,44 +20,60 @@ const Order = ({ order }) => {
   return (
     <>
       {order.length ? (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, p: 0 }}>
           <Grid
             container
             spacing={2}
             rowSpacing={1}
             divider={true}
           >
-            (
             <Grid
               xs={12}
               rowSpacing={2}
               divider={true}
+              sx={{ pb: 2 }}
             >
-              <Item>
-                <Typography variant="h2">Order Details</Typography>
+              <Item sx={{ bgcolor: '#3c614a' }}>
+                <Typography
+                  variant="h5"
+                  sx={{ color: 'white' }}
+                >
+                  My orders
+                </Typography>
               </Item>
             </Grid>
             <Grid
-              xs={6}
+              xs={12}
+              md={6}
               rowSpacing={2}
+              sx={{ pb: 2 }}
             >
               <Item>
                 <Typography variant="h5">Shipping Address</Typography>
                 <ShippingAddress order={order[0]} />
               </Item>
             </Grid>
-            <Grid xs={6}>
+            <Grid
+              xs={12}
+              md={6}
+              rowSpacing={2}
+              sx={{ pb: 2 }}
+            >
               <Item>
                 <Typography variant="h5">Payment Method</Typography>
                 <PaymentMethod order={order[0]} />
               </Item>
             </Grid>
-            <Grid xs={12}>
+            <Grid
+              xs={12}
+              md={6}
+              rowSpacing={2}
+              sx={{ pb: 2 }}
+            >
               <Item>
                 <OrderProducts order={order} />
               </Item>
             </Grid>
-            )
           </Grid>
         </Box>
       ) : (
