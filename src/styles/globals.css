@@ -476,3 +476,16 @@ button.primary,
 thead > tr > th {
   background-color: var(--custom-color-brand);
 }
+
+/* headings */
+.headingLg {
+  text-transform: none;
+  font-size: 1.5rem;
+  font-style: normal;
+}
+
+.headingUpperCase {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-style: normal;
+}
