@@ -10,13 +10,13 @@ import Link from 'next/link';
 import AddToCartButton from './cart/addToCartButton';
 import { useState, useEffect } from 'react';
 
-const HomeProducts = ({ productsData }) => {
-  const products = productsData.data;
+const Products = ({ productsData }) => {
+  const products = productsData;
 
   const productItems = products.map((product, index) => {
     return (
       <Grid
-        xs={2}
+        xs={12}
         sm={4}
         md={4}
         key={index}
@@ -24,7 +24,7 @@ const HomeProducts = ({ productsData }) => {
         <Card sx={{ maxWidth: 345 }}>
           <Link href={`/products/${product.id}`}>
             <CardMedia
-              sx={{ height: 140, backgroundSize: 'contain' }}
+              sx={{ height: 140, backgroundSize: 'contain', my: 1 }}
               image={
                 product.photo && product.photo.endsWith('.jpg')
                   ? `/uploads/products/${product.photo}`
@@ -52,7 +52,7 @@ const HomeProducts = ({ productsData }) => {
             </Typography>
           </CardContent>
 
-          <CardActions>
+          <CardActions sx={{ justifyContent: 'center' }}>
             <AddToCartButton
               product={product}
               quantity={1}
@@ -75,4 +75,4 @@ const HomeProducts = ({ productsData }) => {
   );
 };
 
-export default HomeProducts;
+export default Products;

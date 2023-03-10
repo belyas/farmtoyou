@@ -82,7 +82,9 @@ const Orders = ({ orders }) => {
                       <Link href={`/orders/${order.id}`}>{order.id}</Link>
                     </TableCell>
 
-                    <TableCell align="right">{order.created_at.slice(0, 10)}</TableCell>
+                    <TableCell align="right">
+                      <Link href={`/orders/${order.id}`}>{order.created_at.slice(0, 10)}</Link>
+                    </TableCell>
                     <TableCell align="right">{order.total_amount}</TableCell>
                   </TableRow>
                 ))}

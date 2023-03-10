@@ -42,7 +42,21 @@ export async function getServerSideProps(ctx) {
 const Add = ({ data, error }) => {
   const router = useRouter();
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
+  const category = [
+    'Bakery',
+    'Meat',
+    'Dairy',
+    'Fruits',
+    'Vegetables',
+    'Flour',
+    'Rice and pasta',
+    'Oil',
+    'Coffee and tea',
+    'Wine and beer',
+    'Salt and spices',
+    'Seeds',
+    'Beans and Legumes',
+  ];
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -177,7 +191,7 @@ const Add = ({ data, error }) => {
   return (
     <TableContainer
       component={Paper}
-      sx={{ width: 900, margin: '0 auto' }}
+      sx={{ maxWidth: 900, margin: 'auto' }}
     >
       <form
         action="/api/products/add"

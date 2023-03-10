@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import HomeProducts from '@/components/homeProducts';
+import HomeProducts from '@/components/products';
 import { getURL } from '@/utils';
 import HomeLayout from '@/components/layout/homeLayout';
-import Layout from '@/components/layout/Layout';
+import Layout from '@/components/layout/layout';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
