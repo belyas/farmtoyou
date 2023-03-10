@@ -38,24 +38,9 @@ export default function App({ Component, pageProps }) {
         <CategoryMenu />
         <ShoppingCart />
         <ClearCartButton />
+        <SearchInput />
         <Component {...pageProps} />
       </CartProvider>
-      {!pageProps?.initialSession && <Link href={'/login'}>Login</Link>}
-      {pageProps?.initialSession && (
-        <>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-              route.push('/');
-            }}
-          >
-            Sign Out
-          </button>{' '}
-          | <Link href={'/profile'}>Profile</Link>{' '}
-        </>
-      )}
-      <SearchInput />
-      <Component {...pageProps} />
     </SessionContextProvider>
   );
 }
