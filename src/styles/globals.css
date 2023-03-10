@@ -489,3 +489,7 @@ thead > tr > th {
   font-weight: 500;
   font-style: normal;
 }
+
+address {
+  font-style: normal;
+}

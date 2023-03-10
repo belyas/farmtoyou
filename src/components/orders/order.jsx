@@ -49,7 +49,12 @@ const Order = ({ order }) => {
               sx={{ pb: 2, pr: 2 }}
             >
               <Item>
-                <Typography variant="h5">Shipping Address</Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ pb: 1 }}
+                >
+                  Shipping Address
+                </Typography>
                 <ShippingAddress order={order[0]} />
               </Item>
             </Grid>
@@ -60,7 +65,12 @@ const Order = ({ order }) => {
               sx={{ pb: 2 }}
             >
               <Item>
-                <Typography variant="h5">Payment Method</Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ pb: 1 }}
+                >
+                  Payment Method
+                </Typography>
                 <Typography variant="body1">Card</Typography>
                 <PaymentMethod order={order[0]} />
               </Item>

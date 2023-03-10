@@ -6,8 +6,8 @@ const PaymentMethod = ({ order }) => {
     <>
       <Typography variant="subtitle1">{order.card_holder.toUpperCase()}</Typography>
       <Typography variant="body1">{cardNumber}</Typography>
-      <Typography variant="body1">Expiration Date:{order.expiration_date} </Typography>
-      <Typography variant="body1">CVV:***</Typography>
+      <Typography variant="body1">Expiration Date: {order.expiration_date} </Typography>
+      <Typography variant="body1">CVV: ***</Typography>
     </>
   );
 };
