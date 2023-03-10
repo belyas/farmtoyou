@@ -19,7 +19,7 @@ export default function OrderProducts({ order }) {
         >
           <Grid
             xs={12}
-            lg={4}
+            md={4}
           >
             <div
               className="next-image-wrapper"
@@ -47,7 +47,7 @@ export default function OrderProducts({ order }) {
           <Grid
             container
             xs={12}
-            lg={8}
+            md={8}
             spacing={4}
           >
             <Grid
@@ -69,7 +69,7 @@ export default function OrderProducts({ order }) {
               <Box
                 container
                 aria-labelledby="category-a"
-                sx={{ py: 2, textAlign: 'center', margin: 'auto', display: 'grid' }}
+                sx={{ py: 2, textAlign: 'center', margin: 'auto', display: 'grid', justifyContent: 'center' }}
               >
                 <Link href={`/products/${_order.product_id}`}>
                   <OrderSummary order={_order} />
