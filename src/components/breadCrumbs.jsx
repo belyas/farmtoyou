@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from 'next/link';
 
-export default function BreadCrumbs() {
+export default function BreadCrumbs({ child, grandChild }) {
   return (
     <>
       <Breadcrumbs aria-label="breadcrumb">
