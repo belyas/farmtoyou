@@ -32,6 +32,14 @@ body,
   overflow-x: hidden;
 }
 
+/* link */
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 /* Grid */
 
 .container {
