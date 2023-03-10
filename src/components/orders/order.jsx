@@ -46,7 +46,7 @@ const Order = ({ order }) => {
               xs={12}
               md={6}
               rowSpacing={2}
-              sx={{ pb: 2 }}
+              sx={{ pb: 2, pr: 2 }}
             >
               <Item>
                 <Typography variant="h5">Shipping Address</Typography>
@@ -61,12 +61,12 @@ const Order = ({ order }) => {
             >
               <Item>
                 <Typography variant="h5">Payment Method</Typography>
+                <Typography variant="body1">Card</Typography>
                 <PaymentMethod order={order[0]} />
               </Item>
             </Grid>
             <Grid
               xs={12}
-              md={6}
               rowSpacing={2}
               sx={{ pb: 2 }}
             >
