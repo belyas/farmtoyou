@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import HomeProducts from '@/components/products';
+import DefaultBreadcrumbs from '@/components/breadCrumbsNav';
 
 export async function getServerSideProps(ctx) {
   const category = ctx.query.category;
@@ -23,6 +24,7 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
+      category: category,
       productsData,
       error,
       initialSession: session,
@@ -30,9 +32,7 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-const CategoryPage = ({ productsData }) => {
-  console.log('products data in category page', productsData);
-
+const CategoryPage = ({ category, productsData }) => {
   return (
     <>
       <Head>
@@ -54,6 +54,10 @@ const CategoryPage = ({ productsData }) => {
         className="container"
         style={{ padding: '50px 0 100px 0' }}
       >
+        <DefaultBreadcrumbs
+          child={'Categries'}
+          grandChild={category}
+        />
         <HomeProducts productsData={productsData} />
       </main>
     </>
