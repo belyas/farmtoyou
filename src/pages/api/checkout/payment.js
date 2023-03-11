@@ -9,8 +9,11 @@ export default async function payment(req, res) {
       return res;
     }
 
-    const { data, error } = await supabase.from('payments')
-      .select().eq('profile_id', paymentData.profile_id).maybeSingle();
+    const { data, error } = await supabase
+      .from('payments')
+      .select()
+      .eq('profile_id', paymentData.profile_id)
+      .maybeSingle();
 
     if (data) {
       paymentData.id = data.id;
@@ -36,5 +39,3 @@ export default async function payment(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
-
-
