@@ -18,18 +18,22 @@ export default function SearchInput() {
       sx={{
         width: 500,
         maxWidth: '100%',
+        display: 'flex',
+
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <TextField
         fullWidth
         label="search"
-        q
         id="search"
         value={input}
         onChange={event => {
           setInput(event.target.value);
         }}
         onKeyDown={handleKeyDown}
+        sx={{ width: '80%' }}
       />
     </Box>
   );
