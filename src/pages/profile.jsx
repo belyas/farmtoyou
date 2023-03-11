@@ -9,12 +9,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
 
-export default function Profile({ user , data}) {
+export default function Profile({ user, data }) {
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const [firstname, setFirstName] = useState(null);
   const [lastname, setLastName] = useState(null);
-  
+
   async function updateProfile() {
     try {
       setLoading(true);
@@ -96,10 +96,7 @@ export default function Profile({ user , data}) {
           }}
           autoComplete="off"
         >
-          <Form.Item
-            label={'Update your profile'}>
-
-          </Form.Item>
+          <Form.Item label={'Update your profile'}></Form.Item>
           <Form.Item
             htmlFor="firstname"
             name="firstname"
@@ -172,10 +169,14 @@ export const getServerSideProps = async ctx => {
       },
     };
   }
-  
+
   //const {data } = await supabase.from('profiles').select('*, profiles!inner (*)').eq('profile_id', session.user.id)
- //const { farmer } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-  const {data} = await supabase.from('farmers_profile_extension').select('*').eq('profile_id',session.user.id).single()
+  //const { farmer } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+  const { data } = await supabase
+    .from('farmers_profile_extension')
+    .select('*')
+    .eq('profile_id', session.user.id)
+    .single();
   return {
     props: {
       initialSession: session,
