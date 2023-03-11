@@ -23,6 +23,7 @@ import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { CartProvider } from '@/components/cart/cartContext';
 import { CartContext } from '@/components/cart/cartContext';
+import { useUser } from '@supabase/auth-helpers-react';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -128,6 +129,7 @@ const initialPaymentState = {
 };
 
 export default function Checkout() {
+  const user = useUser();
   const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
@@ -212,11 +214,19 @@ export default function Checkout() {
   };
 
   const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
-  const id = cart.cart.farmer_id;
-  const orders = {
-    total: total,
-    farmer_id: id,
-  };
+  const profile_id = user.id;
+  const newProducts = cart;
+  // const products = [newProducts]
+  // const orders = {};
+  // for (const product of products) {
+  //   const products = orders[product.farmer_id].products ? orders[product.farmer_id].products : [];
+  //   orders[product.farmer_id] = products.push(product);
+  //   orders[product.farmer_id].profile_id = profile_id;
+  //   orders[product.farmer_id].total_amount = orders[product.farmer_id].total_amount
+  //     ? total
+  //     : orders[product.farmer_id].total_amount + product.price * product.quantity;
+  // }
+  console.log(newProducts);
 
   const handleSubmit = async e => {
     e.preventDefault();
