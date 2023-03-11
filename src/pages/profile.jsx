@@ -9,15 +9,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
 
-export default function Profile({ user }) {
+export default function Profile({ user , data}) {
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const [firstname, setFirstName] = useState(null);
   const [lastname, setLastName] = useState(null);
-  function refreshPage() {
-    window.location.reload(false);
-  }
-
+  
   async function updateProfile() {
     try {
       setLoading(true);
@@ -34,13 +31,15 @@ export default function Profile({ user }) {
         throw error;
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }
   }
   // this logs user's information if needed to be passed down to Account component
   console.log('user:', user);
+  console.log('data:', data);
+  //console.log('farmer', farmer)
 
   if (!session) {
     redirect({ timer: 0 });
@@ -69,12 +68,15 @@ export default function Profile({ user }) {
           <CardContent>
             <AccountCircleIcon></AccountCircleIcon>
             <div>
-              <h3>NAME : {user.firstname}</h3>
-              <h3>SURNAME : {user.lastname}</h3>
+              <h3>NAME : {user.user_metadata.firstname}</h3>
+              <h3>SURNAME : {user.user_metadata.lastname}</h3>
             </div>
             <div>
               <h5>Email: {user.email}</h5>
-              <h5>Type: {user.user_type}</h5>
+              <h5>Type: {user.user_metadata.user_type}</h5>
+              <h5>{data.shop_name}</h5>
+              <h5>{data.shop_description}</h5>
+              <h5>{data.shop_logo}</h5>
             </div>
           </CardContent>
         </Card>
@@ -94,6 +96,10 @@ export default function Profile({ user }) {
           }}
           autoComplete="off"
         >
+          <Form.Item
+            label={'Update your profile'}>
+
+          </Form.Item>
           <Form.Item
             htmlFor="firstname"
             name="firstname"
@@ -166,13 +172,17 @@ export const getServerSideProps = async ctx => {
       },
     };
   }
-
-  const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-
+  
+  //const {data } = await supabase.from('profiles').select('*, profiles!inner (*)').eq('profile_id', session.user.id)
+ //const { farmer } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+  const {data} = await supabase.from('farmers_profile_extension').select('*').eq('profile_id',session.user.id).single()
   return {
     props: {
       initialSession: session,
-      user: { ...session.user, ...data },
+      user: session.user,
+      data: data ?? [],
+      //farmer: farmer ?? [],
     },
   };
 };
+//supabase.from('profiles').select('*').eq('id', session.user.id).single();
