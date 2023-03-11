@@ -231,14 +231,6 @@ export default function Checkout() {
   }
 
   const handleSubmit = async e => {
-    const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
-    const id = cart.cart.farmer_id;
-
-    const orderData = {
-      total_amount: total,
-      farmer_id: id,
-    };
-
     e.preventDefault();
     try {
       // Submit orders data to orders API

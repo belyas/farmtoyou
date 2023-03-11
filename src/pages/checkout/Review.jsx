@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import { Box, maxHeight, maxWidth } from '@mui/system';
+import { Box } from '@mui/system';
 
 class Review extends React.Component {
   render() {
@@ -37,6 +37,8 @@ class Review extends React.Component {
               fontSize: 28,
               letterSpacing: 0.25,
               color: '#206530',
+              display: 'flex',
+              alignContent: 'flex-start',
             }}
           >
             Order summary
@@ -68,7 +70,6 @@ class Review extends React.Component {
             container
             spacing={2}
             sx={{ display: 'flex', flexDirection: 'column' }}
-            className="shipping-grid"
           >
             <Grid
               item
@@ -76,6 +77,7 @@ class Review extends React.Component {
               direction="column"
               xs={12}
               sm={6}
+              sx={{ borderBottom: '1px solid #bdbdbd', display: 'flex', alignContent: 'center' }}
             >
               <Typography
                 variant="h6"
@@ -90,7 +92,7 @@ class Review extends React.Component {
                   color: '#206530',
                 }}
               >
-                Shipping
+                Shipping Address
               </Typography>
               <Typography gutterBottom>{`${addressData.firstName} ${addressData.lastName}`}</Typography>
               <Typography gutterBottom>{addressData.address1}</Typography>
@@ -98,19 +100,14 @@ class Review extends React.Component {
               <Typography gutterBottom>{addressData.city}</Typography>
               <Typography gutterBottom>{addressData.country}</Typography>
               <Typography gutterBottom>{addressData.code_postal}</Typography>
-              <Typography
-                gutterBottom
-                sx={{ borderBottom: '1px solid #bdbdbd' }}
-              >
-                {addressData.phone}
-              </Typography>
+              <Typography gutterBottom>{addressData.phone}</Typography>
             </Grid>
             <Grid
               item
               container
-              direction="column"
               xs={12}
               sm={6}
+              sx={{ display: 'flex', justifyContent: 'center' }}
             >
               <Typography
                 variant="h6"
