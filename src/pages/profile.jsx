@@ -8,14 +8,11 @@ import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 
-export default function Profile({ user }) {
+export default function Profile({ user, data }) {
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const [firstname, setFirstName] = useState(null);
   const [lastname, setLastName] = useState(null);
-  function refreshPage() {
-    window.location.reload(false);
-  }
 
   async function updateProfile() {
     try {
@@ -33,13 +30,15 @@ export default function Profile({ user }) {
         throw error;
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }
   }
   // this logs user's information if needed to be passed down to Account component
   console.log('user:', user);
+  console.log('data:', data);
+  //console.log('farmer', farmer)
   console.log('data:', data);
   //console.log('farmer', farmer)
 
@@ -70,12 +69,15 @@ export default function Profile({ user }) {
           <CardContent>
             <AccountCircleIcon></AccountCircleIcon>
             <div>
-              <h3>NAME : {user.firstname}</h3>
-              <h3>SURNAME : {user.lastname}</h3>
+              <h3>NAME : {user.user_metadata.firstname}</h3>
+              <h3>SURNAME : {user.user_metadata.lastname}</h3>
             </div>
             <div>
               <h5>Email: {user.email}</h5>
-              <h5>Type: {user.user_type}</h5>
+              <h5>Type: {user.user_metadata.user_type}</h5>
+              <h5>{data.shop_name}</h5>
+              <h5>{data.shop_description}</h5>
+              <h5>{data.shop_logo}</h5>
             </div>
           </CardContent>
         </Card>
@@ -95,6 +97,7 @@ export default function Profile({ user }) {
           }}
           autoComplete="off"
         >
+          <Form.Item label={'Update your profile'}></Form.Item>
           <Form.Item
             htmlFor="firstname"
             name="firstname"
@@ -187,3 +190,4 @@ export const getServerSideProps = async ctx => {
     },
   };
 };
+//supabase.from('profiles').select('*').eq('id', session.user.id).single();
