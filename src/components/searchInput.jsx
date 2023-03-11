@@ -23,6 +23,7 @@ export default function SearchInput() {
       <TextField
         fullWidth
         label="search"
+        q
         id="search"
         value={input}
         onChange={event => {
