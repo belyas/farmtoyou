@@ -24,16 +24,15 @@ export default function SearchInput() {
         alignItems: 'center',
       }}
     >
-      <TextField
-        fullWidth
+      <input
         label="search"
         id="search"
+        placeholder="search"
         value={input}
         onChange={event => {
           setInput(event.target.value);
         }}
         onKeyDown={handleKeyDown}
-        sx={{ width: '80%' }}
       />
     </Box>
   );

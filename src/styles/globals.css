@@ -458,10 +458,7 @@ button.primary,
   color: var(--custom-bg-color);
   text-decoration: none;
 }
-.header .main-menu {
-}
-.header .right-menu {
-}
+
 .addToCartIconTop path {
   color: var(--custom-bg-color);
 }
@@ -500,6 +497,8 @@ address {
   font-style: normal;
 }
 
-div ~ #search {
-  border: 1px solid;
+#search {
+  width: 62%;
+  margin-bottom: 0.5rem;
+  min-height: 37px;
 }

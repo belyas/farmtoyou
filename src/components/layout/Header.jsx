@@ -112,6 +112,7 @@ export const Header = () => {
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+
           <Typography
             variant="h5"
             noWrap
@@ -130,6 +131,7 @@ export const Header = () => {
           >
             FARMTOYOU
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(page => (
               <Button
@@ -209,6 +211,9 @@ export const Header = () => {
           </Box>
         </Toolbar>
       </Container>
+      <Box sx={{ display: { md: 'none', xs: 'flex' }, width: '100%' }}>
+        <SearchInput />
+      </Box>
     </AppBar>
   );
 };
