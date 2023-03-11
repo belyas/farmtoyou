@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Fade from '@mui/material/Fade';
 import CategoryList from './categoryList';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function CategoryMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -15,15 +16,18 @@ export default function CategoryMenu() {
   };
 
   return (
-    <div>
+    <>
       <Button
-        id="fade-button"
-        aria-controls={open ? 'fade-menu' : undefined}
+        id="category-button"
+        aria-controls={open ? 'category-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        variant="text"
         onClick={handleClick}
+        sx={{ my: 2, color: 'white' }}
       >
         Category
+        <ExpandMoreIcon />
       </Button>
       <Menu
         id="category-menu"
@@ -37,11 +41,13 @@ export default function CategoryMenu() {
         PaperProps={{
           style: {
             width: 600,
+            overflowX: 'auto',
+            overflowY: 'hidden',
           },
         }}
       >
         <CategoryList />
       </Menu>
-    </div>
+    </>
   );
 }

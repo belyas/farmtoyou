@@ -8,17 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
 export default function OrderProducts({ order }) {
-  console.log('order in orderProducts', order);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       {order.map((_order, index) => (
@@ -29,9 +19,12 @@ export default function OrderProducts({ order }) {
         >
           <Grid
             xs={12}
-            lg={4}
+            md={4}
           >
-            <Item>
+            <div
+              className="next-image-wrapper"
+              style={{ position: 'relative' }}
+            >
               {_order.photo && _order.photo.endsWith('.jpg') ? (
                 <Image
                   src={`/uploads/products/${_order.photo}`}
@@ -45,41 +38,43 @@ export default function OrderProducts({ order }) {
                   src="/images/default-veggie.jpg"
                   title="placeholder veggie-basket"
                   alt="placeholder veggie-basket"
-                  height={300}
-                  width={300}
+                  fill={true}
+                  style={{ objectFit: 'cover' }}
                 />
               )}
-            </Item>
+            </div>
           </Grid>
           <Grid
             container
             xs={12}
-            lg={8}
+            md={8}
             spacing={4}
           >
             <Grid
-              xs={6}
+              xs={12}
               lg={12}
             >
-              <Item>
-                <Box
-                  id="category-a"
-                  sx={{ fontSize: '12px', textTransform: 'uppercase' }}
-                >
-                  <Typography variant="h5">
-                    Product will be delivered on {_order.delivery_date} by {_order.delivery_method}
-                  </Typography>
-                </Box>
-                <Box
-                  component="ul"
-                  aria-labelledby="category-a"
-                  sx={{ pl: 2 }}
-                >
-                  <Link href={`/products/${_order.product_id}`}>
-                    <OrderSummary order={_order} />
-                  </Link>
-                </Box>
-              </Item>
+              <Box id="category-a">
+                <div>
+                  <span
+                    className="headingLg"
+                    style={{ fontStyle: 'normal', paddingRight: 5 }}
+                  >
+                    Delivered by
+                  </span>
+                  <span className="headingLg headingUppercase">{_order.delivery_method}</span>
+                </div>
+                <Typography variant="button">Every {_order.delivery_date} </Typography>
+              </Box>
+              <Box
+                container
+                aria-labelledby="category-a"
+                sx={{ py: 2, textAlign: 'center', margin: 'auto', display: 'grid', justifyContent: 'center' }}
+              >
+                <Link href={`/products/${_order.product_id}`}>
+                  <OrderSummary order={_order} />
+                </Link>
+              </Box>
             </Grid>
           </Grid>
         </Grid>

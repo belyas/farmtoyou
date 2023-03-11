@@ -2,13 +2,17 @@ import { supabase } from '@/utils';
 import Product from '@/components/product';
 
 export async function getServerSideProps(context) {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   const productId = context.query.id;
   try {
     const { data, error } = await supabase.from('products').select().eq('id', productId).single();
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
     }
-    return { props: { data } };
+    return { props: { data, initialSession: session } };
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error } };
   }
