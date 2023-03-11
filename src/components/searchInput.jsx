@@ -10,6 +10,7 @@ export default function SearchInput() {
   console.log(input);
   const handleKeyDown = event => {
     if (event.key == 'Enter') {
+      setInput(state => '');
       router.push({ pathname: '/search', query: { q: input } });
     }
   };
