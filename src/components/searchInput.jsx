@@ -26,7 +26,8 @@ export default function SearchInput() {
     >
       <input
         label="search"
-        id="search"
+        id="search-mobile"
+        class="search-input"
         placeholder="search"
         value={input}
         onChange={event => {

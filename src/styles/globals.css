@@ -497,8 +497,14 @@ address {
   font-style: normal;
 }
 
-#search {
-  width: 62%;
-  margin-bottom: 0.5rem;
-  min-height: 37px;
+@media (max-width: 560px) {
+  #search-mobile {
+    width: 62%;
+    margin-bottom: 0.5rem;
+    min-height: 37px;
+  }
+}
+
+.search-input {
+  min-height: 45px;
 }
