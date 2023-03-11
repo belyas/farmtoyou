@@ -142,7 +142,6 @@ export default function Checkout() {
   const [errorPaymentMessage, setErrorPaymentMessage] = useState(false);
   const [successPaymentMessage, setSuccessPaymentMessage] = useState(false);
 
-
   const handleNext = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear().toString().substr(-2);
@@ -239,7 +238,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-      body: JSON.stringify({orders}),
+        body: JSON.stringify({ orders }),
       });
 
       // Check the response status of the orders API call
