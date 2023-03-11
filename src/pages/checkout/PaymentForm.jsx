@@ -2,7 +2,8 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/es/styles-compiled.css';
 
 class PaymentForm extends React.Component {
   handleChange = event => {
@@ -13,18 +14,34 @@ class PaymentForm extends React.Component {
   };
 
   render() {
-    const { setPaymentData, paymentData } = this.props;
+    const { paymentData } = this.props;
+
     return (
       <React.Fragment>
         <Typography
           variant="h6"
           gutterBottom
+          sx={{
+            fontFamily: 'Inter',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: 24,
+            letterSpacing: 0.25,
+            color: '#206530',
+          }}
         >
           Payment method
         </Typography>
+        <Cards
+          number={paymentData.cardNumber}
+          expiry={paymentData.expireDate}
+          cvc={paymentData.cvv}
+          name={paymentData.cardName}
+        />
         <Grid
           container
           spacing={3}
+          sx={{ mt: 3 }}
         >
           <Grid
             item
