@@ -387,7 +387,13 @@ export default function Checkout() {
                 Your order number is #2001539. We have emailed your order confirmation, and will send you an update when
                 your order has shipped.
               </Typography>
-              <Link href="/" style={{display:"flex",justifyContent:"flex-end", padding:"10px"}}> <Button variant="contained">Continue Shopping </Button></Link>
+              <Link
+                href="/"
+                style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}
+              >
+                {' '}
+                <Button variant="contained">Continue Shopping </Button>
+              </Link>
             </React.Fragment>
           ) : (
             <React.Fragment>
