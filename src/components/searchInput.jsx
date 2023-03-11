@@ -10,6 +10,7 @@ export default function SearchInput() {
   console.log(input);
   const handleKeyDown = event => {
     if (event.key == 'Enter') {
+      setInput(state => '');
       router.push({ pathname: '/search', query: { q: input } });
     }
   };
@@ -18,12 +19,17 @@ export default function SearchInput() {
       sx={{
         width: 500,
         maxWidth: '100%',
+        display: 'flex',
+
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      <TextField
-        fullWidth
+      <input
         label="search"
-        id="search"
+        id="search-mobile"
+        class="search-input"
+        placeholder="search"
         value={input}
         onChange={event => {
           setInput(event.target.value);

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato@1&display=swap');
 
 :root {
   --custom-font-family: 'Lato', Helvetica Neue, sans-serif;
@@ -458,10 +458,7 @@ button.primary,
   color: var(--custom-bg-color);
   text-decoration: none;
 }
-.header .main-menu {
-}
-.header .right-menu {
-}
+
 .addToCartIconTop path {
   color: var(--custom-bg-color);
 }
@@ -498,4 +495,16 @@ thead > tr > th {
 
 address {
   font-style: normal;
+}
+
+@media (max-width: 560px) {
+  #search-mobile {
+    width: 62%;
+    margin-bottom: 0.5rem;
+    min-height: 37px;
+  }
+}
+
+.search-input {
+  min-height: 45px;
 }
