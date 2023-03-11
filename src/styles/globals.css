@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato@1&display=swap');
 
 :root {
   --custom-font-family: 'Lato', Helvetica Neue, sans-serif;
@@ -498,4 +498,8 @@ thead > tr > th {
 
 address {
   font-style: normal;
+}
+
+div ~ #search {
+  border: 1px solid;
 }
