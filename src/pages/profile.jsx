@@ -6,7 +6,11 @@ import { redirect, supabase } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { Button, Checkbox, Form, Input } from 'antd';
+// import { Button, Form, Input, message } from 'antd';
+import { Button, Input } from '@mui/material';
+import { FormControl } from '@mui/material';
+import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
+
 import React, { useState } from 'react';
 
 export default function Profile({ user, data }) {
@@ -80,7 +84,8 @@ export default function Profile({ user, data }) {
             </div>
           </CardContent>
         </Card>
-        <Form
+        <UpdateProfileForm />
+        {/* <FormControl
           name="basic"
           labelCol={{
             span: 8,
@@ -147,7 +152,7 @@ export default function Profile({ user, data }) {
               {loading ? 'Loading ...' : 'Update'}
             </Button>
           </Form.Item>
-        </Form>
+        </Form> */}
 
         <Account session={session} />
       </main>
@@ -172,6 +177,9 @@ export const getServerSideProps = async ctx => {
 
   //const {data } = await supabase.from('profiles').select('*, profiles!inner (*)').eq('profile_id', session.user.id)
   //const { farmer } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+
+  // Check user type, and then decide which table to query
+
   const { data } = await supabase
     .from('farmers_profile_extension')
     .select('*')
