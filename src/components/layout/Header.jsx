@@ -262,7 +262,7 @@ export const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
