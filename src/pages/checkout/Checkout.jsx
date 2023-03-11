@@ -142,6 +142,7 @@ export default function Checkout() {
   const [errorPaymentMessage, setErrorPaymentMessage] = useState(false);
   const [successPaymentMessage, setSuccessPaymentMessage] = useState(false);
 
+
   const handleNext = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear().toString().substr(-2);
@@ -213,20 +214,21 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
   const profile_id = user.id;
-  const newProducts = cart;
-  // const products = [newProducts]
-  // const orders = {};
-  // for (const product of products) {
-  //   const products = orders[product.farmer_id].products ? orders[product.farmer_id].products : [];
-  //   orders[product.farmer_id] = products.push(product);
-  //   orders[product.farmer_id].profile_id = profile_id;
-  //   orders[product.farmer_id].total_amount = orders[product.farmer_id].total_amount
-  //     ? total
-  //     : orders[product.farmer_id].total_amount + product.price * product.quantity;
-  // }
-  console.log(newProducts);
+  const products = cart.cart;
+  const orders = {};
+  for (const product of products) {
+    const farmer_id = product.farmer_id;
+    const products = orders[farmer_id] ? orders[farmer_id].products : [];
+    orders[farmer_id] = {
+      products: products,
+      profile_id: profile_id,
+      total_amount: orders[farmer_id]?.total_amount
+        ? orders[farmer_id].total_amount + product.price * product.quantity
+        : product.price * product.quantity,
+    };
+    orders[farmer_id].products.push(product);
+  }
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -237,7 +239,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(orders),
+      body: JSON.stringify({orders}),
       });
 
       // Check the response status of the orders API call
