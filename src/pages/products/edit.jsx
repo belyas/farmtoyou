@@ -63,7 +63,7 @@ const Edit = ({ data, farmers }) => {
       subscription_frequency: data.subscription_frequency,
       subscription_start: data.subscription_start,
       subscription_end: data.subscription_end,
-      photo: data.photo,
+      photo: null,
       oldphoto: data.photo,
       organic: data.organic ? 'Yes' : 'No',
       category: data.category,
@@ -86,19 +86,14 @@ const Edit = ({ data, farmers }) => {
       subscription_frequency: Yup.number()
         .required('Subscription Frequency is required')
         .notOneOf(['Select an option'], 'Please select an option*'),
-      subscription_start: Yup.date()
-        .required('Subscription start date is required*')
-        .test('valid-date', 'Please enter a valid date', value => {
-          const date = new Date(value);
-          return !isNaN(date) && date >= new Date();
-        }),
+   
       subscription_end: Yup.date()
         .required('Subscription end date is required*')
         .test('valid-date', 'Please enter a valid date', value => {
           const date = new Date(value);
           return !isNaN(date) && date >= new Date();
         }),
-      photo: Yup.mixed(),
+      // photo: Yup.mixed(),
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required*'),
       category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
       delivery_method: Yup.string().required('Please select delivery method* '),
@@ -108,48 +103,27 @@ const Edit = ({ data, farmers }) => {
         .required('Quantity is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      // i have comented the formData method if you want to use it you can:
-      //const formData = new FormData();
-      //   formData.append('title', values.title);
-      //   formData.append('price', values.price);
-      //   formData.append('description', values.description);
-      //   formData.append('photo', values.photo);
-      //   formData.append('delivery_date', values.delivery_date);
-      //   formData.append('subscription_end', values.subscription_end);
-      //   formData.append('subscription_start', values.subscription_start);
-      //   formData.append('subscription_frequency', values.subscription_frequency);
-      //   formData.append('category', values.category);
-      //   formData.append('organic', values.organic === 'Yes');
-      //   formData.append('farmer_id', values.farmer_id);
-      //   formData.append('quantity', values.quantity);
-      //   formData.append('delivery_method', values.delivery_method);
-      //   formData.append('id', values.id);
+      const formData = new FormData();
+        formData.append('title', values.title);
+        formData.append('price', values.price);
+        formData.append('description', values.description);
+        formData.append('photo', values.photo);
+        formData.append('oldphoto', values.oldphoto);
+        formData.append('delivery_date', values.delivery_date);
+        formData.append('subscription_end', values.subscription_end);
+        formData.append('subscription_frequency', values.subscription_frequency);
+        formData.append('category', values.category);
+        formData.append('organic', values.organic === 'Yes');
+        formData.append('farmer_id', values.farmer_id);
+        formData.append('quantity', values.quantity);
+        formData.append('delivery_method', values.delivery_method);
+        formData.append('id', values.id);
 
-      const dataToUpdateProduct = {
-        title: values.title,
-        price: values.price,
-        description: values.description,
-        photo: values.photo,
-        delivery_date: values.delivery_date,
-        subscription_end: values.subscription_end,
-        subscription_start: values.subscription_start,
-        subscription_frequency: values.subscription_frequency,
-        category: values.category,
-        organic: values.organic === 'Yes',
-        farmer_id: values.farmer_id,
-        quantity: values.quantity,
-        delivery_method: values.delivery_method,
-        id: values.id,
-      };
-
+       // Uploading and submitting FIle
       try {
         const response = await fetch(`${getURL()}api/products`, {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
           method: 'PUT',
-          body: JSON.stringify(dataToUpdateProduct),
+          body: formData,
         });
 
         if (!response.ok) {
@@ -195,14 +169,7 @@ const Edit = ({ data, farmers }) => {
       setSubmitting(false);
     },
   });
-  // handle start Subscription change
-
-  const handleSubStartChange = subscription_start => {
-    const formattedDate = `${subscription_start.getFullYear()}-${(subscription_start.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${subscription_start.getDate().toString().padStart(2, '0')}`;
-    formik.setFieldValue('subscription_start', formattedDate);
-  };
+ 
 
   // handle End Subscription change
 
@@ -235,6 +202,7 @@ const Edit = ({ data, farmers }) => {
       onSubmit={formik.handleSubmit}
       encType="multipart/form-data"
       noValidate
+      display={'flex'}
     >
       <Snackbar
         open={showError}
@@ -250,6 +218,7 @@ const Edit = ({ data, farmers }) => {
       >
         <Alert severity="success">Successfully submitted data</Alert>
       </Snackbar>
+      <Grid>
       <Grid>
         <InputLabel
           htmlFor="title"
@@ -326,24 +295,7 @@ const Edit = ({ data, farmers }) => {
         />
       </Grid>
 
-      <Grid>
-        <InputLabel htmlFor="subscription_start">
-          Subscription Start:{' '}
-          {formik.touched.subscription_start && formik.errors.subscription_start ? (
-            <span style={{ color: 'red' }}>{formik.errors.subscription_start}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="date"
-          name="subscription_start"
-          required
-          onChange={event => handleSubStartChange(new Date(event.target.value))}
-          value={formik.values.subscription_start}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
+      
       <Grid>
         <InputLabel htmlFor="subscription_end">
           Subcription End:
@@ -512,6 +464,7 @@ const Edit = ({ data, farmers }) => {
         >
           Submit
         </Button>
+      </Grid>
       </Grid>
     </form>
   );
