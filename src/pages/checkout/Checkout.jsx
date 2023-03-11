@@ -9,7 +9,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
@@ -387,6 +387,7 @@ export default function Checkout() {
                 Your order number is #2001539. We have emailed your order confirmation, and will send you an update when
                 your order has shipped.
               </Typography>
+              <Link href="/" style={{display:"flex",justifyContent:"flex-end", padding:"10px"}}> <Button variant="contained">Continue Shopping </Button></Link>
             </React.Fragment>
           ) : (
             <React.Fragment>
