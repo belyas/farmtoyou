@@ -145,7 +145,8 @@ export default function Profile({ profile }) {
           </Form.Item>
         </Form>
 
-      <Account session={session} />
+          */}
+     
     </>
   );
 }
