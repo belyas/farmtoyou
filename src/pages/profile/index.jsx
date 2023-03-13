@@ -2,13 +2,11 @@ import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
 import { redirect, supabase } from '@/utils';
-import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
-import React, { useState } from 'react';
+import React from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
 import BasicProfile from '@/components/profiles/basicProfile';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -17,9 +15,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { ListItems } from '@/components/profiles/listItems';
-import Orders from '@/components/profiles/orders';
 import Title from '@/components/profiles/Title';
-import Order from '@/components/orders/order';
 import PaymentInfo from '@/components/profiles/paymentInfo';
 import ShippingInfo from '@/components/profiles/shippingInfo';
 
@@ -44,14 +40,24 @@ export const getServerSideProps = async ctx => {
   const farmerId = await isUserFarmer(session.user.id);
   console.log(farmerId);
 
+  let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
+  console.log(paymentResult.data);
+
+  let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
+  console.log('addressdata', addressResult.data);
   //if farmerId is undefinied, means the user is not a farmer, go ahead and query profiles table
+
   if (!farmerId) {
-    const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-    console.log('profile', data);
+    let profileResult = await supabase.from('profiles_extension').select('*').eq('id', session.user.id).single();
+    const profile = profileResult.data;
+    console.log('profile', profile);
+
     return {
       props: {
         initialSession: session,
-        profile: data,
+        profile: profile,
+        payment: paymentResult.data,
+        address: addressResult.data,
       },
     };
   }
@@ -67,13 +73,14 @@ export const getServerSideProps = async ctx => {
     props: {
       initialSession: session,
       profile: data,
-      //farmer: farmer ?? [],
+      payment: paymentResult.data,
+      address: addressResult.data,
     },
   };
 };
 //supabase.from('profiles').select('*').eq('id', session.user.id).single();
 
-export default function Profile({ profile }) {
+export default function Profile({ profile, payment, address }) {
   const session = useSession();
   // const [loading, setLoading] = useState(false);
   // const [firstname, setFirstName] = useState(null);
@@ -148,7 +155,7 @@ export default function Profile({ profile }) {
                       height: 240,
                     }}
                   >
-                    <PaymentInfo />
+                    <PaymentInfo payment={payment} />
                   </Paper>
                 </Grid>
                 <Grid
@@ -163,7 +170,7 @@ export default function Profile({ profile }) {
                       height: 240,
                     }}
                   >
-                    <ShippingInfo />
+                    <ShippingInfo address={address} />
                   </Paper>
                 </Grid>
               </Grid>

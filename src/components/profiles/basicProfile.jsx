@@ -15,7 +15,7 @@ export default function BasicProfile({ profile }) {
         color="text.secondary"
         sx={{ flex: 1 }}
       >
-        email address
+        {profile.email}
       </Typography>
       <Link href="/profiles/edit">Edit</Link>
     </React.Fragment>
