@@ -1,9 +1,14 @@
-import UpdateProfileForm from '@/components/profiles/updateProfileForm';
+import UpdatePersonalInfo from '@/components/profiles/UpdatePersonalInfo';
 import Account from '@/components/Account';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
-import { Grid } from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import Paper from '@mui/material/Paper';
+import Link from 'next/link';
+import { useState } from 'react';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -18,9 +23,30 @@ const getServerSideProps = async ctx => {
 };
 
 export default function EditProfile({ session }) {
+  const [address, SetAddress] = useState('');
+  const showAddressForm = () => {};
   return (
     <>
-      <Grid>My data</Grid>
+      <Grid
+        container
+        sx={{ pb: 4 }}
+        spacing={2}
+      >
+        <Grid item>
+          <Button variant="contained">Info</Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            onClick={showAddressForm}
+          >
+            <Link href="/profile/address">Address</Link>
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="contained">Payment</Button>
+        </Grid>
+      </Grid>
       <Grid container>
         <Grid
           item
@@ -36,8 +62,7 @@ export default function EditProfile({ session }) {
               height: 140,
             }}
           >
-            {' '}
-            My personal info
+            <UpdatePersonalInfo />
           </Paper>
         </Grid>
         <Grid
@@ -50,15 +75,13 @@ export default function EditProfile({ session }) {
               p: 2,
               display: 'flex',
               flexDirection: 'column',
-              height: 140,
+              height: 240,
             }}
           >
-            Change password
+            <Account session={session} />
           </Paper>
         </Grid>
       </Grid>
-      <UpdateProfileForm />
-      <Account session={session} />
     </>
   );
 }
