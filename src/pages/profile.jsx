@@ -6,81 +6,95 @@ import { redirect, supabase } from '@/utils';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Button, Form, Input, message } from 'antd';
+// import { Button, Form, Input, message } from 'antd';
+import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
 import React, { useState } from 'react';
+import isUserFarmer from '@/utils/getFarmerId';
 
-export default function Profile({ user, data }) {
-  const session = useSession();
-  const [loading, setLoading] = useState(false);
-  const [firstname, setFirstName] = useState(null);
-  const [lastname, setLastName] = useState(null);
+export const getServerSideProps = async ctx => {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  async function updateProfile() {
-    try {
-      setLoading(true);
-
-      const updates = {
-        id: user.id,
-        firstname: firstname,
-        lastname: lastname,
-      };
-
-      let { error } = await supabase.from('profiles').upsert(updates);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-  // this logs user's information if needed to be passed down to Account component
-  console.log('user:', user);
-  console.log('data:', data);
-  //console.log('farmer', farmer)
-
-  if (!session) {
-    redirect({ timer: 0 });
-    return null;
+  if (!session || !session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 
-  const handleSave = () => {
-    updateProfile({ firstname, lastname });
-    window.location.reload(false);
+  // Check user type, and then decide which table to query
+  const farmerId = await isUserFarmer(session.user.id);
+  console.log(farmerId);
+
+  //if farmerId is undefinied, means the user is not a farmer, go ahead and query profiles table
+  if (!farmerId) {
+    const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+    console.log('profile', data);
+    return {
+      props: {
+        initialSession: session,
+        profile: data,
+      },
+    };
+  }
+
+  //if farmerId, means the user is a farmer,query farmer view table
+  const { data } = await supabase
+    .from('farmers_profile_extension')
+    .select('*')
+    .eq('profile_id', session.user.id)
+    .single();
+
+  return {
+    props: {
+      initialSession: session,
+      profile: data,
+      //farmer: farmer ?? [],
+    },
   };
+};
+//supabase.from('profiles').select('*').eq('id', session.user.id).single();
+
+export default function Profile({ profile }) {
+  const session = useSession();
+  // const [loading, setLoading] = useState(false);
+  // const [firstname, setFirstName] = useState(null);
+  // const [lastname, setLastName] = useState(null);
+
+  // if (!session) {
+  //   redirect({ timer: 0 });
+  //   return null;
+  // }
+
+  // const handleSave = () => {
+  //   updateProfile({ firstname, lastname });
+  //   window.location.reload(false);
+  // };
 
   return (
     <>
-      <Head>
-        <title>Your Profile</title>
-        <meta
-          name="description"
-          content="Connect farmers with locals for fresh food"
-        />
-      </Head>
-      <main
-        className="container"
-        style={{ padding: '50px 0 100px 0' }}
-      >
-        <Card>
-          <CardContent>
-            <AccountCircleIcon></AccountCircleIcon>
-            <div>
-              <h3>NAME : {user.user_metadata.firstname}</h3>
-              <h3>SURNAME : {user.user_metadata.lastname}</h3>
-            </div>
-            <div>
-              <h5>Email: {user.email}</h5>
-              <h5>Type: {user.user_metadata.user_type}</h5>
-              <h5>{data.shop_name}</h5>
-              <h5>{data.shop_description}</h5>
-              <h5>{data.shop_logo}</h5>
-            </div>
-          </CardContent>
-        </Card>
-        <Form
+      <Card>
+        <CardContent>
+          <AccountCircleIcon></AccountCircleIcon>
+          <div>
+            <h3>NAME : {profile.firstname}</h3>
+            <h3>SURNAME : {profile.lastname}</h3>
+          </div>
+          <div>
+            <h5>Email: {profile.email}</h5>
+            {/* <h5>Type: {profile.user_metadata.user_type}</h5> */}
+            {/* <h5>{data.shop_name}</h5>
+            <h5>{data.shop_description}</h5>
+            <h5>{data.shop_logo}</h5> */}
+          </div>
+        </CardContent>
+      </Card>
+      <UpdateProfileForm />
+      {/* <FormControl
           name="basic"
           labelCol={{
             span: 8,
@@ -149,41 +163,7 @@ export default function Profile({ user, data }) {
           </Form.Item>
         </Form>
 
-        <Account session={session} />
-      </main>
+      <Account session={session} />
     </>
   );
 }
-
-export const getServerSideProps = async ctx => {
-  const supabase = createServerSupabaseClient(ctx);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session || !session?.user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  //const {data } = await supabase.from('profiles').select('*, profiles!inner (*)').eq('profile_id', session.user.id)
-  //const { farmer } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-  const { data } = await supabase
-    .from('farmers_profile_extension')
-    .select('*')
-    .eq('profile_id', session.user.id)
-    .single();
-  return {
-    props: {
-      initialSession: session,
-      user: session.user,
-      data: data ?? [],
-      //farmer: farmer ?? [],
-    },
-  };
-};
-//supabase.from('profiles').select('*').eq('id', session.user.id).single();
