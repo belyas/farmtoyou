@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Link from 'next/link';
 
 export default function BasicProfile({ profile }) {
   return (
@@ -42,7 +43,7 @@ export default function BasicProfile({ profile }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Edit</Button>
+        <Link href="/profiles/edit">Edit</Link>
       </CardActions>
     </Card>
   );
