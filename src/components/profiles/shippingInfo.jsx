@@ -35,7 +35,7 @@ export default function ShippingInfo({ address }) {
         </Typography>
       )}
 
-      <Link href="/profiles/edit">Edit</Link>
+      <Link href="/profile/edit">Edit</Link>
     </React.Fragment>
   );
 }

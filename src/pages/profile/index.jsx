@@ -135,7 +135,7 @@ export default function Profile({ profile, payment, address, shop }) {
                       p: 2,
                       display: 'flex',
                       flexDirection: 'column',
-                      height: 240,
+                      height: 140,
                     }}
                   >
                     {shop ? <ShopInfo shop={shop} /> : null}

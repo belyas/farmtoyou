@@ -32,7 +32,7 @@ export default function Payment({ payment }) {
           You have not set up your payment yet.
         </Typography>
       )}
-      <Link href="/profiles/edit">Edit</Link>
+      <Link href="/profile/edit">Edit</Link>
     </React.Fragment>
   );
 }
