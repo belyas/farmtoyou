@@ -2,14 +2,14 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 
-export default function BasicProfile({ profile }) {
+export default function Payment({ profile }) {
   return (
     <React.Fragment>
       <Typography
         component="p"
         variant="h4"
       >
-        {profile.firstname} {profile.lastname}
+        Payment Card
       </Typography>
       <Typography
         color="text.secondary"
