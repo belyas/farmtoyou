@@ -18,6 +18,7 @@ import { ListItems } from '@/components/profiles/listItems';
 import Title from '@/components/profiles/Title';
 import PaymentInfo from '@/components/profiles/paymentInfo';
 import ShippingInfo from '@/components/profiles/shippingInfo';
+import ShopInfo from '@/components/profiles/Shop';
 
 const mdTheme = createTheme();
 
@@ -45,13 +46,13 @@ export const getServerSideProps = async ctx => {
 
   let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
   console.log('addressdata', addressResult.data);
-  //if farmerId is undefinied, means the user is not a farmer, go ahead and query profiles table
 
+  let profileResult = await supabase.from('profiles_extension').select('*').eq('id', session.user.id).single();
+  const profile = profileResult.data;
+  console.log('profile', profile);
+
+  //if farmerId is undefinied, return without shop data
   if (!farmerId) {
-    let profileResult = await supabase.from('profiles_extension').select('*').eq('id', session.user.id).single();
-    const profile = profileResult.data;
-    console.log('profile', profile);
-
     return {
       props: {
         initialSession: session,
@@ -62,8 +63,8 @@ export const getServerSideProps = async ctx => {
     };
   }
 
-  //if farmerId, means the user is a farmer,query farmer view table
-  const { data } = await supabase
+  //else, return shop data
+  let shopResult = await supabase
     .from('farmers_profile_extension')
     .select('*')
     .eq('profile_id', session.user.id)
@@ -72,15 +73,16 @@ export const getServerSideProps = async ctx => {
   return {
     props: {
       initialSession: session,
-      profile: data,
+      profile: profileResult.data,
       payment: paymentResult.data,
       address: addressResult.data,
+      shop: shopResult.data,
     },
   };
 };
 //supabase.from('profiles').select('*').eq('id', session.user.id).single();
 
-export default function Profile({ profile, payment, address }) {
+export default function Profile({ profile, payment, address, shop }) {
   const session = useSession();
   // const [loading, setLoading] = useState(false);
   // const [firstname, setFirstName] = useState(null);
@@ -124,7 +126,21 @@ export default function Profile({ profile, payment, address }) {
                 container
                 spacing={3}
               >
-                {/* Chart */}
+                <Grid
+                  sx={{ p: 2 }}
+                  xs={12}
+                >
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: 240,
+                    }}
+                  >
+                    {shop ? <ShopInfo shop={shop} /> : null}
+                  </Paper>
+                </Grid>
                 <Grid
                   item
                   xs={12}
