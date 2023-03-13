@@ -3,13 +3,10 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
 import Account from '@/components/Account';
 import { redirect, supabase } from '@/utils';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import { Button, Form, Input, message } from 'antd';
 import UpdateProfileForm from '@/components/profiles/UpdateProfileForm';
 import React, { useState } from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
+import BasicProfile from '@/components/profiles/basicProfile';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -77,22 +74,7 @@ export default function Profile({ profile }) {
 
   return (
     <>
-      <Card>
-        <CardContent>
-          <AccountCircleIcon></AccountCircleIcon>
-          <div>
-            <h3>NAME : {profile.firstname}</h3>
-            <h3>SURNAME : {profile.lastname}</h3>
-          </div>
-          <div>
-            <h5>Email: {profile.email}</h5>
-            {/* <h5>Type: {profile.user_metadata.user_type}</h5> */}
-            {/* <h5>{data.shop_name}</h5>
-            <h5>{data.shop_description}</h5>
-            <h5>{data.shop_logo}</h5> */}
-          </div>
-        </CardContent>
-      </Card>
+      <BasicProfile profile={profile} />
       <UpdateProfileForm />
       {/* <FormControl
           name="basic"
