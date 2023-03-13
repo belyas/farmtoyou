@@ -8,12 +8,12 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import styles from "@/styles/Footer.module.css"
+import styles from '@/styles/Footer.module.css';
 import { ClassNames } from '@emotion/react';
 
 const footers = [
   {
-    title: <HelpOutlineIcon />, 
+    title: <HelpOutlineIcon />,
   },
   {
     title: <GitHubIcon />,
@@ -22,7 +22,7 @@ const footers = [
     title: <EmailIcon />,
   },
   {
-    title:  <LocationOnIcon />,
+    title: <LocationOnIcon />,
   },
 ];
 
@@ -49,7 +49,7 @@ export const Footer = () => {
               xs={6}
               sm={3}
               key={footer.title}
-              sx= {{display:"flex",justifyContent:"center"}}
+              sx={{ display: 'flex', justifyContent: 'center' }}
             >
               <Typography
                 variant="h6"
@@ -65,4 +65,3 @@ export const Footer = () => {
     </>
   );
 };
-
