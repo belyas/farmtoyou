@@ -4,7 +4,7 @@ import { useSession } from '@supabase/auth-helpers-react';
 import { redirect, supabase } from '@/utils';
 import React from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
-import BasicProfile from '@/components/profiles/basicProfile';
+import Profile from '@/components/profiles/Profile';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
@@ -43,14 +43,14 @@ export const getServerSideProps = async ctx => {
   const farmerId = await isUserFarmer(session.user.id);
 
   let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
-  console.log(paymentResult.data);
+  // console.log(paymentResult.data);
 
   let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
-  console.log('addressdata', addressResult.data);
+  // console.log('addressdata', addressResult.data);
 
   let profileResult = await supabase.from('profiles_extension').select('*').eq('id', session.user.id).single();
   const profile = profileResult.data;
-  console.log('profile', profile);
+  // console.log('profile', profile);
 
   //if farmerId is undefinied, return without shop data
   if (!farmerId) {
@@ -71,7 +71,7 @@ export const getServerSideProps = async ctx => {
     .eq('profile_id', session.user.id)
     .single();
 
-  console.log('shop', shopResult.data);
+  // console.log('shop', shopResult.data);
 
   return {
     props: {
@@ -117,8 +117,8 @@ function a11yProps(index) {
   };
 }
 
-export default function Profile({ profile, payment, address, shop }) {
-  console.log('shop', shop);
+export default function ProfileHome({ profile, payment, address, shop }) {
+  // console.log('shop', shop);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -179,7 +179,7 @@ export default function Profile({ profile, payment, address, shop }) {
                 height: 240,
               }}
             >
-              <BasicProfile
+              <Profile
                 profile={profile}
                 shop={shop}
               />

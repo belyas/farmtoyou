@@ -9,6 +9,7 @@ import UpdateProfile from './UpdateProfile';
 
 export default function BasicProfile({ profile, shop }) {
   const [edit, setEdit] = useState(false);
+
   console.log('edit', edit);
   const handleClick = () => {
     setEdit(edit => !edit);
@@ -20,6 +21,7 @@ export default function BasicProfile({ profile, shop }) {
         <UpdateProfile
           profile={profile}
           shop={shop}
+          setEdit={setEdit}
         />
       ) : (
         <Grid container>

@@ -47,25 +47,28 @@ export default async function update(req, res) {
       firstname: fields.firstName.trim(),
       lastname: fields.lastName.trim(),
     };
+    if (fields.farmerId) {
+      const newFarmerProfile = {
+        shop_name: fields.shopName.trim(),
+        shop_description: fields.shopDescription.trim(),
+      };
 
-    const newFarmerProfile = {
-      shop_name: fields.shopName.trim(),
-      shop_description: fields.shopDescription.trim(),
-    };
-
-    // if user upload a new photo, add it to the query
-    if (files && files['shopLogo']?.newFilename) {
-      newFarmerProfile.shop_logo = files['shopLogo']?.newFilename;
+      // if user upload a new photo, add it to the query
+      if (files && files['shopLogo']?.newFilename) {
+        newFarmerProfile.shop_logo = files['shopLogo']?.newFilename;
+      }
+      const { error } = await supabase.from('farmers').update(newFarmerProfile).eq('id', fields.farmerId);
+      if (error) {
+        return res.status(500).json({ data: 'Internal server rrror' });
+      }
+      console.log('new farmer profile', newFarmerProfile);
     }
 
     console.log('new user profile', newUserProfile);
-    console.log('new farmer profile', newFarmerProfile);
 
-    const updateProfileResult = await supabase.from('profiles').update(newUserProfile).eq('id', fields.profileId);
+    const { error } = await supabase.from('profiles').update(newUserProfile).eq('id', fields.profileId);
 
-    const updateFarmerResult = await supabase.from('farmers').update(newFarmerProfile).eq('id', fields.farmerId);
-
-    if (updateProfileResult.error || updateFarmerResult.error) {
+    if (error) {
       return res.status(500).json({ data: 'Internal server rrror' });
     }
 

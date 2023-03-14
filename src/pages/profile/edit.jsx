@@ -1,4 +1,4 @@
-import UpdatePersonalInfo from '@/components/profiles/UpdatePersonalInfo';
+import UpdateProfile from '@/components/profiles/UpdateProfile';
 import Account from '@/components/Account';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSession } from '@supabase/auth-helpers-react';
@@ -22,8 +22,7 @@ const getServerSideProps = async ctx => {
   };
 };
 
-export default function EditProfile({ session }) {
-  const [address, SetAddress] = useState('');
+export default function EditProfile({ profile, payment, address, shop }) {
   const showAddressForm = () => {};
   return (
     <>
@@ -51,7 +50,7 @@ export default function EditProfile({ session }) {
         <Grid
           item
           xs={12}
-          md={6}
+          md={12}
         >
           {' '}
           <Paper
@@ -62,23 +61,10 @@ export default function EditProfile({ session }) {
               height: 140,
             }}
           >
-            <UpdatePersonalInfo />
-          </Paper>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}
-        >
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 240,
-            }}
-          >
-            <Account session={session} />
+            <UpdateProfile
+              profile={profile}
+              shop={shop}
+            />
           </Paper>
         </Grid>
       </Grid>
