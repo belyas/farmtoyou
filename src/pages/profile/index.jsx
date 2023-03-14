@@ -5,22 +5,24 @@ import { redirect, supabase } from '@/utils';
 import React from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
 import BasicProfile from '@/components/profiles/basicProfile';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { ListItems } from '@/components/profiles/listItems';
+
 import Title from '@/components/profiles/Title';
 import PaymentInfo from '@/components/profiles/paymentInfo';
 import ShippingInfo from '@/components/profiles/shippingInfo';
 import ShopInfo from '@/components/profiles/Shop';
-
-const mdTheme = createTheme();
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import HomeIcon from '@mui/icons-material/Home';
+import PaymentIcon from '@mui/icons-material/Payment';
+import StoreIcon from '@mui/icons-material/Store';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon from '@mui/icons-material/People';
+import Link from 'next/link';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -39,7 +41,6 @@ export const getServerSideProps = async ctx => {
 
   // Check user type, and then decide which table to query
   const farmerId = await isUserFarmer(session.user.id);
-  console.log(farmerId);
 
   let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
   console.log(paymentResult.data);
@@ -70,6 +71,8 @@ export const getServerSideProps = async ctx => {
     .eq('profile_id', session.user.id)
     .single();
 
+  console.log('shop', shopResult.data);
+
   return {
     props: {
       initialSession: session,
@@ -80,120 +83,123 @@ export const getServerSideProps = async ctx => {
     },
   };
 };
-//supabase.from('profiles').select('*').eq('id', session.user.id).single();
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`profile-tabpanel-${index}`}
+      aria-labelledby={`profile-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <div>{children}</div>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `profile-tab-${index}`,
+    'aria-controls': `profile-tabpanel-${index}`,
+  };
+}
 
 export default function Profile({ profile, payment, address, shop }) {
-  const session = useSession();
-  // const [loading, setLoading] = useState(false);
-  // const [firstname, setFirstName] = useState(null);
-  // const [lastname, setLastName] = useState(null);
+  console.log('shop', shop);
+  const [value, setValue] = React.useState(0);
 
-  // if (!session) {
-  //   redirect({ timer: 0 });
-  //   return null;
-  // }
-
-  // const handleSave = () => {
-  //   updateProfile({ firstname, lastname });
-  //   window.location.reload(false);
-  // };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <>
-      <ThemeProvider theme={mdTheme}>
-        <Box sx={{ display: 'flex' }}>
-          <CssBaseline />
-          <List component="nav">{ListItems}</List>
-          <Box
-            component="main"
-            sx={{
-              backgroundColor: theme =>
-                theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-              flexGrow: 1,
-              height: '100vh',
-              overflow: 'auto',
-            }}
+      <Box sx={{ width: '100%' }}>
+        <Grid sx={{ pb: 2 }}>
+          <Title title={`Welcome Back ${profile.firstname} !`} />
+        </Grid>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="profile tabs"
           >
-            <Container
-              maxWidth="lg"
-              sx={{ mt: 4, mb: 4 }}
-            >
-              <Grid sx={{ p: 2 }}>
-                <Title title={`Welcome Back ${profile.firstname} !`} />
-              </Grid>
+            <Tab
+              label="My orders"
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="My information"
+              {...a11yProps(1)}
+            />
 
-              <Grid
-                container
-                spacing={3}
-              >
-                <Grid
-                  sx={{ p: 2 }}
-                  xs={12}
-                >
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 140,
-                    }}
-                  >
-                    {shop ? <ShopInfo shop={shop} /> : null}
-                  </Paper>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 240,
-                    }}
-                  >
-                    <BasicProfile profile={profile} />
-                  </Paper>
-                </Grid>
-                {/* Recent Deposits */}
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                >
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 240,
-                    }}
-                  >
-                    <PaymentInfo payment={payment} />
-                  </Paper>
-                </Grid>
-                <Grid
-                  sx={{ p: 2 }}
-                  xs={12}
-                >
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 240,
-                    }}
-                  >
-                    <ShippingInfo address={address} />
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Container>
-          </Box>
+            <Tab
+              label="My address"
+              {...a11yProps(2)}
+            />
+            <Tab
+              label="Saved Payment"
+              {...a11yProps(3)}
+            />
+          </Tabs>
         </Box>
-      </ThemeProvider>
+        <TabPanel
+          value={value}
+          index={0}
+        >
+          <Link href="/orders">Go to Orders</Link>
+        </TabPanel>
+        <TabPanel
+          value={value}
+          index={1}
+        >
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                height: 240,
+              }}
+            >
+              <BasicProfile
+                profile={profile}
+                shop={shop}
+              />
+            </Paper>
+          </Grid>
+        </TabPanel>
+
+        <TabPanel
+          value={value}
+          index={2}
+        >
+          <ShippingInfo address={address} />
+        </TabPanel>
+        <TabPanel
+          value={value}
+          index={3}
+        >
+          <PaymentInfo payment={payment} />
+        </TabPanel>
+      </Box>
     </>
   );
 }

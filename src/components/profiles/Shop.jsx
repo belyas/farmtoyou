@@ -15,8 +15,8 @@ export default function ShopInfo({ shop }) {
       <Card sx={{ display: 'flex', boxShadow: 'none' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography
-            component="div"
-            variant="h5"
+            component="p"
+            variant="h6"
           >
             {shop.shop_name}
           </Typography>
@@ -44,7 +44,6 @@ export default function ShopInfo({ shop }) {
           />
         )}
       </Card>
-      <Link href="/profile">Edit</Link>
     </>
   );
 }
