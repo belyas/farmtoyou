@@ -20,7 +20,6 @@ export const Footer = () => {
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <Container
         className={styles.footer}
-    
         maxWidth="xl"
         component="footer"
         sx={{
@@ -34,13 +33,17 @@ export const Footer = () => {
           justifyContent="center"
         >
           <Link>
-          <GitHubIcon  href="https://github.com/belyas/farmtoyou" target="blank"/></Link>
+            <GitHubIcon
+              href="https://github.com/belyas/farmtoyou"
+              target="blank"
+            />
+          </Link>
           <EmailIcon />
           <FacebookIcon />
           <TwitterIcon />
           <InstagramIcon />
           <Typography>&copy;FarmToYou,2023.All rights reserved.</Typography>
-        </Grid>   
+        </Grid>
       </Container>
     </>
   );
