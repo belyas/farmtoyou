@@ -48,6 +48,7 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
 };
 
 export default function UpdateProfile({ profile, shop }) {
+  // console.log('profile', profile);
   const router = useRouter();
 
   const [showError, setShowError] = useState(false);
@@ -69,15 +70,23 @@ export default function UpdateProfile({ profile, shop }) {
       shopLogo: Yup.mixed().required(),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      // alert(JSON.stringify(values, null, 2));
-      const newProfile = JSON.stringify(values, null, 2);
-      console.log('new profile', newProfile);
+      console.log('firstname', values.firstName);
+      const formData = new FormData();
+      formData.append('firstName', values.firstName);
+      formData.append('lastName', values.lastName);
+      formData.append('shopName', values.shopName);
+      formData.append('shopLogo', values.shopLogo);
+      formData.append('shopDescription', values.shopDescription);
+      formData.append('profileId', profile.id);
+      formData.append('farmerId', shop.id);
+
       try {
         const res = await fetch(`${getURL()}api/profiles/update`, {
-          method: 'POST',
-          body: newProfile,
+          method: 'PUT',
+          body: formData,
         });
-        if (!res.ok) {
+
+        if (!res.status === '204') {
           throw new Error('Failed to submit data');
         }
 
@@ -94,8 +103,10 @@ export default function UpdateProfile({ profile, shop }) {
   });
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-    console.log('file', file.name);
-    formik.setFieldValue('shopLogo', file.name);
+    console.log('file', file);
+    if (file) {
+      formik.setFieldValue('shopLogo', file);
+    }
   };
 
   return (
