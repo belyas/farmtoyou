@@ -13,7 +13,6 @@ export default async function address(req, res) {
       .select()
       .eq('profile_id', addressDetail.profile_id)
       .maybeSingle();
-
     if (data) {
       addressDetail.id = data.id;
     } else {
