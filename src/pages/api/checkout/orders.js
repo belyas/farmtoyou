@@ -47,13 +47,13 @@ export default async function orders(req, res) {
 async function createOrderDetails(products, orderId) {
   const orderDetailsToInsert = products.map(orderDetailsItem => {
     return {
-    order_id: orderId,
-    product_id: orderDetailsItem.id,
-    product_title: orderDetailsItem.title,
-    product_quantity: orderDetailsItem.quantity,
-    product_price: orderDetailsItem.price,
-    total_price: orderDetailsItem.price * orderDetailsItem.quantity
-    }
+      order_id: orderId,
+      product_id: orderDetailsItem.id,
+      product_title: orderDetailsItem.title,
+      product_quantity: orderDetailsItem.quantity,
+      product_price: orderDetailsItem.price,
+      total_price: orderDetailsItem.price * orderDetailsItem.quantity,
+    };
   });
   const { error } = await supabase
     .from('order_details')

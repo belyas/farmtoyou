@@ -232,7 +232,7 @@ export default function Checkout() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      console.log(orders)
+      console.log(orders);
       // Submit orders data to orders API
       const ordersResponse = await fetch(`${getURL()}api/checkout/orders`, {
         method: 'POST',
