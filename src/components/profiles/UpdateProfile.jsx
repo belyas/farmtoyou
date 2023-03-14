@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/router';
+import { Snackbar, Alert } from '@mui/material';
 
 const UpdateShopForm = ({ formik, handlePhotoChange }) => {
   return (
@@ -47,7 +48,7 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
   );
 };
 
-export default function UpdateProfile({ profile, shop }) {
+export default function UpdateProfile({ profile, shop, setEdit }) {
   // console.log('profile', profile);
   const router = useRouter();
 
@@ -70,7 +71,7 @@ export default function UpdateProfile({ profile, shop }) {
       shopLogo: Yup.mixed().required(),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      console.log('firstname', values.firstName);
+      // console.log('firstname', values.firstName);
       const formData = new FormData();
       formData.append('firstName', values.firstName);
       formData.append('lastName', values.lastName);
@@ -92,9 +93,7 @@ export default function UpdateProfile({ profile, shop }) {
 
         setShowSuccess(true);
 
-        setTimeout(() => {
-          router.push('/profile');
-        }, 500);
+        setEdit(edit => !edit);
       } catch (error) {
         setShowError(true);
       }
@@ -103,7 +102,7 @@ export default function UpdateProfile({ profile, shop }) {
   });
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-    console.log('file', file);
+    // console.log('file', file);
     if (file) {
       formik.setFieldValue('shopLogo', file);
     }
@@ -117,6 +116,20 @@ export default function UpdateProfile({ profile, shop }) {
       encType="multipart/form-data"
       noValidate
     >
+      <Snackbar
+        open={showError}
+        autoHideDuration={3000}
+        onClose={() => setShowError(false)}
+      >
+        <Alert severity="error">Failed to submit data</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccess(false)}
+      >
+        <Alert severity="success">Successfully submitted data</Alert>
+      </Snackbar>
       <Grid container>
         <Grid
           item
