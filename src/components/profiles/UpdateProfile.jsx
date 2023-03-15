@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/router';
-
 import UpdateUserProfile from './UpdateUserProfile';
 import UpdateFarmerProfile from '@/components/profiles/UpdateFarmerProfile';
 

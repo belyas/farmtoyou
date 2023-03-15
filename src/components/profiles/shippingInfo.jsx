@@ -58,11 +58,10 @@ export default function ShippingInfo({ address }) {
   const [edit, setEdit] = useState(false);
   console.log('edit', edit);
 
-  console.log('address', address);
   return (
     <>
       {edit ? (
-        <UpdateAddress />
+        <UpdateAddress address={address} />
       ) : (
         <Address
           address={address}
