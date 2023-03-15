@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import UpdateAddress from './UpdateAddress';
 
-export default function ShippingInfo({ address }) {
+export default function ShippingInfo({ address, showError, setShowError, showSuccess, setShowSuccess }) {
   const [edit, setEdit] = useState(false);
   console.log('edit', edit);
 
@@ -13,6 +13,10 @@ export default function ShippingInfo({ address }) {
         <UpdateAddress
           address={address}
           setEdit={setEdit}
+          showError={showError}
+          setShowError={setShowError}
+          showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
         />
       ) : (
         <Address

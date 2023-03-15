@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import UpdateProfile from './UpdateProfile';
 
-export default function BasicProfile({ profile, shop }) {
+export default function BasicProfile({ profile, shop, showError, setShowError, showSuccess, setShowSuccess }) {
   const [edit, setEdit] = useState(false);
 
   console.log('edit', edit);
@@ -22,6 +22,10 @@ export default function BasicProfile({ profile, shop }) {
           profile={profile}
           shop={shop}
           setEdit={setEdit}
+          showError={showError}
+          setShowError={setShowError}
+          showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
         />
       ) : (
         <Grid container>

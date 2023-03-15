@@ -3,14 +3,10 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import ProfileSnackBar from './SnackBar';
 
-export default function UpdateAddress({ address, setEdit }) {
-  console.log('address', address);
+export default function UpdateAddress({ address, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
   const router = useRouter();
-
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -52,22 +48,26 @@ export default function UpdateAddress({ address, setEdit }) {
       formData.append('phone', values.phone);
 
       try {
-        const res = await fetch(`${getURL()}api/profiles/update`, {
+        const res = await fetch(`${getURL()}api/profiles/`, {
           method: 'PUT',
           body: formData,
         });
+
+        if (res.status === 204) {
+          setShowSuccess(true);
+          //todo better to just refresh this component than the whole page. Use state to manage profile
+          setTimeout(() => {
+            router.reload();
+          }, 500);
+
+          setEdit(edit => !edit);
+          setSubmitting(false);
+        } else {
+          setShowError(true);
+        }
       } catch (error) {
-        throw new Error(error);
+        setShowError(true);
       }
-
-      if (!res.status === '204') {
-        throw new Error('Failed to submit data');
-      }
-      if (res.status !== 204) {
-        alert('failed to update');
-      }
-
-      setEdit(edit => !edit);
     },
   });
 
@@ -78,6 +78,12 @@ export default function UpdateAddress({ address, setEdit }) {
       onSubmit={formik.handleSubmit}
       noValidate
     >
+      <ProfileSnackBar
+        showError={showError}
+        setShowError={setShowError}
+        showSuccess={showSuccess}
+        setShowSuccess={setShowSuccess}
+      />
       <Grid container>
         <Grid
           item

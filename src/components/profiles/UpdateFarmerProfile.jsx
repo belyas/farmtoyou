@@ -2,7 +2,7 @@ import ProfileSnackBar from './SnackBar';
 import { Grid } from '@mui/material';
 import UpdateShopForm from './UpdateShop';
 
-const UpdateFarmerProfile = ({ formik, handlePhotoChange, showError, showSuccess, setShowError }) => {
+const UpdateFarmerProfile = ({ formik, handlePhotoChange, showError, showSuccess, setShowError, setShowSuccess }) => {
   return (
     <form
       action="/api/profiles/update"
@@ -15,6 +15,7 @@ const UpdateFarmerProfile = ({ formik, handlePhotoChange, showError, showSuccess
         showError={showError}
         setShowError={setShowError}
         showSuccess={showSuccess}
+        setShowSuccess={setShowSuccess}
       />
       <Grid container>
         <Grid

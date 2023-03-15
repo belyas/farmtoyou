@@ -6,14 +6,19 @@ import { useRouter } from 'next/router';
 import UpdateUserProfile from './UpdateUserProfile';
 import UpdateFarmerProfile from '@/components/profiles/UpdateFarmerProfile';
 
-export default function UpdateProfile({ profile, shop, setEdit }) {
+export default function UpdateProfile({
+  profile,
+  shop,
+  setEdit,
+  showError,
+  setShowError,
+  showSuccess,
+  setShowSuccess,
+}) {
   // console.log('profile', profile);
   console.log('shop', shop);
 
   const router = useRouter();
-
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const userFormik = useFormik({
     initialValues: {
@@ -88,22 +93,21 @@ export default function UpdateProfile({ profile, shop, setEdit }) {
           body: formData,
         });
 
-        if (!res.status === '204') {
-          throw new Error('Failed to submit data');
+        if (res.status === 204) {
+          setShowSuccess(true);
+          //todo better to just refresh this component than the whole page. Use state to manage profile
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+
+          setEdit(edit => !edit);
+          setSubmitting(false);
+        } else {
+          setShowError(true);
         }
-
-        setShowSuccess(true);
-
-        //todo better to just refresh this component than the whole page. Use state to manage profile
-        setTimeout(() => {
-          router.reload();
-        }, 500);
-
-        setEdit(edit => !edit);
       } catch (error) {
         setShowError(true);
       }
-      setSubmitting(false);
     },
   });
 
@@ -123,6 +127,7 @@ export default function UpdateProfile({ profile, shop, setEdit }) {
           showError={showError}
           setShowError={setShowError}
           showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
           handlePhotoChange={handlePhotoChange}
         />
       ) : (
@@ -131,6 +136,7 @@ export default function UpdateProfile({ profile, shop, setEdit }) {
           showError={showError}
           setShowError={setShowError}
           showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
         />
       )}
     </>

@@ -1,31 +1,23 @@
 import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useSession } from '@supabase/auth-helpers-react';
-import { redirect, supabase } from '@/utils';
 import React from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
 import Profile from '@/components/profiles/Profile';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-
 import Title from '@/components/profiles/Title';
 import PaymentInfo from '@/components/profiles/paymentInfo';
 import ShippingInfo from '@/components/profiles/shippingInfo';
-import ShopInfo from '@/components/profiles/Shop';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import HomeIcon from '@mui/icons-material/Home';
-import PaymentIcon from '@mui/icons-material/Payment';
-import StoreIcon from '@mui/icons-material/Store';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -125,6 +117,12 @@ export default function ProfileHome({ profile, payment, address, shop }) {
     setValue(newValue);
   };
 
+  //error handling
+  const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  console.log('show error', showError);
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
@@ -182,6 +180,10 @@ export default function ProfileHome({ profile, payment, address, shop }) {
               <Profile
                 profile={profile}
                 shop={shop}
+                showError={showError}
+                setShowError={setShowError}
+                showSuccess={showSuccess}
+                setShowSuccess={setShowSuccess}
               />
             </Paper>
           </Grid>
@@ -191,13 +193,25 @@ export default function ProfileHome({ profile, payment, address, shop }) {
           value={value}
           index={2}
         >
-          <ShippingInfo address={address} />
+          <ShippingInfo
+            address={address}
+            showError={showError}
+            setShowError={setShowError}
+            showSuccess={showSuccess}
+            setShowSuccess={setShowSuccess}
+          />
         </TabPanel>
         <TabPanel
           value={value}
           index={3}
         >
-          <PaymentInfo payment={payment} />
+          <PaymentInfo
+            payment={payment}
+            showError={showError}
+            setShowError={setShowError}
+            showSuccess={showSuccess}
+            setShowSuccess={setShowSuccess}
+          />
         </TabPanel>
       </Box>
     </>

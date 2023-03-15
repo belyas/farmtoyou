@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import UpdatePayment from './UpdatePayment';
 
-export default function Payment({ payment }) {
+export default function Payment({ payment, showError, setShowError, showSuccess, setShowSuccess }) {
   // console.log('payment', payment);
   const [edit, setEdit] = React.useState(false);
 
@@ -13,6 +13,10 @@ export default function Payment({ payment }) {
         <UpdatePayment
           payment={payment}
           setEdit={setEdit}
+          showError={showError}
+          setShowError={setShowError}
+          showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
         />
       ) : (
         <>

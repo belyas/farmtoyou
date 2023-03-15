@@ -1,8 +1,8 @@
 import { useFormik } from 'formik';
 import { getURL } from '@/utils';
-import { Snackbar } from '@mui/material';
+import ProfileSnackBar from './SnackBar';
 
-export default function UpdatePayment({ payment, setEdit }) {
+export default function UpdatePayment({ payment, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
   console.log('payment', payment);
   const formik = useFormik({
     initialValues: {
@@ -24,29 +24,42 @@ export default function UpdatePayment({ payment, setEdit }) {
           method: 'PUT',
           body: formData,
         });
+        if (res.status === 204) {
+          setShowSuccess(true);
+          //todo better to just refresh this component than the whole page. Use state to manage profile
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+
+          setEdit(edit => !edit);
+          setSubmitting(false);
+        } else {
+          setShowError(true);
+        }
       } catch (error) {
-        alert(error);
+        setShowError(true);
       }
-
-      if (res.status !== 204) {
-        alert('failed to update');
-      }
-
-      setEdit(edit => !edit);
     },
   });
   return (
     <>
       <form
         method="post"
-        action="/api/profiles/update"
+        action="/api/profiles"
         onSubmit={formik.handleSubmit}
         noValidate
       >
+        <ProfileSnackBar
+          showError={showError}
+          setShowError={setShowError}
+          showSuccess={showSuccess}
+          setShowSuccess={setShowSuccess}
+        />
         <label>
           Card Holder
           <input
             type="text"
+            id="cardHolder"
             value={formik.values.cardHolder}
             onChange={formik.handleChange}
           />
@@ -55,6 +68,7 @@ export default function UpdatePayment({ payment, setEdit }) {
           Card Number
           <input
             type="text"
+            id="cardNumber"
             value={`${'*'.repeat(12)}${formik.values.cardNumber}`}
             onChange={formik.handleChange}
           />
@@ -63,6 +77,7 @@ export default function UpdatePayment({ payment, setEdit }) {
           Expiration Date
           <input
             type="date"
+            id="expirationDate"
             value={formik.values.expirationDate}
             onChange={formik.handleChange}
           />
@@ -72,6 +87,7 @@ export default function UpdatePayment({ payment, setEdit }) {
           <input
             type="number"
             value={formik.values.cvv}
+            id="cvv"
             onChange={formik.handleChange}
           />
         </label>
