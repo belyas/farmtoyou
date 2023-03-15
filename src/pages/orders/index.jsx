@@ -43,13 +43,13 @@ export const getServerSideProps = async ctx => {
   const _orders = {};
 
   if (data && farmerOrders) {
-    const allOrders = [ ...data, ...farmerOrders ];
+    const allOrders = [...data, ...farmerOrders];
 
     for (let order of allOrders) {
       if (_orders[order.id]) {
         continue;
       }
-      
+
       _orders[order.id] = order;
     }
   }

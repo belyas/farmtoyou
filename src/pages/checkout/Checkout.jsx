@@ -253,7 +253,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({...paymentData, profile_id }),
+        body: JSON.stringify({ ...paymentData, profile_id }),
       });
 
       // Check the response status of the payment API call
