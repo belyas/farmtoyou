@@ -3,6 +3,27 @@ import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import UpdateAddress from './UpdateAddress';
 
+export default function ShippingInfo({ address }) {
+  const [edit, setEdit] = useState(false);
+  console.log('edit', edit);
+
+  return (
+    <>
+      {edit ? (
+        <UpdateAddress
+          address={address}
+          setEdit={setEdit}
+        />
+      ) : (
+        <Address
+          address={address}
+          setEdit={setEdit}
+        />
+      )}
+    </>
+  );
+}
+
 const Address = ({ address, setEdit }) => {
   return (
     <>
@@ -53,21 +74,3 @@ const Address = ({ address, setEdit }) => {
     </>
   );
 };
-
-export default function ShippingInfo({ address }) {
-  const [edit, setEdit] = useState(false);
-  console.log('edit', edit);
-
-  return (
-    <>
-      {edit ? (
-        <UpdateAddress address={address} />
-      ) : (
-        <Address
-          address={address}
-          setEdit={setEdit}
-        />
-      )}
-    </>
-  );
-}

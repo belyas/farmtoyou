@@ -5,9 +5,9 @@ export default function UpdatePayment({ payment, setEdit }) {
   console.log('payment', payment);
   const formik = useFormik({
     initialValues: {
-      cardHolder: payment?.card_holder,
-      cardNumber: payment?.card_number,
-      expirationDate: payment?.expiration_date,
+      cardHolder: payment?.card_holder || '',
+      cardNumber: payment?.card_number || '',
+      expirationDate: payment?.expiration_date || '',
       cvv: '',
     },
     onSubmit: async values => {

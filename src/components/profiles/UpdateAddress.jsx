@@ -5,7 +5,7 @@ import { getURL } from '@/utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export default function UpdateAddress({ address }) {
+export default function UpdateAddress({ address, setEdit }) {
   // console.log('address', address);
   const router = useRouter();
 
@@ -14,15 +14,15 @@ export default function UpdateAddress({ address }) {
 
   const formik = useFormik({
     initialValues: {
-      firstName: address?.firstname,
-      lastName: address?.lastname,
-      address1: address?.address_1,
-      address2: address?.address_2,
-      city: address?.city,
-      province: address?.province ? address?.province : '',
-      country: address?.country,
-      codePostal: address?.code_postal,
-      phone: address?.phone,
+      firstName: address?.firstname || '',
+      lastName: address?.lastname || '',
+      address1: address?.address_1 || '',
+      address2: address?.address_2 || '',
+      city: address?.city || '',
+      province: address?.province || '',
+      country: address?.country || '',
+      codePostal: address?.code_postal || '',
+      phone: address?.phone || '',
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('First name is required'),
@@ -36,8 +36,8 @@ export default function UpdateAddress({ address }) {
         .required('Phone number is required')
         .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number'),
     }),
-    onSubmit: async (values, { setSubmitting }) => {
-      console.log(1);
+
+    onSubmit: async values => {
       console.log(values);
       const formData = new FormData();
       formData.append('firstName', values.firstName);
@@ -55,23 +55,18 @@ export default function UpdateAddress({ address }) {
           method: 'PUT',
           body: formData,
         });
-
-        if (!res.status === '204') {
-          throw new Error('Failed to submit data');
-        }
-
-        setShowSuccess(true);
-
-        //todo better to just refresh this component than the whole page. Use state to manage profile
-        setTimeout(() => {
-          router.reload();
-        }, 500);
-
-        setEdit(edit => !edit);
       } catch (error) {
-        setShowError(true);
+        throw new Error(error);
       }
-      setSubmitting(false);
+
+      if (!res.status === '204') {
+        throw new Error('Failed to submit data');
+      }
+      if (res.status !== 204) {
+        alert('failed to update');
+      }
+
+      setEdit(edit => !edit);
     },
   });
 
@@ -134,9 +129,9 @@ export default function UpdateAddress({ address }) {
           <label htmlFor="province">Address 2</label>
           <input
             type="text"
-            id="province"
+            id="address2"
             required
-            value={formik.values.province}
+            value={formik.values.address2}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />

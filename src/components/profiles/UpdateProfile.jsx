@@ -17,8 +17,8 @@ export default function UpdateProfile({ profile, shop, setEdit }) {
 
   const userFormik = useFormik({
     initialValues: {
-      firstName: profile.firstname,
-      lastName: profile.lastname,
+      firstName: profile.firstname || '',
+      lastName: profile.lastname || '',
     },
     validationSchema: Yup.object({
       firstName: Yup.string().max(10).typeError('First name must be a string').required(),
@@ -58,11 +58,11 @@ export default function UpdateProfile({ profile, shop, setEdit }) {
 
   const farmerFormik = useFormik({
     initialValues: {
-      firstName: profile.firstname,
-      lastName: profile.lastname,
-      shopName: shop?.shop_name,
-      shopDescription: shop?.shop_description,
-      shopLogo: shop?.shop_logo,
+      firstName: profile.firstname || '',
+      lastName: profile.lastname || '',
+      shopName: shop?.shop_name || '',
+      shopDescription: shop?.shop_description || '',
+      shopLogo: shop?.shop_logo || '',
     },
     validationSchema: Yup.object({
       firstName: Yup.string().max(10).typeError('First name must be a string').required(),
