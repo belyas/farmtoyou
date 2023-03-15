@@ -20,6 +20,8 @@ class Review extends React.Component {
     // Total Amount
     const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
+    console.log(cart.cart);
+
     return (
       <React.Fragment>
         <Typography
@@ -36,7 +38,7 @@ class Review extends React.Component {
             >
               <ListItemText
                 primary={product.title}
-                secondary={product.quantity}
+                secondary={`Quantity: ${product.quantity}`}
               />
               <Typography variant="body2">${product.price * product.quantity}</Typography>
             </ListItem>
@@ -68,9 +70,12 @@ class Review extends React.Component {
               Shipping
             </Typography>
             <Typography gutterBottom>{`${addressData.firstName} ${addressData.lastName}`}</Typography>
-            <Typography
-              gutterBottom
-            >{`${addressData.address1},${addressData.code_postal},  ${addressData.country}`}</Typography>
+            <Typography gutterBottom>{addressData.address1}</Typography>
+            <Typography gutterBottom>{addressData.address2}</Typography>
+            <Typography gutterBottom>{addressData.city}</Typography>
+            <Typography gutterBottom>{addressData.country}</Typography>
+            <Typography gutterBottom>{addressData.code_postal}</Typography>
+            <Typography gutterBottom>{addressData.phone}</Typography>
           </Grid>
           <Grid
             item

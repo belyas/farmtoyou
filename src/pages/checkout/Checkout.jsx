@@ -9,7 +9,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
@@ -18,12 +18,12 @@ import Review from './Review';
 import * as Yup from 'yup';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { CartProvider } from '@/components/cart/cartContext';
 import { CartContext } from '@/components/cart/cartContext';
-import { useContext } from 'react';
+import { useUser } from '@supabase/auth-helpers-react';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -41,7 +41,7 @@ export async function getServerSideProps(ctx) {
   }
 
   try {
-    let { error, data } = await supabase.from('customer').select('id').eq('profile_id', session.user.id);
+    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
 
     if (error) {
       throw typeof error === 'string' ? new Error(error) : error;
@@ -49,7 +49,7 @@ export async function getServerSideProps(ctx) {
 
     return { props: { data, initialSession: session } };
   } catch (error) {
-    return { props: { data: 'Internal Server Error.', error, initialSession: session } };
+    return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
   }
 }
 
@@ -118,6 +118,7 @@ const initialAddressState = {
   province: '',
   code_postal: '',
   country: '',
+  phone: '',
 };
 
 const initialPaymentState = {
@@ -128,14 +129,24 @@ const initialPaymentState = {
 };
 
 export default function Checkout() {
+  const user = useUser();
+  const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressData, setAddressData] = React.useState(initialAddressState);
   const [paymentData, setPaymentData] = React.useState(initialPaymentState);
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorPaymentMessage, setErrorPaymentMessage] = useState(false);
+  const [successPaymentMessage, setSuccessPaymentMessage] = useState(false);
 
   const handleNext = () => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear().toString().substr(-2);
+    const currentMonth = currentDate.getMonth() + 1;
+
     // Address Validation
     const addressValidationSchema = Yup.object().shape({
       firstName: Yup.string().required('First name is required'),
@@ -144,6 +155,10 @@ export default function Checkout() {
       city: Yup.string().required('City is required'),
       country: Yup.string().required('Country is required'),
       code_postal: Yup.string().required('Postal/Zip code is required'),
+      province: Yup.string().required('Province is required'),
+      phone: Yup.string()
+        .required('Phone number is required')
+        .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number'),
     });
 
     // Payment Validation
@@ -155,7 +170,15 @@ export default function Checkout() {
         .matches(/^\d{16}$/, 'Card number must be 16 digits'),
       expireDate: Yup.string()
         .required('Expiration date is required')
-        .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiration date must be in the format MM/YY'),
+        .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, 'Expiration date must be in the format MM/YY')
+        .test('future-date', 'Expiration date must be in the future', function (value) {
+          if (!value) return false;
+          const [month, year] = value.split('/');
+          return (
+            parseInt(year) > parseInt(currentYear) ||
+            (parseInt(year) === parseInt(currentYear) && parseInt(month) >= currentMonth)
+          );
+        }),
       cvv: Yup.string()
         .required('CVV is required')
         .matches(/^\d{3}$/, 'CVV must be 3 digits'),
@@ -164,22 +187,24 @@ export default function Checkout() {
     if (activeStep === 0) {
       addressValidationSchema
         .validate(addressData, { abortEarly: false })
-        .then(() => {
+        .then(success => {
+          setSuccessMessage(success);
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
-          const errorMessage = error.errors.join('\n');
-          alert(errorMessage);
+          const errorrMessage = error.errors.join('\n');
+          setErrorMessage(true);
         });
     } else if (activeStep === 1) {
       paymentSchema
         .validate(paymentData, { abortEarly: false })
         .then(() => {
+          setSuccessPaymentMessage(true);
           setActiveStep(activeStep + 1);
         })
         .catch(error => {
-          const errorMessage = error.errors.join('\n');
-          alert(errorMessage);
+          const errorrMessage = error.errors ? error.errors.join('\n') : 'Unknown error';
+          setErrorPaymentMessage(true);
         });
     }
   };
@@ -188,9 +213,40 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
+  const profile_id = user.id;
+  const products = cart.cart;
+  const orders = {};
+  for (const product of products) {
+    const farmer_id = product.farmer_id;
+    const products = orders[farmer_id] ? orders[farmer_id].products : [];
+    orders[farmer_id] = {
+      products: products,
+      profile_id: profile_id,
+      total_amount: orders[farmer_id]?.total_amount
+        ? orders[farmer_id].total_amount + product.price * product.quantity
+        : product.price * product.quantity,
+    };
+    orders[farmer_id].products.push(product);
+  }
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      console.log(orders);
+      // Submit orders data to orders API
+      const ordersResponse = await fetch(`${getURL()}api/checkout/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orders }),
+      });
+
+      // Check the response status of the orders API call
+      if (!ordersResponse.ok) {
+        throw new Error('Error submitting orders data');
+      }
+
       // Submit payment data to payment API
       const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
         method: 'POST',
@@ -219,6 +275,9 @@ export default function Checkout() {
         throw new Error('Error submitting address data');
       }
 
+      // Remove cart data from local storage
+      localStorage.removeItem('cart');
+
       // Both API calls were successful, update the active step
       setShowSuccess(true);
       setActiveStep(activeStep + 1);
@@ -227,6 +286,7 @@ export default function Checkout() {
       console.error(error);
       // Show error message
       setShowError(true);
+      console.log(orders);
     }
   };
 
@@ -271,6 +331,36 @@ export default function Checkout() {
       >
         <Alert severity="success">Successfully submitted data</Alert>
       </Snackbar>
+
+      <Snackbar
+        open={errorMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (Phone contains 10 to 13 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={errorPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setErrorPaymentMessage(false)}
+      >
+        <Alert severity="error">Add Required Fields* (card:16 digits && ExpDate: MM/YY && Cvv: 3 digits)</Alert>
+      </Snackbar>
+      <Snackbar
+        open={successPaymentMessage}
+        autoHideDuration={3000}
+        onClose={() => setSuccessPaymentMessage(false)}
+      >
+        <Alert severity="success">Next</Alert>
+      </Snackbar>
       <Container
         component="main"
         maxWidth="sm"
@@ -309,6 +399,13 @@ export default function Checkout() {
                 Your order number is #2001539. We have emailed your order confirmation, and will send you an update when
                 your order has shipped.
               </Typography>
+              <Link
+                href="/"
+                style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}
+              >
+                {' '}
+                <Button variant="contained">Continue Shopping </Button>
+              </Link>
             </React.Fragment>
           ) : (
             <React.Fragment>
