@@ -31,22 +31,32 @@ export const getServerSideProps = async ctx => {
 
   //check user type
   const farmerId = await getFarmerId(session.user.id);
+  let farmerOrders = [];
+  let finalOrders = [];
 
   if (farmerId) {
     const { data } = await supabase.from('orders').select('*').eq('farmer_id', farmerId);
-    return {
-      props: {
-        orders: data,
-        initialSession: session,
-      },
-    };
+    farmerOrders = data;
   }
 
   const { data } = await supabase.from('orders').select('*').eq('profile_id', session.user.id);
+  const _orders = {};
+
+  if (data && farmerOrders) {
+    const allOrders = [ ...data, ...farmerOrders ];
+
+    for (let order of allOrders) {
+      if (_orders[order.id]) {
+        continue;
+      }
+      
+      _orders[order.id] = order;
+    }
+  }
 
   return {
     props: {
-      orders: data,
+      orders: Object.values(_orders),
       initialSession: session,
     },
   };

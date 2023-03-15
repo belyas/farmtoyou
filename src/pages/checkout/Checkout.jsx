@@ -253,7 +253,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(paymentData),
+        body: JSON.stringify({...paymentData, profile_id }),
       });
 
       // Check the response status of the payment API call
@@ -267,7 +267,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(addressData),
+        body: JSON.stringify({ ...addressData, profile_id }),
       });
 
       // Check the response status of the address API call
