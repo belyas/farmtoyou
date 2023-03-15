@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
+import { Button } from '@mui/material';
+import UpdateAddress from './UpdateAddress';
 
-export default function ShippingInfo({ address }) {
-  console.log('address', address);
+const Address = ({ address, setEdit }) => {
   return (
-    <React.Fragment>
+    <>
       <Typography
         component="p"
         variant="h4"
@@ -13,29 +13,62 @@ export default function ShippingInfo({ address }) {
         Shipping Address
       </Typography>
       {address ? (
-        <address>
-          <Typography variant="subtitle1">
-            {address.firstname} {address.lastname}
-          </Typography>
-          <Typography variant="body1">
-            {address.address_1} {address.address_2}
-          </Typography>
-          <Typography variant="body1">Postcode: {address.code_postal} </Typography>
-          <Typography variant="body1">
-            {address.city} {address.province} {address.country}
-          </Typography>
-          <Typography variant="body1">Contact Number: {address.phone} </Typography>
-        </address>
+        <>
+          <address>
+            <Typography variant="subtitle1">
+              {address.firstname} {address.lastname}
+            </Typography>
+            <Typography variant="body1">
+              {address.address_1} {address.address_2}
+            </Typography>
+            <Typography variant="body1">Postcode: {address.code_postal} </Typography>
+            <Typography variant="body1">
+              {address.city} {address.province} {address.country}
+            </Typography>
+            <Typography variant="body1">Contact Number: {address.phone} </Typography>
+          </address>
+          <Button
+            variant="contained"
+            onClick={() => setEdit(edit => !edit)}
+          >
+            Edit
+          </Button>
+        </>
       ) : (
-        <Typography
-          color="text.secondary"
-          sx={{ flex: 1 }}
-        >
-          You do not have a shipping address yet.
-        </Typography>
+        <>
+          <Typography
+            color="text.secondary"
+            sx={{ flex: 1 }}
+          >
+            You do not have a shipping address yet.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => setEdit(edit => !edit)}
+          >
+            Add Address
+          </Button>
+        </>
       )}
+    </>
+  );
+};
 
-      <Link href="/profile/edit">Edit</Link>
-    </React.Fragment>
+export default function ShippingInfo({ address }) {
+  const [edit, setEdit] = useState(false);
+  console.log('edit', edit);
+
+  console.log('address', address);
+  return (
+    <>
+      {edit ? (
+        <UpdateAddress />
+      ) : (
+        <Address
+          address={address}
+          setEdit={setEdit}
+        />
+      )}
+    </>
   );
 }
