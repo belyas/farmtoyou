@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export default function UpdateAddress({ address, setEdit }) {
-  // console.log('address', address);
+  console.log('address', address);
   const router = useRouter();
 
   const [showError, setShowError] = useState(false);
@@ -40,6 +40,7 @@ export default function UpdateAddress({ address, setEdit }) {
     onSubmit: async values => {
       console.log(values);
       const formData = new FormData();
+      formData.append('profileId', address.profile_id);
       formData.append('firstName', values.firstName);
       formData.append('lastName', values.lastName);
       formData.append('address1', values.address1);

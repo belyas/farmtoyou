@@ -11,9 +11,8 @@ export default function UpdatePayment({ payment, setEdit }) {
       cvv: '',
     },
     onSubmit: async values => {
-      alert(values);
-      console.log(values);
       const formData = new FormData();
+      formData.append('profileId', payment.profile_id);
       formData.append('cardHolder', values.cardHolder);
       formData.append('cardNumber', values.cardNumber);
       formData.append('expirationDate', values.expirationDate);
