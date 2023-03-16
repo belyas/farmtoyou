@@ -75,6 +75,7 @@ class PaymentForm extends React.Component {
               variant="standard"
               value={paymentData.cardNumber}
               onChange={this.handleChange}
+              inputProps={{ maxLength: 16 }}
             />
           </Grid>
           <Grid
