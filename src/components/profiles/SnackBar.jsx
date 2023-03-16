@@ -1,6 +1,6 @@
 import { Snackbar, Alert } from '@mui/material';
 
-const ProfileSnackBar = ({ showError, showSuccess, setShowError }) => {
+const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess }) => {
   return (
     <>
       <Snackbar

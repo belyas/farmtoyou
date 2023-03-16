@@ -1,30 +1,45 @@
 import { useFormik } from 'formik';
 import { getURL } from '@/utils';
 import ProfileSnackBar from './SnackBar';
+import { useRouter } from 'next/router';
+import valid from 'card-validator';
+import * as Yup from 'yup';
 
 export default function UpdatePayment({ payment, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
-  console.log('payment', payment);
+  // console.log('payment', payment);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       cardHolder: payment?.card_holder || '',
-      cardNumber: payment?.card_number || '',
+      cardNumber: `${'*'.repeat(12)}${payment?.card_number}` || '',
       expirationDate: payment?.expiration_date || '',
       cvv: '',
     },
-    onSubmit: async values => {
-      const formData = new FormData();
-      formData.append('profileId', payment.profile_id);
-      formData.append('cardHolder', values.cardHolder);
-      formData.append('cardNumber', values.cardNumber);
-      formData.append('expirationDate', values.expirationDate);
-      formData.append('cvv', values.cvv);
+    validationSchema: Yup.object().shape({
+      cardHolder: Yup.string()
+        .test('test-card-holder', 'Card holder is invalid', value => valid.cardholderName(value).isValid)
+        .required(),
+      cardNumber: Yup.string().max(16).min(15).required(),
+      expirationDate: Yup.string().required(),
+      cvv: Yup.string().test('test-cvv', 'Card cvv is invalid', value => valid.cvv(value).isValid),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
+      const formData = {};
+
+      formData.profile_id = payment.profile_id;
+      formData.card_holder = values.cardHolder;
+      formData.card_number = values.cardNumber;
+      formData.card_cvv = values.cvv;
+      formData.expiration_date = values.expirationDate;
 
       try {
-        const res = await fetch(`${getURL()}api/profiles/update`, {
+        const res = await fetch(`${getURL()}api/checkout/payment`, {
           method: 'PUT',
-          body: formData,
+          body: JSON.stringify(formData),
+          headers: { 'content-type': 'application/json' },
         });
-        if (res.status === 204) {
+
+        if (res.status === 201) {
           setShowSuccess(true);
           //todo better to just refresh this component than the whole page. Use state to manage profile
           setTimeout(() => {
@@ -69,7 +84,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
           <input
             type="text"
             id="cardNumber"
-            value={`${'*'.repeat(12)}${formik.values.cardNumber}`}
+            value={formik.values.cardNumber}
             onChange={formik.handleChange}
           />
         </label>

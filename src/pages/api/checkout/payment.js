@@ -4,6 +4,10 @@ export default async function payment(req, res) {
   try {
     const paymentData = req.body;
 
+    console.log('request body', req.body, typeof req.body);
+
+    console.log('profile id', req.body.profile_id);
+
     if (!paymentData.profile_id) {
       res.status(400).json({ success: false, error: 'Profile not found' });
       return res;
@@ -34,6 +38,7 @@ export default async function payment(req, res) {
     if (error) {
       throw error;
     }
+
     res.status(201).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

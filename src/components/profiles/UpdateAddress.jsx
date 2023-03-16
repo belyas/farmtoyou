@@ -33,32 +33,34 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number'),
     }),
 
-    onSubmit: async values => {
-      console.log(values);
-      const formData = new FormData();
-      formData.append('profileId', address.profile_id);
-      formData.append('firstName', values.firstName);
-      formData.append('lastName', values.lastName);
-      formData.append('address1', values.address1);
-      formData.append('address2', values.address2);
-      formData.append('city', values.city);
-      formData.append('province', values.province);
-      formData.append('country', values.country);
-      formData.append('codePostal', values.codePostal);
-      formData.append('phone', values.phone);
+    onSubmit: async (values, { setSubmitting }) => {
+      // values.profile_id=address.profile_id
+
+      const formData = {};
+      formData.profile_id = address.profile_id;
+      formData.address_1 = values.address1;
+      formData.address_2 = values.address2;
+      formData.country = values.country;
+      formData.city = values.city;
+      formData.province = values.province;
+      formData.code_postal = values.codePostal;
+      formData.phone = values.phone;
+      formData.firstname = values.firstName;
+      formData.lastname = values.lastName;
 
       try {
-        const res = await fetch(`${getURL()}api/profiles/`, {
+        const res = await fetch(`${getURL()}api/checkout/address`, {
           method: 'PUT',
-          body: formData,
+          body: JSON.stringify(formData),
+          headers: { 'content-type': 'application/json' },
         });
 
-        if (res.status === 204) {
+        if (res.status === 201) {
           setShowSuccess(true);
           //todo better to just refresh this component than the whole page. Use state to manage profile
           setTimeout(() => {
             router.reload();
-          }, 500);
+          }, 1000);
 
           setEdit(edit => !edit);
           setSubmitting(false);

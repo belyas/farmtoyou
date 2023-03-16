@@ -8,6 +8,8 @@ export default async function address(req, res) {
       return res;
     }
 
+    console.log('address', addressDetail);
+
     const { data, error } = await supabase
       .from('addresses')
       .select()
