@@ -4,7 +4,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import { CartProvider } from '@/components/cart/cartContext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Layout from '@/components/layout/layout';
+import Layout from '@/components/layout/Layout';
 
 const theme = createTheme({
   palette: {
