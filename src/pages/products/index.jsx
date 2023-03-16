@@ -16,6 +16,7 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import BreadCrumbs from '@/components/breadCrumbs';
 import isUserFarmer from '@/utils/getFarmerId';
+import EditIcon from '@mui/icons-material/Edit';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -155,7 +156,7 @@ export default function Products({ products = [] }) {
                       <DeleteIcon />
                     </Button>
 
-                    <Button onClick={() => route.push(`/products/edit/?id=${product.id}`)}>Edit</Button>
+                    <Button onClick={() => route.push(`/products/edit/?id=${product.id}`)}><EditIcon /></Button>
                   </Grid>
                 </TableCell>
               </TableRow>
