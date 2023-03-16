@@ -9,6 +9,7 @@ import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { getURL } from '@/utils';
 import styles from '@/styles/edit.module.css';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -47,10 +48,33 @@ export async function getServerSideProps(ctx) {
   }
 }
 
+// const filterOptions = createFilterOptions({
+//   ignoreCase: ,
+//   stringify: option => option.title,
+// });
+
+{
+  /* <Autocomplete filterOptions={filterOptions} />; */
+}
+
 const Edit = ({ data, farmers }) => {
   const router = useRouter();
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
+  const category = [
+    'Bakery',
+    'Meat',
+    'Dairy',
+    'Fruits',
+    'Vegetables',
+    'Flour',
+    'Rice and pasta',
+    'Oil',
+    'Coffee and tea',
+    'Wine and beer',
+    'Salt and spices',
+    'Seeds',
+    'Beans and Legumes',
+  ];
   const daysOfWeekFromBackend = daysOfWeek.map(day => day.toLowerCase());
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
@@ -102,8 +126,10 @@ const Edit = ({ data, farmers }) => {
         .typeError('Quantity must be a number')
         .positive('Quantity must be greater than zero')
         .required('Quantity is required'),
+      photo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
     }),
     onSubmit: async (values, { setSubmitting }) => {
+      alert('submit');
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('price', values.price);
@@ -122,10 +148,13 @@ const Edit = ({ data, farmers }) => {
 
       // Uploading and submitting FIle
       try {
-        const response = await fetch(`${getURL()}api/products`, {
+        const response = await fetch(`${getURL()}api/products/update`, {
           method: 'PUT',
           body: formData,
         });
+
+        console.log('res', response);
+        console.log('res data', response.body);
 
         if (!response.ok) {
           throw new Error('Failed to submit data');
@@ -145,7 +174,7 @@ const Edit = ({ data, farmers }) => {
           formData.append('photo', dataToUpdateProduct.photo, dataToUpdateProduct.photo.name);
 
           try {
-            const response = await fetch(`${getURL()}api/products`, {
+            const response = await fetch(`${getURL()}api/products/update`, {
               method: 'PUT',
               body: formData,
             });
@@ -441,6 +470,7 @@ const Edit = ({ data, farmers }) => {
           )}
 
           <Autocomplete
+            isOptionEqualToValue={(option, value) => option.value === value.value}
             className={styles.autocomplete}
             multiple
             id="category"
