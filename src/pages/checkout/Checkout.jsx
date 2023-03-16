@@ -53,25 +53,7 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-function Copyright() {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-    >
-      {'Copyright © '}
-      <Link
-        color="inherit"
-        href="https://mui.com/"
-      >
-        FarmToYou
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -418,7 +400,6 @@ export default function Checkout() {
             </React.Fragment>
           )}
         </Paper>
-        <Copyright />
       </Container>
     </ThemeProvider>
   );
