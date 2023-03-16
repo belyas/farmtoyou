@@ -132,7 +132,7 @@ const CartOverview = () => {
           )}
           {cart.cart.length > 0 && (
             <Link
-              href="/checkout/Checkout"
+              href="/checkout"
               style={{ textDecoration: 'none' }}
             >
               {' '}

@@ -3,9 +3,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import { CartProvider } from '@/components/cart/cartContext';
-import { Header } from '@/components/layout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Footer } from '@/components/layout';
 import Layout from '@/components/layout/layout';
 
 const theme = createTheme({

@@ -53,26 +53,6 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-function Copyright() {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-    >
-      {'Copyright © '}
-      <Link
-        color="inherit"
-        href="https://mui.com/"
-      >
-        FarmToYou
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
 function GetStepContent(step, { setAddressData, addressData, paymentData, setPaymentData }) {
@@ -214,26 +194,26 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  const profile_id = user.id;
-  const products = cart.cart;
-  const orders = {};
-  for (const product of products) {
-    const farmer_id = product.farmer_id;
-    const products = orders[farmer_id] ? orders[farmer_id].products : [];
-    orders[farmer_id] = {
-      products: products,
-      profile_id: profile_id,
-      total_amount: orders[farmer_id]?.total_amount
-        ? orders[farmer_id].total_amount + product.price * product.quantity
-        : product.price * product.quantity,
-    };
-    orders[farmer_id].products.push(product);
-  }
-
   const handleSubmit = async e => {
     e.preventDefault();
+
+    const profile_id = user.id;
+    const products = cart.cart;
+    const orders = {};
+    for (const product of products) {
+      const farmer_id = product.farmer_id;
+      const products = orders[farmer_id] ? orders[farmer_id].products : [];
+      orders[farmer_id] = {
+        products: products,
+        profile_id: profile_id,
+        total_amount: orders[farmer_id]?.total_amount
+          ? orders[farmer_id].total_amount + product.price * product.quantity
+          : product.price * product.quantity,
+      };
+      orders[farmer_id].products.push(product);
+    }
+
     try {
-      console.log(orders);
       // Submit orders data to orders API
       const ordersResponse = await fetch(`${getURL()}api/checkout/orders`, {
         method: 'POST',
@@ -418,7 +398,6 @@ export default function Checkout() {
             </React.Fragment>
           )}
         </Paper>
-        <Copyright />
       </Container>
     </ThemeProvider>
   );
