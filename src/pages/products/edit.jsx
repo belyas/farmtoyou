@@ -86,7 +86,7 @@ const Edit = ({ data, farmers }) => {
       subscription_frequency: Yup.number()
         .required('Subscription Frequency is required')
         .notOneOf(['Select an option'], 'Please select an option*'),
-   
+
       subscription_end: Yup.date()
         .required('Subscription end date is required*')
         .test('valid-date', 'Please enter a valid date', value => {
@@ -104,22 +104,22 @@ const Edit = ({ data, farmers }) => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
-        formData.append('title', values.title);
-        formData.append('price', values.price);
-        formData.append('description', values.description);
-        formData.append('photo', values.photo);
-        formData.append('oldphoto', values.oldphoto);
-        formData.append('delivery_date', values.delivery_date);
-        formData.append('subscription_end', values.subscription_end);
-        formData.append('subscription_frequency', values.subscription_frequency);
-        formData.append('category', values.category);
-        formData.append('organic', values.organic === 'Yes');
-        formData.append('farmer_id', values.farmer_id);
-        formData.append('quantity', values.quantity);
-        formData.append('delivery_method', values.delivery_method);
-        formData.append('id', values.id);
+      formData.append('title', values.title);
+      formData.append('price', values.price);
+      formData.append('description', values.description);
+      formData.append('photo', values.photo);
+      formData.append('oldphoto', values.oldphoto);
+      formData.append('delivery_date', values.delivery_date);
+      formData.append('subscription_end', values.subscription_end);
+      formData.append('subscription_frequency', values.subscription_frequency);
+      formData.append('category', values.category);
+      formData.append('organic', values.organic === 'Yes');
+      formData.append('farmer_id', values.farmer_id);
+      formData.append('quantity', values.quantity);
+      formData.append('delivery_method', values.delivery_method);
+      formData.append('id', values.id);
 
-       // Uploading and submitting FIle
+      // Uploading and submitting FIle
       try {
         const response = await fetch(`${getURL()}api/products`, {
           method: 'PUT',
@@ -169,7 +169,6 @@ const Edit = ({ data, farmers }) => {
       setSubmitting(false);
     },
   });
- 
 
   // handle End Subscription change
 
@@ -219,252 +218,251 @@ const Edit = ({ data, farmers }) => {
         <Alert severity="success">Successfully submitted data</Alert>
       </Snackbar>
       <Grid>
-      <Grid>
-        <InputLabel
-          htmlFor="title"
-          id="title"
-        >
-          Title:{' '}
-          {formik.touched.title && formik.errors.title ? (
-            <span style={{ color: 'red' }}>{formik.errors.title}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="text"
-          name="title"
-          required
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="description">
-          Description:{' '}
-          {formik.touched.description && formik.errors.description ? (
-            <span style={{ color: 'red' }}>{formik.errors.description} </span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="text"
-          name="description"
-          required
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="price">
-          Price:{' '}
-          {formik.touched.price && formik.errors.price ? (
-            <span style={{ color: 'red' }}>{formik.errors.price} </span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="number"
-          name="price"
-          required
-          value={formik.values.price}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="quantity">
-          Quantity:{' '}
-          {formik.touched.quantity && formik.errors.quantity ? (
-            <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="number"
-          name="quantity"
-          required
-          value={formik.values.quantity}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
-
-      
-      <Grid>
-        <InputLabel htmlFor="subscription_end">
-          Subcription End:
-          {formik.touched.subscription_end && formik.errors.subscription_end ? (
-            <span style={{ color: 'red' }}>{formik.errors.subscription_end}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <TextField
-          type="date"
-          name="subscription_end"
-          required
-          onChange={event => handleSubEndChange(new Date(event.target.value))}
-          value={formik.values.subscription_end}
-          onBlur={formik.handleBlur}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="file">
-          Photo:
-          {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
-        </InputLabel>
-        <TextField
-          type="file"
-          name="photo"
-          onBlur={formik.handleBlur}
-          onChange={handlePhotoChange}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="delivey_date">
-          Delivery Date:
-          {formik.touched.delivery_date && formik.errors.delivery_date ? (
-            <span style={{ color: 'red' }}>{formik.errors.delivery_date}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <Select
-          id="dayOfWeek"
-          name="dayOfWeek"
-          value={formik.values.delivery_date.charAt(0).toUpperCase() + formik.values.delivery_date.slice(1)}
-          onBlur={formik.handleBlur}
-          onChange={event => {
-            formik.setFieldValue('delivery_date', event.target.value);
-          }}
-          label="Select the Day"
-        >
-          <MenuItem value="">
-            <em>Select the day</em>
-          </MenuItem>
-          {daysOfWeek.map(day => (
-            <MenuItem
-              key={day}
-              value={day}
-            >
-              {day}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="subscription_frequency">
-          Subscription Frequency:
-          {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
-            <span style={{ color: 'red' }}>{formik.errors.subscription_frequency}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <Select
-          id="subscription_frequency"
-          name="subscription_frequency"
-          value={formik.values.subscription_frequency}
-          onChange={handleFrequency}
-          onBlur={formik.handleBlur}
-        >
-          <MenuItem value="Select an option">Select an option</MenuItem>
-          <MenuItem value={1}>Once a week</MenuItem>
-        </Select>
-      </Grid>
-      <Grid>
-        <InputLabel htmlFor="delivery_method">
-          Delivery method:
-          {formik.touched.delivery_method && formik.errors.delivery_method ? (
-            <span style={{ color: 'red' }}>{formik.errors.delivery_method}</span>
-          ) : (
-            ''
-          )}
-        </InputLabel>
-        <Select
-          id="delivery_method"
-          name="delivery_method"
-          value={formik.values.delivery_method}
-          onChange={handleDeliveryMethod}
-          onBlur={formik.handleBlur}
-        >
-          <MenuItem value="">
-            <em>Select an option</em>
-          </MenuItem>
-          <MenuItem value={1}>Farmer delivery</MenuItem>
-          <MenuItem value={2}>Pick up place</MenuItem>
-        </Select>
-      </Grid>
-
-      <Grid>
-        {formik.touched.category && formik.errors.category && (
-          <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
-        )}
-
-        <Autocomplete
-          multiple
-          id="category"
-          options={category}
-          sx={{ width: 300, margin: 1 }}
-          value={formik.values.category}
-          onBlur={formik.handleBlur}
-          onChange={(event, value) => {
-            formik.setFieldValue('category', value);
-          }}
-          renderInput={params => (
-            <TextField
-              {...params}
-              label="category"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        />
-      </Grid>
-      <Grid>
-        <InputLabel>Is it organic?</InputLabel>
         <Grid>
-          <InputLabel>
-            <Radio
-              type="radio"
-              name="organic"
-              value="Yes"
-              checked={formik.values.organic === 'Yes'}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            Yes
+          <InputLabel
+            htmlFor="title"
+            id="title"
+          >
+            Title:{' '}
+            {formik.touched.title && formik.errors.title ? (
+              <span style={{ color: 'red' }}>{formik.errors.title}</span>
+            ) : (
+              ''
+            )}
           </InputLabel>
-          <InputLabel>
-            <Radio
-              type="radio"
-              name="organic"
-              value="No"
-              checked={formik.values.organic === 'No'}
-              onChange={formik.handleChange}
-            />
-            No
-          </InputLabel>
+          <TextField
+            type="text"
+            name="title"
+            required
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
         </Grid>
-        {formik.touched.organic && formik.errors.organic ? (
-          <Grid style={{ color: 'red' }}>{formik.errors.organic}</Grid>
-        ) : null}
-      </Grid>
-      <Grid>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
-          Submit
-        </Button>
-      </Grid>
+        <Grid>
+          <InputLabel htmlFor="description">
+            Description:{' '}
+            {formik.touched.description && formik.errors.description ? (
+              <span style={{ color: 'red' }}>{formik.errors.description} </span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <TextField
+            type="text"
+            name="description"
+            required
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="price">
+            Price:{' '}
+            {formik.touched.price && formik.errors.price ? (
+              <span style={{ color: 'red' }}>{formik.errors.price} </span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <TextField
+            type="number"
+            name="price"
+            required
+            value={formik.values.price}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="quantity">
+            Quantity:{' '}
+            {formik.touched.quantity && formik.errors.quantity ? (
+              <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <TextField
+            type="number"
+            name="quantity"
+            required
+            value={formik.values.quantity}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </Grid>
+
+        <Grid>
+          <InputLabel htmlFor="subscription_end">
+            Subcription End:
+            {formik.touched.subscription_end && formik.errors.subscription_end ? (
+              <span style={{ color: 'red' }}>{formik.errors.subscription_end}</span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <TextField
+            type="date"
+            name="subscription_end"
+            required
+            onChange={event => handleSubEndChange(new Date(event.target.value))}
+            value={formik.values.subscription_end}
+            onBlur={formik.handleBlur}
+          />
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="file">
+            Photo:
+            {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
+          </InputLabel>
+          <TextField
+            type="file"
+            name="photo"
+            onBlur={formik.handleBlur}
+            onChange={handlePhotoChange}
+          />
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="delivey_date">
+            Delivery Date:
+            {formik.touched.delivery_date && formik.errors.delivery_date ? (
+              <span style={{ color: 'red' }}>{formik.errors.delivery_date}</span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <Select
+            id="dayOfWeek"
+            name="dayOfWeek"
+            value={formik.values.delivery_date.charAt(0).toUpperCase() + formik.values.delivery_date.slice(1)}
+            onBlur={formik.handleBlur}
+            onChange={event => {
+              formik.setFieldValue('delivery_date', event.target.value);
+            }}
+            label="Select the Day"
+          >
+            <MenuItem value="">
+              <em>Select the day</em>
+            </MenuItem>
+            {daysOfWeek.map(day => (
+              <MenuItem
+                key={day}
+                value={day}
+              >
+                {day}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="subscription_frequency">
+            Subscription Frequency:
+            {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
+              <span style={{ color: 'red' }}>{formik.errors.subscription_frequency}</span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <Select
+            id="subscription_frequency"
+            name="subscription_frequency"
+            value={formik.values.subscription_frequency}
+            onChange={handleFrequency}
+            onBlur={formik.handleBlur}
+          >
+            <MenuItem value="Select an option">Select an option</MenuItem>
+            <MenuItem value={1}>Once a week</MenuItem>
+          </Select>
+        </Grid>
+        <Grid>
+          <InputLabel htmlFor="delivery_method">
+            Delivery method:
+            {formik.touched.delivery_method && formik.errors.delivery_method ? (
+              <span style={{ color: 'red' }}>{formik.errors.delivery_method}</span>
+            ) : (
+              ''
+            )}
+          </InputLabel>
+          <Select
+            id="delivery_method"
+            name="delivery_method"
+            value={formik.values.delivery_method}
+            onChange={handleDeliveryMethod}
+            onBlur={formik.handleBlur}
+          >
+            <MenuItem value="">
+              <em>Select an option</em>
+            </MenuItem>
+            <MenuItem value={1}>Farmer delivery</MenuItem>
+            <MenuItem value={2}>Pick up place</MenuItem>
+          </Select>
+        </Grid>
+
+        <Grid>
+          {formik.touched.category && formik.errors.category && (
+            <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
+          )}
+
+          <Autocomplete
+            multiple
+            id="category"
+            options={category}
+            sx={{ width: 300, margin: 1 }}
+            value={formik.values.category}
+            onBlur={formik.handleBlur}
+            onChange={(event, value) => {
+              formik.setFieldValue('category', value);
+            }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="category"
+                variant="outlined"
+                fullWidth
+              />
+            )}
+          />
+        </Grid>
+        <Grid>
+          <InputLabel>Is it organic?</InputLabel>
+          <Grid>
+            <InputLabel>
+              <Radio
+                type="radio"
+                name="organic"
+                value="Yes"
+                checked={formik.values.organic === 'Yes'}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              Yes
+            </InputLabel>
+            <InputLabel>
+              <Radio
+                type="radio"
+                name="organic"
+                value="No"
+                checked={formik.values.organic === 'No'}
+                onChange={formik.handleChange}
+              />
+              No
+            </InputLabel>
+          </Grid>
+          {formik.touched.organic && formik.errors.organic ? (
+            <Grid style={{ color: 'red' }}>{formik.errors.organic}</Grid>
+          ) : null}
+        </Grid>
+        <Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Submit
+          </Button>
+        </Grid>
       </Grid>
     </form>
   );
