@@ -179,6 +179,7 @@ class AddressForm extends React.Component {
               variant="standard"
               value={addressData.phone}
               onChange={this.handleChange}
+              inputProps={{ maxLength: 13 }}
             />
           </Grid>
         </Grid>
