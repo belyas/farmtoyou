@@ -243,7 +243,7 @@ const Edit = ({ data, farmers }) => {
           />
         </Grid>
         <Grid>
-          <InputLabel 
+          <InputLabel
             htmlFor="description"
             className={styles.label}
           >
@@ -265,9 +265,9 @@ const Edit = ({ data, farmers }) => {
           />
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="price"
-          className={styles.label}
+          <InputLabel
+            htmlFor="price"
+            className={styles.label}
           >
             Price:{' '}
             {formik.touched.price && formik.errors.price ? (
@@ -287,9 +287,9 @@ const Edit = ({ data, farmers }) => {
           />
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="quantity"
-          className={styles.label}
+          <InputLabel
+            htmlFor="quantity"
+            className={styles.label}
           >
             Quantity:{' '}
             {formik.touched.quantity && formik.errors.quantity ? (
@@ -311,8 +311,8 @@ const Edit = ({ data, farmers }) => {
 
         <Grid>
           <InputLabel
-          htmlFor="subscription_end"
-          className={styles.label}
+            htmlFor="subscription_end"
+            className={styles.label}
           >
             Subcription End:
             {formik.touched.subscription_end && formik.errors.subscription_end ? (
@@ -332,9 +332,9 @@ const Edit = ({ data, farmers }) => {
           />
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="file"
-          className={styles.label}
+          <InputLabel
+            htmlFor="file"
+            className={styles.label}
           >
             Photo:
             {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
@@ -348,9 +348,9 @@ const Edit = ({ data, farmers }) => {
           />
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="delivey_date"
-          className={styles.label}
+          <InputLabel
+            htmlFor="delivey_date"
+            className={styles.label}
           >
             Delivery Date:
             {formik.touched.delivery_date && formik.errors.delivery_date ? (
@@ -384,9 +384,9 @@ const Edit = ({ data, farmers }) => {
           </Select>
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="subscription_frequency"
-          className={styles.label}
+          <InputLabel
+            htmlFor="subscription_frequency"
+            className={styles.label}
           >
             Subscription Frequency:
             {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
@@ -408,9 +408,9 @@ const Edit = ({ data, farmers }) => {
           </Select>
         </Grid>
         <Grid>
-          <InputLabel 
-          htmlFor="delivery_method"
-          className={styles.label}
+          <InputLabel
+            htmlFor="delivery_method"
+            className={styles.label}
           >
             Delivery method:
             {formik.touched.delivery_method && formik.errors.delivery_method ? (
@@ -436,14 +436,14 @@ const Edit = ({ data, farmers }) => {
         </Grid>
 
         <Grid>
-        <InputLabel className={styles.label}>Select a catagory:</InputLabel>
-        
+          <InputLabel className={styles.label}>Select a catagory:</InputLabel>
+
           {formik.touched.category && formik.errors.category && (
             <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
           )}
 
           <Autocomplete
-          className={styles.autocomplete}
+            className={styles.autocomplete}
             multiple
             id="category"
             options={category}
@@ -460,14 +460,12 @@ const Edit = ({ data, farmers }) => {
                 variant="outlined"
                 fullWidth
                 sx={{ backgroundColor: 'var(--custom-bg-color)' }}
-
               />
             )}
           />
         </Grid>
         <Grid>
-          <InputLabel className={styles.label}
-          >Is it organic?</InputLabel>
+          <InputLabel className={styles.label}>Is it organic?</InputLabel>
           <Grid className={styles.radioButton}>
             <InputLabel className={styles.label}>
               <Radio
