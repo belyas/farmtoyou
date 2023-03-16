@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import React from 'react';
 import isUserFarmer from '@/utils/getFarmerId';
