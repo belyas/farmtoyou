@@ -8,20 +8,14 @@ import { Box } from '@mui/system';
 
 class Review extends React.Component {
   render() {
-    const { paymentData, cart, addressData } = this.props;
-
-    //Payment Data
-    const payment = [paymentData];
+    const { paymentData = { cardNumber: 'xxxx' }, cart = {}, addressData = {} } = this.props;
     const formattedPayments = [
-      { name: 'Card holder', detail: payment[0].cardName },
-      { name: 'Card number', detail: `xxxx-xxxx-xxxx-${payment[0].cardNumber.slice(-4)}` },
-      { name: 'Expiry date', detail: payment[0].expireDate },
+      { name: 'Card holder', detail: paymentData?.cardName },
+      { name: 'Card number', detail: `xxxx-xxxx-xxxx-${paymentData.cardNumber.slice(-4)}` },
+      { name: 'Expiry date', detail: paymentData?.expireDate },
     ];
-
     // Total Amount
-    const total = cart.cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
-
-    console.log(cart.cart);
+    const total = cart?.cart?.reduce((acc, product) => acc + product.price * product.quantity, 0);
 
     return (
       <React.Fragment>
@@ -44,18 +38,19 @@ class Review extends React.Component {
             Order summary
           </Typography>
           <List disablePadding>
-            {cart.cart.map(product => (
-              <ListItem
-                key={product.id}
-                sx={{ py: 1, px: 0 }}
-              >
-                <ListItemText
-                  primary={product.title}
-                  secondary={`Quantity: ${product.quantity}`}
-                />
-                <Typography variant="body2">${product.price * product.quantity}</Typography>
-              </ListItem>
-            ))}
+            {cart?.cart &&
+              cart.cart.map(product => (
+                <ListItem
+                  key={product.id}
+                  sx={{ py: 1, px: 0 }}
+                >
+                  <ListItemText
+                    primary={product.title}
+                    secondary={`Quantity: ${product.quantity}`}
+                  />
+                  <Typography variant="body2">${product.price * product.quantity}</Typography>
+                </ListItem>
+              ))}
             <ListItem sx={{ py: 1, px: 0, borderBottom: '1px solid #bdbdbd' }}>
               <ListItemText primary="Total" />
               <Typography

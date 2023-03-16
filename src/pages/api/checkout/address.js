@@ -8,8 +8,6 @@ export default async function address(req, res) {
       return res;
     }
 
-    console.log('address', addressDetail);
-
     const { data, error } = await supabase
       .from('addresses')
       .select()
@@ -37,13 +35,11 @@ export default async function address(req, res) {
       },
       { onConflict: 'id', returning: 'minimal' },
     );
-    if (error) {
-      console.log(error);
-    } else {
+
+    if (!error) {
       res.status(201).json({ success: true, data });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 }

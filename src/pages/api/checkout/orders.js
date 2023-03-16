@@ -32,10 +32,11 @@ export default async function orders(req, res) {
         )
         .select()
         .maybeSingle();
+
       if (error) {
         throw error;
       }
-      console.log(data);
+
       await createOrderDetails(products, data.id);
       res.status(200).json(data);
     }

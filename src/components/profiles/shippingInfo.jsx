@@ -5,7 +5,6 @@ import UpdateAddress from './UpdateAddress';
 
 export default function ShippingInfo({ address, showError, setShowError, showSuccess, setShowSuccess }) {
   const [edit, setEdit] = useState(false);
-  console.log('edit', edit);
 
   return (
     <>

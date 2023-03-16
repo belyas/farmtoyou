@@ -35,7 +35,6 @@ export default function Account({ session }) {
       }
     } catch (error) {
       alert('Error loading user data!');
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,6 @@ export default function Account({ session }) {
       alert('Profile updated!');
     } catch (error) {
       alert('Error updating the data!');
-      console.log(error);
     } finally {
       setLoading(false);
     }

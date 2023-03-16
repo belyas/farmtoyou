@@ -79,9 +79,7 @@ export default function Products({ products = [] }) {
       }
 
       route.push('/products');
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (_) {}
   };
 
   return (

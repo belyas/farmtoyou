@@ -25,9 +25,6 @@ const theme = createTheme();
 
 const CartOverview = () => {
   const { cart } = useContext(CartContext);
-
-  console.log(cart.cart);
-
   const totalPrice = cart.cart.reduce((accumulator, cart) => accumulator + cart.price * cart.quantity, 0);
 
   return (

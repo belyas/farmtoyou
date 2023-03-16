@@ -1,9 +1,7 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -21,7 +19,6 @@ import { Alert } from '@mui/material';
 import { useState, useContext } from 'react';
 import { getURL } from '@/utils';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { CartProvider } from '@/components/cart/cartContext';
 import { CartContext } from '@/components/cart/cartContext';
 import { useUser } from '@supabase/auth-helpers-react';
 
@@ -55,8 +52,7 @@ export async function getServerSideProps(ctx) {
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
-function GetStepContent(step, { setAddressData, addressData, paymentData, setPaymentData }) {
-  const { cart } = useContext(CartContext);
+function GetStepContent(step, cart, { setAddressData, addressData, paymentData, setPaymentData }) {
   switch (step) {
     case 0:
       return (
@@ -74,13 +70,11 @@ function GetStepContent(step, { setAddressData, addressData, paymentData, setPay
       );
     case 2:
       return (
-        <CartProvider>
-          <Review
-            paymentData={paymentData}
-            cart={cart}
-            addressData={addressData}
-          />{' '}
-        </CartProvider>
+        <Review
+          paymentData={paymentData}
+          cart={cart}
+          addressData={addressData}
+        />
       );
     default:
       throw new Error('Unknown step');
@@ -265,11 +259,8 @@ export default function Checkout() {
       setShowSuccess(true);
       setActiveStep(activeStep + 1);
     } catch (error) {
-      // Handle any errors that occur during the fetch requests
-      console.error(error);
       // Show error message
       setShowError(true);
-      console.log(orders);
     }
   };
 
@@ -376,7 +367,7 @@ export default function Checkout() {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {GetStepContent(activeStep, { setAddressData, addressData, paymentData, setPaymentData })}
+              {GetStepContent(activeStep, cart, { setAddressData, addressData, paymentData, setPaymentData })}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
                   <Button

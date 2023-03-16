@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 export default function SearchInput() {
   const router = useRouter();
   const [input, setInput] = useState('');
-  console.log(input);
+
   const handleKeyDown = event => {
     if (event.key == 'Enter') {
       setInput(state => '');

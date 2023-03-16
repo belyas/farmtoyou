@@ -17,7 +17,6 @@ import BreadCrumbs from '@/components/breadCrumbs';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
-
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -33,16 +32,10 @@ export const getServerSideProps = async ctx => {
 
   // Check user type, and then decide which table to query
   const farmerId = await isUserFarmer(session.user.id);
-
   let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
-  // console.log(paymentResult.data);
-
   let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
-  // console.log('addressdata', addressResult.data);
-
   let profileResult = await supabase.from('profiles_extension').select('*').eq('id', session.user.id).single();
   const profile = profileResult.data;
-  // console.log('profile', profile);
 
   //if farmerId is undefinied, return without shop data
   if (!farmerId) {
@@ -62,8 +55,6 @@ export const getServerSideProps = async ctx => {
     .select('*')
     .eq('profile_id', session.user.id)
     .single();
-
-  // console.log('shop', shopResult.data);
 
   return {
     props: {
@@ -110,18 +101,13 @@ function a11yProps(index) {
 }
 
 export default function ProfileHome({ profile, payment, address, shop }) {
-  // console.log('shop', shop);
   const [value, setValue] = React.useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   //error handling
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
-  console.log('show error', showError);
 
   return (
     <>
