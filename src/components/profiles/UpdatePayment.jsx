@@ -124,10 +124,11 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
               ''
             )}
             <input
-              type="date"
+              type="text"
               id="expirationDate"
               value={formik.values.expirationDate}
               onChange={formik.handleChange}
+              placeholder="MON/YEAR e.g.,'01/2025'"
             />
           </Grid>
           <Grid
@@ -138,10 +139,11 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
             <label>CVV </label>
             {formik.touched.cvv && formik.errors.cvv ? <span style={{ color: 'red' }}>{formik.errors.cvv} </span> : ''}
             <input
-              type="number"
+              type="text"
               value={formik.values.cvv}
               id="cvv"
               onChange={formik.handleChange}
+              placeholder="Check the back of your card, 3 digits number"
             />
           </Grid>
           <Grid
