@@ -8,6 +8,11 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
         md={6}
       >
         <label htmlFor="shopName">Shop Name</label>
+        {formik.touched.shopName && formik.errors.shopName ? (
+          <span style={{ color: 'red' }}>{formik.errors.shopName} </span>
+        ) : (
+          ''
+        )}
         <input
           id="shopName"
           type="text"
@@ -29,6 +34,11 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
         md={12}
       >
         <label htmlFor="shopDescription">Shop Description</label>
+        {formik.touched.shopDescription && formik.errors.shopDescription ? (
+          <span style={{ color: 'red' }}>{formik.errors.shopDescription} </span>
+        ) : (
+          ''
+        )}
         <input
           id="shopDescription"
           type="text"
