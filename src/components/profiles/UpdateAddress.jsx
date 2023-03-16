@@ -93,6 +93,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           xs={12}
         >
           <label htmlFor="firstName">First Name</label>
+          {formik.touched.firstName && formik.errors.firstName ? (
+            <span style={{ color: 'red' }}>{formik.errors.firstName} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="firstName"
@@ -107,6 +112,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="lastName">Last Name</label>
+          {formik.touched.lastName && formik.errors.lastName ? (
+            <span style={{ color: 'red' }}>{formik.errors.lastName} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="lastName"
@@ -121,6 +131,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="address1">Address 1</label>
+          {formik.touched.address1 && formik.errors.address1 ? (
+            <span style={{ color: 'red' }}>{formik.errors.address1} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="address1"
@@ -136,6 +151,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="province">Address 2</label>
+          {formik.touched.address2 && formik.errors.address2 ? (
+            <span style={{ color: 'red' }}>{formik.errors.address2} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="address2"
@@ -150,6 +170,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="city">City</label>
+          {formik.touched.city && formik.errors.city ? <span style={{ color: 'red' }}>{formik.errors.city} </span> : ''}
           <input
             type="text"
             id="city"
@@ -164,6 +185,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="province">Province</label>
+          {formik.touched.province && formik.errors.province ? (
+            <span style={{ color: 'red' }}>{formik.errors.province} </span>
+          ) : (
+            ''
+          )}
           <input
             type="selects"
             id="province"
@@ -178,6 +204,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="country">Country</label>
+          {formik.touched.country && formik.errors.country ? (
+            <span style={{ color: 'red' }}>{formik.errors.country} </span>
+          ) : (
+            ''
+          )}
           <input
             type="select"
             id="country"
@@ -192,6 +223,11 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="codePostal">Post Code</label>
+          {formik.touched.codePostal && formik.errors.codePostal ? (
+            <span style={{ color: 'red' }}>{formik.errors.codePostal} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="codePostal"
@@ -206,6 +242,12 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
           md={6}
         >
           <label htmlFor="phone">Phone</label>
+
+          {formik.touched.phone && formik.errors.phone ? (
+            <span style={{ color: 'red' }}>{formik.errors.phone} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="phone"

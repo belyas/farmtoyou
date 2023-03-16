@@ -10,14 +10,14 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      cardHolder: payment?.card_holder || '',
+      expirationDate: payment?.card_holder || '',
       cardNumber: `${'*'.repeat(12)}${payment?.card_number}` || '',
       expirationDate: payment?.expiration_date || '',
       cvv: '',
     },
     validationSchema: Yup.object().shape({
-      cardHolder: Yup.string()
-        .test('test-card-holder', 'Card holder is invalid', value => valid.cardholderName(value).isValid)
+      expirationDate: Yup.string()
+        .test('test-card-holder', 'Card holder is invalid', value => valid.expirationDateName(value).isValid)
         .required(),
       cardNumber: Yup.string().max(16).min(15).required(),
       expirationDate: Yup.string().required(),
@@ -27,7 +27,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
       const formData = {};
 
       formData.profile_id = payment.profile_id;
-      formData.card_holder = values.cardHolder;
+      formData.card_holder = values.expirationDate;
       formData.card_number = values.cardNumber;
       formData.card_cvv = values.cvv;
       formData.expiration_date = values.expirationDate;
@@ -72,6 +72,11 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
         />
         <label>
           Card Holder
+          {formik.touched.cardHolder && formik.errors.cardHolder ? (
+            <span style={{ color: 'red' }}>{formik.errors.cardHolder} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="cardHolder"
@@ -81,6 +86,11 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
         </label>
         <label>
           Card Number
+          {formik.touched.cardNumber && formik.errors.cardNumber ? (
+            <span style={{ color: 'red' }}>{formik.errors.cardNumber} </span>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             id="cardNumber"
@@ -90,6 +100,11 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
         </label>
         <label>
           Expiration Date
+          {formik.touched.expirationDate && formik.errors.expirationDate ? (
+            <span style={{ color: 'red' }}>{formik.errors.expirationDate} </span>
+          ) : (
+            ''
+          )}
           <input
             type="date"
             id="expirationDate"
@@ -99,6 +114,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
         </label>
         <label>
           CVV
+          {formik.touched.cvv && formik.errors.cvv ? <span style={{ color: 'red' }}>{formik.errors.cvv} </span> : ''}
           <input
             type="number"
             value={formik.values.cvv}
