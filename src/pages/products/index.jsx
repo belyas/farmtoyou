@@ -15,6 +15,7 @@ import { Typography } from '@mui/material';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import BreadCrumbs from '@/components/breadCrumbs';
+import isUserFarmer from '@/utils/getFarmerId';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -26,6 +27,18 @@ export async function getServerSideProps(ctx) {
     return {
       redirect: {
         destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const farmerId = await isUserFarmer(session.user.id);
+
+  //if user is not a farmer, redirect to home
+  if (!farmerId) {
+    return {
+      redirect: {
+        destination: '/',
         permanent: false,
       },
     };
