@@ -34,6 +34,7 @@ const Address = ({ address, setEdit }) => {
       <Typography
         component="p"
         variant="h4"
+        sx={{ my: 2 }}
       >
         Shipping Address
       </Typography>
@@ -52,7 +53,9 @@ const Address = ({ address, setEdit }) => {
             </Typography>
             <Typography variant="body1">Contact Number: {address.phone} </Typography>
           </address>
+
           <Button
+            sx={{ mt: 2 }}
             variant="contained"
             onClick={() => setEdit(edit => !edit)}
           >
@@ -68,6 +71,7 @@ const Address = ({ address, setEdit }) => {
             You do not have a shipping address yet.
           </Typography>
           <Button
+            sx={{ mt: 2 }}
             variant="contained"
             onClick={() => setEdit(edit => !edit)}
           >
