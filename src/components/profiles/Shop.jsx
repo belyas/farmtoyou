@@ -32,7 +32,7 @@ export default function ShopInfo({ shop }) {
           <CardMedia
             component="img"
             sx={{ width: 151 }}
-            image={`/images/${shop.shop_logo}`}
+            image={`/uploads/profiles/${shop.shop_logo}`}
             alt="shop logo"
           />
         ) : (

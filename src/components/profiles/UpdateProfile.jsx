@@ -40,7 +40,10 @@ export default function UpdateProfile({
         const res = await fetch(`${getURL()}api/profiles/update`, {
           method: 'PUT',
           body: formData,
+          header: { 'content-type': 'multipart/form-data' },
         });
+
+        console.log('res', res);
 
         if (!res.status === '204') {
           throw new Error('Failed to submit data');
@@ -74,7 +77,7 @@ export default function UpdateProfile({
       lastName: Yup.string().max(10).typeError('Last name must be a string').required(),
       shopName: Yup.string().max(20).typeError('Shop name must be a string').required(),
       shopDescription: Yup.string().max(100).required(),
-      shopLogo: Yup.mixed().required(),
+      shopLogo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       // console.log('firstname', values.firstName);
@@ -91,7 +94,10 @@ export default function UpdateProfile({
         const res = await fetch(`${getURL()}api/profiles/update`, {
           method: 'PUT',
           body: formData,
+          header: { 'content-type': 'multipart/form-data' },
         });
+
+        console.log('res', res);
 
         if (res.status === 204) {
           setShowSuccess(true);
@@ -113,7 +119,7 @@ export default function UpdateProfile({
 
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-    // console.log('file', file);
+
     if (file) {
       farmerFormik.setFieldValue('shopLogo', file);
     }

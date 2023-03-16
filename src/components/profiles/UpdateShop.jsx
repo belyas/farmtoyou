@@ -23,6 +23,11 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
         />
       </Grid>
       <label htmlFor="shopLogo">Shop Logo</label>
+      {formik.touched.shopLogo && formik.errors.shopLogo ? (
+        <span style={{ color: 'red' }}>{formik.errors.shopLogo} </span>
+      ) : (
+        ''
+      )}
       <input
         type="file"
         name="shopLogo"

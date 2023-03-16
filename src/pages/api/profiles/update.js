@@ -3,7 +3,8 @@ import path from 'path';
 import fs from 'fs';
 import { supabase } from '@/utils';
 
-const uploadDir = path.join(process.cwd(), 'public/uploads/products');
+const uploadDir = path.join(process.cwd(), 'public/uploads/profiles');
+
 const removeUploadedPhoto = photoFile => {
   fs.unlinkSync(`${uploadDir}/${photoFile}`);
 };
@@ -41,12 +42,14 @@ export default async function update(req, res) {
 
     console.log('files', files);
 
-    console.log('fields', fields);
+    // console.log('fields', fields);
 
     const newUserProfile = {
       firstname: fields.firstName.trim(),
       lastname: fields.lastName.trim(),
     };
+
+    //if user is farmer, update shop
     if (fields.farmerId) {
       const newFarmerProfile = {
         shop_name: fields.shopName.trim(),
@@ -57,6 +60,7 @@ export default async function update(req, res) {
       if (files && files['shopLogo']?.newFilename) {
         newFarmerProfile.shop_logo = files['shopLogo']?.newFilename;
       }
+
       const { error } = await supabase.from('farmers').update(newFarmerProfile).eq('id', fields.farmerId);
       if (error) {
         return res.status(500).json({ data: 'Internal server rrror' });
@@ -75,6 +79,7 @@ export default async function update(req, res) {
     return res.status(204).end();
   });
 }
+
 export const config = {
   api: {
     bodyParser: false,
