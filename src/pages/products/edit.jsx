@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { getURL } from '@/utils';
+import styles from '@/styles/edit.module.css';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -201,7 +202,7 @@ const Edit = ({ data, farmers }) => {
       onSubmit={formik.handleSubmit}
       encType="multipart/form-data"
       noValidate
-      display={'flex'}
+      className={styles.formGrid}
     >
       <Snackbar
         open={showError}
@@ -222,6 +223,7 @@ const Edit = ({ data, farmers }) => {
           <InputLabel
             htmlFor="title"
             id="title"
+            className={styles.label}
           >
             Title:{' '}
             {formik.touched.title && formik.errors.title ? (
@@ -230,17 +232,21 @@ const Edit = ({ data, farmers }) => {
               ''
             )}
           </InputLabel>
-          <TextField
+          <input
             type="text"
             name="title"
             required
             value={formik.values.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className={styles.input}
           />
         </Grid>
         <Grid>
-          <InputLabel htmlFor="description">
+          <InputLabel 
+            htmlFor="description"
+            className={styles.label}
+          >
             Description:{' '}
             {formik.touched.description && formik.errors.description ? (
               <span style={{ color: 'red' }}>{formik.errors.description} </span>
@@ -248,17 +254,21 @@ const Edit = ({ data, farmers }) => {
               ''
             )}
           </InputLabel>
-          <TextField
+          <input
             type="text"
             name="description"
             required
             value={formik.values.description}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className={styles.input}
           />
         </Grid>
         <Grid>
-          <InputLabel htmlFor="price">
+          <InputLabel 
+          htmlFor="price"
+          className={styles.label}
+          >
             Price:{' '}
             {formik.touched.price && formik.errors.price ? (
               <span style={{ color: 'red' }}>{formik.errors.price} </span>
@@ -266,17 +276,21 @@ const Edit = ({ data, farmers }) => {
               ''
             )}
           </InputLabel>
-          <TextField
+          <input
             type="number"
             name="price"
             required
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className={styles.input}
           />
         </Grid>
         <Grid>
-          <InputLabel htmlFor="quantity">
+          <InputLabel 
+          htmlFor="quantity"
+          className={styles.label}
+          >
             Quantity:{' '}
             {formik.touched.quantity && formik.errors.quantity ? (
               <span style={{ color: 'red' }}>{formik.errors.quantity} </span>
@@ -284,18 +298,22 @@ const Edit = ({ data, farmers }) => {
               ''
             )}
           </InputLabel>
-          <TextField
+          <input
             type="number"
             name="quantity"
             required
             value={formik.values.quantity}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className={styles.input}
           />
         </Grid>
 
         <Grid>
-          <InputLabel htmlFor="subscription_end">
+          <InputLabel
+          htmlFor="subscription_end"
+          className={styles.label}
+          >
             Subcription End:
             {formik.touched.subscription_end && formik.errors.subscription_end ? (
               <span style={{ color: 'red' }}>{formik.errors.subscription_end}</span>
@@ -303,29 +321,37 @@ const Edit = ({ data, farmers }) => {
               ''
             )}
           </InputLabel>
-          <TextField
+          <input
             type="date"
             name="subscription_end"
             required
             onChange={event => handleSubEndChange(new Date(event.target.value))}
             value={formik.values.subscription_end}
             onBlur={formik.handleBlur}
+            className={styles.input}
           />
         </Grid>
         <Grid>
-          <InputLabel htmlFor="file">
+          <InputLabel 
+          htmlFor="file"
+          className={styles.label}
+          >
             Photo:
             {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
           </InputLabel>
-          <TextField
+          <input
             type="file"
             name="photo"
             onBlur={formik.handleBlur}
             onChange={handlePhotoChange}
+            className={styles.input}
           />
         </Grid>
         <Grid>
-          <InputLabel htmlFor="delivey_date">
+          <InputLabel 
+          htmlFor="delivey_date"
+          className={styles.label}
+          >
             Delivery Date:
             {formik.touched.delivery_date && formik.errors.delivery_date ? (
               <span style={{ color: 'red' }}>{formik.errors.delivery_date}</span>
@@ -341,6 +367,7 @@ const Edit = ({ data, farmers }) => {
             onChange={event => {
               formik.setFieldValue('delivery_date', event.target.value);
             }}
+            className={styles.selectTag}
             label="Select the Day"
           >
             <MenuItem value="">
@@ -357,7 +384,10 @@ const Edit = ({ data, farmers }) => {
           </Select>
         </Grid>
         <Grid>
-          <InputLabel htmlFor="subscription_frequency">
+          <InputLabel 
+          htmlFor="subscription_frequency"
+          className={styles.label}
+          >
             Subscription Frequency:
             {formik.touched.subscription_frequency && formik.errors.subscription_frequency ? (
               <span style={{ color: 'red' }}>{formik.errors.subscription_frequency}</span>
@@ -371,13 +401,17 @@ const Edit = ({ data, farmers }) => {
             value={formik.values.subscription_frequency}
             onChange={handleFrequency}
             onBlur={formik.handleBlur}
+            className={styles.selectTag}
           >
             <MenuItem value="Select an option">Select an option</MenuItem>
             <MenuItem value={1}>Once a week</MenuItem>
           </Select>
         </Grid>
         <Grid>
-          <InputLabel htmlFor="delivery_method">
+          <InputLabel 
+          htmlFor="delivery_method"
+          className={styles.label}
+          >
             Delivery method:
             {formik.touched.delivery_method && formik.errors.delivery_method ? (
               <span style={{ color: 'red' }}>{formik.errors.delivery_method}</span>
@@ -391,6 +425,7 @@ const Edit = ({ data, farmers }) => {
             value={formik.values.delivery_method}
             onChange={handleDeliveryMethod}
             onBlur={formik.handleBlur}
+            className={styles.selectTag}
           >
             <MenuItem value="">
               <em>Select an option</em>
@@ -401,11 +436,14 @@ const Edit = ({ data, farmers }) => {
         </Grid>
 
         <Grid>
+        <InputLabel className={styles.label}>Select a catagory:</InputLabel>
+        
           {formik.touched.category && formik.errors.category && (
             <Grid style={{ color: 'red' }}>{formik.errors.category}</Grid>
           )}
 
           <Autocomplete
+          className={styles.autocomplete}
             multiple
             id="category"
             options={category}
@@ -421,14 +459,17 @@ const Edit = ({ data, farmers }) => {
                 label="category"
                 variant="outlined"
                 fullWidth
+                sx={{ backgroundColor: 'var(--custom-bg-color)' }}
+
               />
             )}
           />
         </Grid>
         <Grid>
-          <InputLabel>Is it organic?</InputLabel>
-          <Grid>
-            <InputLabel>
+          <InputLabel className={styles.label}
+          >Is it organic?</InputLabel>
+          <Grid className={styles.radioButton}>
+            <InputLabel className={styles.label}>
               <Radio
                 type="radio"
                 name="organic"
@@ -436,16 +477,18 @@ const Edit = ({ data, farmers }) => {
                 checked={formik.values.organic === 'Yes'}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                style={{ width: 'auto' }}
               />
               Yes
             </InputLabel>
-            <InputLabel>
+            <InputLabel className={styles.label}>
               <Radio
                 type="radio"
                 name="organic"
                 value="No"
                 checked={formik.values.organic === 'No'}
                 onChange={formik.handleChange}
+                style={{ width: 'auto' }}
               />
               No
             </InputLabel>
@@ -454,10 +497,9 @@ const Edit = ({ data, farmers }) => {
             <Grid style={{ color: 'red' }}>{formik.errors.organic}</Grid>
           ) : null}
         </Grid>
-        <Grid>
+        <Grid className={styles.submit}>
           <Button
-            variant="contained"
-            color="primary"
+            style={{ background: '#206530', color: '#ffff' }}
             type="submit"
           >
             Submit
