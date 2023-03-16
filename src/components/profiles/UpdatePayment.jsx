@@ -4,6 +4,8 @@ import ProfileSnackBar from './SnackBar';
 import { useRouter } from 'next/router';
 import valid from 'card-validator';
 import * as Yup from 'yup';
+import { Button } from '@mui/material';
+import { Grid } from '@mui/material';
 
 export default function UpdatePayment({ payment, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
   // console.log('payment', payment);
@@ -11,7 +13,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
   const formik = useFormik({
     initialValues: {
       expirationDate: payment?.card_holder || '',
-      cardNumber: `${'*'.repeat(12)}${payment?.card_number}` || '',
+      cardNumber: payment ? `${'*'.repeat(12)}${payment?.card_number}` : '',
       expirationDate: payment?.expiration_date || '',
       cvv: '',
     },
@@ -70,59 +72,92 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
           showSuccess={showSuccess}
           setShowSuccess={setShowSuccess}
         />
-        <label>
-          Card Holder
-          {formik.touched.cardHolder && formik.errors.cardHolder ? (
-            <span style={{ color: 'red' }}>{formik.errors.cardHolder} </span>
-          ) : (
-            ''
-          )}
-          <input
-            type="text"
-            id="cardHolder"
-            value={formik.values.cardHolder}
-            onChange={formik.handleChange}
-          />
-        </label>
-        <label>
-          Card Number
-          {formik.touched.cardNumber && formik.errors.cardNumber ? (
-            <span style={{ color: 'red' }}>{formik.errors.cardNumber} </span>
-          ) : (
-            ''
-          )}
-          <input
-            type="text"
-            id="cardNumber"
-            value={formik.values.cardNumber}
-            onChange={formik.handleChange}
-          />
-        </label>
-        <label>
-          Expiration Date
-          {formik.touched.expirationDate && formik.errors.expirationDate ? (
-            <span style={{ color: 'red' }}>{formik.errors.expirationDate} </span>
-          ) : (
-            ''
-          )}
-          <input
-            type="date"
-            id="expirationDate"
-            value={formik.values.expirationDate}
-            onChange={formik.handleChange}
-          />
-        </label>
-        <label>
-          CVV
-          {formik.touched.cvv && formik.errors.cvv ? <span style={{ color: 'red' }}>{formik.errors.cvv} </span> : ''}
-          <input
-            type="number"
-            value={formik.values.cvv}
-            id="cvv"
-            onChange={formik.handleChange}
-          />
-        </label>
-        <button type="submit">Save</button>
+        <Grid
+          container
+          spacing={2}
+        >
+          <Grid
+            item
+            md={6}
+            xs={12}
+          >
+            <label>Card Holder</label>
+            {formik.touched.cardHolder && formik.errors.cardHolder ? (
+              <span style={{ color: 'red' }}>{formik.errors.cardHolder} </span>
+            ) : (
+              ''
+            )}
+            <input
+              type="text"
+              id="cardHolder"
+              value={formik.values.cardHolder}
+              onChange={formik.handleChange}
+            />
+          </Grid>
+          <Grid
+            item
+            md={6}
+            xs={12}
+          >
+            <label>Card Number </label>
+            {formik.touched.cardNumber && formik.errors.cardNumber ? (
+              <span style={{ color: 'red' }}>{formik.errors.cardNumber} </span>
+            ) : (
+              ''
+            )}
+            <input
+              type="text"
+              id="cardNumber"
+              value={formik.values.cardNumber}
+              onChange={formik.handleChange}
+            />
+          </Grid>
+          <Grid
+            item
+            md={6}
+            xs={12}
+          >
+            <label>Expiration Date </label>
+            {formik.touched.expirationDate && formik.errors.expirationDate ? (
+              <span style={{ color: 'red' }}>{formik.errors.expirationDate} </span>
+            ) : (
+              ''
+            )}
+            <input
+              type="text"
+              id="expirationDate"
+              value={formik.values.expirationDate}
+              onChange={formik.handleChange}
+              placeholder="MON/YEAR e.g.,'01/2025'"
+            />
+          </Grid>
+          <Grid
+            item
+            md={6}
+            xs={12}
+          >
+            <label>CVV </label>
+            {formik.touched.cvv && formik.errors.cvv ? <span style={{ color: 'red' }}>{formik.errors.cvv} </span> : ''}
+            <input
+              type="text"
+              value={formik.values.cvv}
+              id="cvv"
+              onChange={formik.handleChange}
+              placeholder="Check the back of your card, 3 digits number"
+            />
+          </Grid>
+          <Grid
+            item
+            md={12}
+          >
+            <Button
+              type="submit"
+              variant="contained"
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </>
   );

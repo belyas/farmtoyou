@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { getURL } from '@/utils';
 import { useRouter } from 'next/router';
 import ProfileSnackBar from './SnackBar';
+import Button from '@mui/material/Button';
 
 export default function UpdateAddress({ address, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
   const router = useRouter();
@@ -86,10 +87,13 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         showSuccess={showSuccess}
         setShowSuccess={setShowSuccess}
       />
-      <Grid container>
+      <Grid
+        container
+        spacing={2}
+      >
         <Grid
           item
-          md={4}
+          md={6}
           xs={12}
         >
           <label htmlFor="firstName">First Name</label>
@@ -110,6 +114,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="lastName">Last Name</label>
           {formik.touched.lastName && formik.errors.lastName ? (
@@ -129,6 +134,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="address1">Address 1</label>
           {formik.touched.address1 && formik.errors.address1 ? (
@@ -149,6 +155,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="province">Address 2</label>
           {formik.touched.address2 && formik.errors.address2 ? (
@@ -168,6 +175,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="city">City</label>
           {formik.touched.city && formik.errors.city ? <span style={{ color: 'red' }}>{formik.errors.city} </span> : ''}
@@ -183,6 +191,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="province">Province</label>
           {formik.touched.province && formik.errors.province ? (
@@ -191,7 +200,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
             ''
           )}
           <input
-            type="selects"
+            type="text"
             id="province"
             required
             value={formik.values.province}
@@ -202,6 +211,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="country">Country</label>
           {formik.touched.country && formik.errors.country ? (
@@ -210,7 +220,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
             ''
           )}
           <input
-            type="select"
+            type="text"
             id="country"
             required
             value={formik.values.country}
@@ -221,6 +231,7 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="codePostal">Post Code</label>
           {formik.touched.codePostal && formik.errors.codePostal ? (
@@ -240,9 +251,9 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
         <Grid
           item
           md={6}
+          xs={12}
         >
           <label htmlFor="phone">Phone</label>
-
           {formik.touched.phone && formik.errors.phone ? (
             <span style={{ color: 'red' }}>{formik.errors.phone} </span>
           ) : (
@@ -257,8 +268,18 @@ export default function UpdateAddress({ address, setEdit, showError, setShowErro
             onBlur={formik.handleBlur}
           />
         </Grid>
+        <Grid
+          item
+          md={12}
+        >
+          <Button
+            type="submit"
+            variant="contained"
+          >
+            Save
+          </Button>
+        </Grid>
       </Grid>
-      <button type="submit">Save</button>
     </form>
   );
 }

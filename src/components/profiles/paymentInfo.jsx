@@ -29,29 +29,39 @@ export default function Payment({ payment, showError, setShowError, showSuccess,
           {payment ? (
             <>
               <Typography
-                color="text.secondary"
-                sx={{ flex: 1 }}
+                color="body1"
+                sx={{ my: 2 }}
               >
                 Card holder: {payment.card_holder.toUpperCase()}
               </Typography>
               <Typography variant="body1">{'*'.repeat(12) + payment.card_number}</Typography>
               <Typography variant="body1">Expiration Date: {payment.expiration_date} </Typography>
               <Typography variant="body1">CVV: ***</Typography>
+              <Button
+                variant="contained"
+                onClick={() => setEdit(edit => !edit)}
+                sx={{ mt: 2 }}
+              >
+                Edit
+              </Button>
             </>
           ) : (
-            <Typography
-              color="text.secondary"
-              sx={{ flex: 1 }}
-            >
-              You have not set up your payment yet.
-            </Typography>
+            <>
+              <Typography
+                color="text.secondary"
+                sx={{ flex: 1 }}
+              >
+                You have not set up your payment yet.
+              </Typography>
+              <Button
+                sx={{ mt: 2 }}
+                variant="contained"
+                onClick={() => setEdit(edit => !edit)}
+              >
+                Add Payment
+              </Button>
+            </>
           )}
-          <Button
-            variant="contained"
-            onClick={() => setEdit(edit => !edit)}
-          >
-            Edit
-          </Button>
         </>
       )}
     </React.Fragment>
