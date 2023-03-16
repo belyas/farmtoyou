@@ -41,14 +41,13 @@ export default function Account({ session }) {
     }
   }
 
-  async function updateProfile({ username, website, avatar_url }) {
+  async function updateProfile({ username, avatar_url }) {
     try {
       setLoading(true);
 
       const updates = {
         id: user.id,
         username,
-        website,
         avatar_url,
         updated_at: new Date().toISOString(),
       };
@@ -87,19 +86,19 @@ export default function Account({ session }) {
         />
       </div>
       <div>
-        <label htmlFor="website">Website</label>
+        <label htmlFor="username">Avatar</label>
         <input
-          id="website"
-          type="website"
-          value={website || ''}
-          onChange={e => setWebsite(e.target.value)}
+          id="username"
+          type="file"
+          value={username || ''}
+          onChange={e => setUsername(e.target.value)}
         />
       </div>
 
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ username, website, avatar_url })}
+          onClick={() => updateProfile({ username, avatar_url })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
