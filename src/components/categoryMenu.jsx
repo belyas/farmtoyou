@@ -46,7 +46,7 @@ export default function CategoryMenu() {
           },
         }}
       >
-        <CategoryList />
+        <CategoryList setAnchorEl={setAnchorEl} />
       </Menu>
     </>
   );

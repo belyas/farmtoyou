@@ -26,7 +26,7 @@ const categories = [
   'Beans and Legumes',
 ];
 
-function CategoryListParts({ c }) {
+function CategoryListParts({ c, setAnchorEl }) {
   return (
     <Box sx={{ width: '100%', maxWidth: 540, bgcolor: 'background.paper' }}>
       <Grid
@@ -40,6 +40,7 @@ function CategoryListParts({ c }) {
                 href={`/categories/${category.toLowerCase()}`}
                 key={index}
                 className="nextjs-link"
+                onClick={() => setAnchorEl(_anchor => null)}
               >
                 <ListItem
                   disablePadding
@@ -71,7 +72,7 @@ const Item = styled(Paper)(({ theme }) => ({
   overflowY: 'hidden',
 }));
 
-export default function CategoryList() {
+export default function CategoryList({ setAnchorEl }) {
   return (
     <Box sx={{ flexGrow: 1, overflowX: 'auto', overflowY: 'hidden' }}>
       <Grid
@@ -80,17 +81,26 @@ export default function CategoryList() {
       >
         <Grid xs={4}>
           <Item sx={{ boxShadow: '0 0 0 0 ' }}>
-            <CategoryListParts c={categories.slice(0, 4)} />
+            <CategoryListParts
+              c={categories.slice(0, 4)}
+              setAnchorEl={setAnchorEl}
+            />
           </Item>
         </Grid>
         <Grid xs={4}>
           <Item sx={{ boxShadow: '0 0 0 0 ' }}>
-            <CategoryListParts c={categories.slice(4, 8)} />
+            <CategoryListParts
+              c={categories.slice(4, 8)}
+              setAnchorEl={setAnchorEl}
+            />
           </Item>
         </Grid>
         <Grid xs={4}>
           <Item sx={{ boxShadow: '0 0 0 0 ' }}>
-            <CategoryListParts c={categories.slice(8)} />
+            <CategoryListParts
+              c={categories.slice(8)}
+              setAnchorEl={setAnchorEl}
+            />
           </Item>
         </Grid>
       </Grid>
