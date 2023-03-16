@@ -278,6 +278,8 @@ export default function Checkout() {
 
       // Remove cart data from local storage
       localStorage.removeItem('cart');
+      //Remove Cart from cart
+      cart.clear();
 
       // Both API calls were successful, update the active step
       setShowSuccess(true);
