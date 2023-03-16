@@ -8,8 +8,8 @@ export default function BreadCrumbs({ child, grandChild }) {
     <>
       <Breadcrumbs aria-label="breadcrumb">
         <Link href="/">Home</Link>
-        <Link href={`/${child}`}>{child}</Link>
-        <Typography color="text.primary">{grandChild}</Typography>
+        <Link href={`/${child.toLowerCase()}`}>{child}</Link>
+        {grandChild ? <Typography color="text.primary">{grandChild}</Typography> : null}
       </Breadcrumbs>
     </>
   );

@@ -55,7 +55,7 @@ const CategoryPage = ({ category, productsData }) => {
         style={{ padding: '50px 0 100px 0' }}
       >
         <BreadCrumbs
-          child={'Categries'}
+          child={'Category'}
           grandChild={category}
         />
         <HomeProducts productsData={productsData} />

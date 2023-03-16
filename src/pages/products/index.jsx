@@ -206,6 +206,8 @@ import { getURL } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { Typography } from '@mui/material';
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import BreadCrumbs from '@/components/breadCrumbs';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -263,6 +265,9 @@ export default function Products({ products = [] }) {
 
   return (
     <>
+      <Box sx={{ pb: 3 }}>
+        <BreadCrumbs child={'Products'} />
+      </Box>
       <Button
         variant="contained"
         sx={{ mt: 3, mb: 2, mr: 1 }}

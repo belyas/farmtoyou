@@ -18,6 +18,9 @@ import { CartContext } from '@/components/cart/cartContext';
 import { useContext } from 'react';
 import { CardMedia } from '@mui/material';
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import BreadCrumbs from '@/components/breadCrumbs';
+
 const theme = createTheme();
 
 const CartOverview = () => {
@@ -30,6 +33,9 @@ const CartOverview = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Box sx={{ pb: 3 }}>
+        <BreadCrumbs child={'Cart'} />
+      </Box>
       <AppBar
         position="absolute"
         color="default"
