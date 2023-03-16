@@ -11,6 +11,7 @@ import { getURL } from '@/utils';
 import styles from '@/styles/add.module.css';
 import Box from '@mui/material/Box';
 import BreadCrumbs from '@/components/breadCrumbs';
+import isUserFarmer from '@/utils/getFarmerId';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -26,7 +27,17 @@ export async function getServerSideProps(ctx) {
       },
     };
   }
+  const farmerId = await isUserFarmer(session.user.id);
 
+  //if user is not a farmer, redirect to home
+  if (!farmerId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   try {
     let { error, data } = await supabase.from('farmers').select('id').eq('profile_id', session.user.id);
 
