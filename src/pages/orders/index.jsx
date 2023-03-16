@@ -12,6 +12,7 @@ import { Typography } from '@mui/material';
 import getFarmerId from '@/utils/getFarmerId';
 import Box from '@mui/material';
 import Container from '@mui/material/Container';
+import BreadCrumbs from '@/components/breadCrumbs';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -66,6 +67,7 @@ const Orders = ({ orders }) => {
   return (
     <>
       <Container maxWidth="md">
+        <BreadCrumbs child={'Orders'} />
         {orders.length ? (
           <TableContainer component={Paper}>
             <Table

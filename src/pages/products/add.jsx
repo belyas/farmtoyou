@@ -9,6 +9,8 @@ import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { getURL } from '@/utils';
 import styles from '@/styles/add.module.css';
+import Box from '@mui/material/Box';
+import BreadCrumbs from '@/components/breadCrumbs';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -175,6 +177,12 @@ const Add = ({ data, error }) => {
 
   return (
     <div>
+      <Box sx={{ pb: 3 }}>
+        <BreadCrumbs
+          child={'Products'}
+          grandChild={'Add'}
+        />
+      </Box>
       <form
         action="/api/products/add"
         method="post"

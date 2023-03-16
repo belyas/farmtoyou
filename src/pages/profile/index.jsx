@@ -13,6 +13,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
 import { useState } from 'react';
+import BreadCrumbs from '@/components/breadCrumbs';
 
 export const getServerSideProps = async ctx => {
   const supabase = createServerSupabaseClient(ctx);
@@ -124,6 +125,9 @@ export default function ProfileHome({ profile, payment, address, shop }) {
 
   return (
     <>
+      <Box sx={{ pb: 3 }}>
+        <BreadCrumbs child={'Profile'} />
+      </Box>
       <Box sx={{ width: '100%' }}>
         <Grid sx={{ pb: 2 }}>
           <Title title={`Welcome Back ${profile.firstname} !`} />

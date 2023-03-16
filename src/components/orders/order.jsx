@@ -7,6 +7,7 @@ import OrderProducts from './orderProducts';
 import Typography from '@mui/material/Typography';
 import ShippingAddress from './shippingAddress';
 import PaymentMethod from './paymentMethod';
+import BreadCrumbs from '../breadCrumbs';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -19,6 +20,12 @@ const Item = styled(Paper)(({ theme }) => ({
 const Order = ({ order }) => {
   return (
     <>
+      <Box sx={{ pb: 3 }}>
+        <BreadCrumbs
+          child={'Orders'}
+          grandChild={'Details'}
+        />
+      </Box>
       {order.length ? (
         <Box sx={{ flexGrow: 1, p: 0 }}>
           <Grid
