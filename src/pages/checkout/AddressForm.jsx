@@ -12,7 +12,7 @@ class AddressForm extends React.Component {
   };
 
   render() {
-    const { setAddressData, addressData } = this.props;
+    const { addressData = {} } = this.props;
     return (
       <React.Fragment>
         <Typography

@@ -151,9 +151,7 @@ const Edit = ({ data, farmers }) => {
             });
             const data = await response.json();
             return data;
-          } catch (error) {
-            console.error(error);
-          }
+          } catch (_) {}
         };
 
         // show success message

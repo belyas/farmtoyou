@@ -10,7 +10,6 @@ import UpdateProfile from './UpdateProfile';
 export default function BasicProfile({ profile, shop, showError, setShowError, showSuccess, setShowSuccess }) {
   const [edit, setEdit] = useState(false);
 
-  console.log('edit', edit);
   const handleClick = () => {
     setEdit(edit => !edit);
   };

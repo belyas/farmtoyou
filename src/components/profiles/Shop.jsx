@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 
 export default function ShopInfo({ shop }) {
-  console.log('shop', shop);
   const theme = useTheme();
 
   return (

@@ -15,9 +15,6 @@ export default function UpdateProfile({
   showSuccess,
   setShowSuccess,
 }) {
-  // console.log('profile', profile);
-  console.log('shop', shop);
-
   const router = useRouter();
 
   const userFormik = useFormik({
@@ -30,7 +27,6 @@ export default function UpdateProfile({
       lastName: Yup.string().max(10).typeError('Last name must be a string').required(),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      // console.log('firstname', values.firstName);
       const formData = new FormData();
       formData.append('firstName', values.firstName);
       formData.append('lastName', values.lastName);
@@ -42,8 +38,6 @@ export default function UpdateProfile({
           body: formData,
           header: { 'content-type': 'multipart/form-data' },
         });
-
-        console.log('res', res);
 
         if (!res.status === '204') {
           throw new Error('Failed to submit data');
@@ -80,7 +74,6 @@ export default function UpdateProfile({
       shopLogo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      // console.log('firstname', values.firstName);
       const formData = new FormData();
       formData.append('firstName', values.firstName);
       formData.append('lastName', values.lastName);
@@ -96,8 +89,6 @@ export default function UpdateProfile({
           body: formData,
           header: { 'content-type': 'multipart/form-data' },
         });
-
-        console.log('res', res);
 
         if (res.status === 204) {
           setShowSuccess(true);

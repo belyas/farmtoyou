@@ -15,10 +15,8 @@ export async function getServerSideProps(ctx) {
 
   try {
     const { data, error } = await supabase.from('products').select('*').contains('category', [category]);
-    console.log('category data', data);
     productsData = data;
   } catch (error) {
-    console.log('category error', error);
     error = error;
   }
 

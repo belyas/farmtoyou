@@ -14,7 +14,7 @@ class PaymentForm extends React.Component {
   };
 
   render() {
-    const { paymentData } = this.props;
+    const { paymentData = {} } = this.props;
 
     return (
       <React.Fragment>
@@ -33,10 +33,10 @@ class PaymentForm extends React.Component {
           Payment method
         </Typography>
         <Cards
-          number={paymentData.cardNumber}
-          expiry={paymentData.expireDate}
-          cvc={paymentData.cvv}
-          name={paymentData.cardName}
+          number={paymentData?.cardNumber ?? ''}
+          expiry={paymentData?.expireDate ?? ''}
+          cvc={paymentData?.cvv ?? '***'}
+          name={paymentData?.cardName ?? ''}
         />
         <Grid
           container

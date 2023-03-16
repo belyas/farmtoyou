@@ -8,7 +8,6 @@ import { Button } from '@mui/material';
 import { Grid } from '@mui/material';
 
 export default function UpdatePayment({ payment, setEdit, showError, setShowError, showSuccess, setShowSuccess }) {
-  // console.log('payment', payment);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {

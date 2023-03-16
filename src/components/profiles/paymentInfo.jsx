@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import UpdatePayment from './UpdatePayment';
 
 export default function Payment({ payment, showError, setShowError, showSuccess, setShowSuccess }) {
-  // console.log('payment', payment);
   const [edit, setEdit] = React.useState(false);
 
   return (

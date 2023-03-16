@@ -25,9 +25,6 @@ const theme = createTheme();
 
 const CartOverview = () => {
   const { cart } = useContext(CartContext);
-
-  console.log(cart.cart);
-
   const totalPrice = cart.cart.reduce((accumulator, cart) => accumulator + cart.price * cart.quantity, 0);
 
   return (
@@ -132,7 +129,7 @@ const CartOverview = () => {
           )}
           {cart.cart.length > 0 && (
             <Link
-              href="/checkout/Checkout"
+              href="/checkout"
               style={{ textDecoration: 'none' }}
             >
               {' '}

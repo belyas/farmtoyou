@@ -1,9 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
-
-const isBrowser = typeof window != undefined;
-
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 

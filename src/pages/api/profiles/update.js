@@ -40,10 +40,6 @@ export default async function update(req, res) {
       });
     }
 
-    console.log('files', files);
-
-    // console.log('fields', fields);
-
     const newUserProfile = {
       firstname: fields.firstName.trim(),
       lastname: fields.lastName.trim(),
@@ -65,10 +61,7 @@ export default async function update(req, res) {
       if (error) {
         return res.status(500).json({ data: 'Internal server rrror' });
       }
-      console.log('new farmer profile', newFarmerProfile);
     }
-
-    console.log('new user profile', newUserProfile);
 
     const { error } = await supabase.from('profiles').update(newUserProfile).eq('id', fields.profileId);
 
