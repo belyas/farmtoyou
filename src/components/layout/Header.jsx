@@ -149,7 +149,7 @@ export const Header = () => {
             <SearchInput />
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: { md: 'flex' }, alignItems: 'center' }}>
             <ShoppingCart />
             {session ? (
               <>
