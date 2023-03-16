@@ -53,8 +53,6 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-
-
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
 function GetStepContent(step, { setAddressData, addressData, paymentData, setPaymentData }) {
