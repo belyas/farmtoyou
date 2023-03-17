@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 import ProfileSnackBar from './SnackBar';
+import Button from '@mui/material/Button';
 
 const UpdateUserProfile = ({ formik, showError, showSuccess, setShowError, setShowSuccess }) => {
   return (
@@ -16,17 +17,24 @@ const UpdateUserProfile = ({ formik, showError, showSuccess, setShowError, setSh
         showSuccess={showSuccess}
         setShowSuccess={setShowSuccess}
       />
-      <Grid container>
+      <Grid
+        container
+        spacing={3}
+      >
         <Grid
           item
           md={6}
+          xs={12}
         >
-          <label htmlFor="firstName">First Name</label>
-          {formik.touched.firstName && formik.errors.firstName ? (
-            <span style={{ color: 'red' }}>{formik.errors.firstName} </span>
-          ) : (
-            ''
-          )}
+          <label htmlFor="firstName">
+            First Name{' '}
+            {formik.touched.firstName && formik.errors.firstName ? (
+              <span style={{ color: 'red' }}>{formik.errors.firstName} </span>
+            ) : (
+              ''
+            )}
+          </label>
+
           <input
             type="text"
             id="firstName"
@@ -39,13 +47,17 @@ const UpdateUserProfile = ({ formik, showError, showSuccess, setShowError, setSh
         <Grid
           item
           md={6}
+          xs={12}
         >
-          <label htmlFor="lastName">Last Name</label>
-          {formik.touched.lastName && formik.errors.lastName ? (
-            <span style={{ color: 'red' }}>{formik.errors.lastName} </span>
-          ) : (
-            ''
-          )}
+          <label htmlFor="lastName">
+            Last Name{' '}
+            {formik.touched.lastName && formik.errors.lastName ? (
+              <span style={{ color: 'red' }}>{formik.errors.lastName} </span>
+            ) : (
+              ''
+            )}
+          </label>
+
           <input
             type="text"
             id="lastName"
@@ -55,8 +67,17 @@ const UpdateUserProfile = ({ formik, showError, showSuccess, setShowError, setSh
             onBlur={formik.handleBlur}
           />
         </Grid>
-
-        <button type="submit">Save</button>
+        <Grid
+          item
+          md={12}
+        >
+          <Button
+            type="submit"
+            variant="contained"
+          >
+            Save
+          </Button>
+        </Grid>
       </Grid>
     </form>
   );

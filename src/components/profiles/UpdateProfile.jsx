@@ -39,22 +39,20 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (!res.status === '204') {
-          throw new Error('Failed to submit data');
+        if (res.ok) {
+          setShowSuccess(true);
+
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+
+          setSubmitting(false);
+        } else {
+          setShowError(true);
         }
-
-        setShowSuccess(true);
-
-        //todo better to just refresh this component than the whole page. Use state to manage profile
-        setTimeout(() => {
-          router.reload();
-        }, 500);
-
-        setEdit(edit => !edit);
       } catch (error) {
         setShowError(true);
       }
-      setSubmitting(false);
     },
   });
 
@@ -64,14 +62,13 @@ export default function UpdateProfile({
       lastName: profile.lastname || '',
       shopName: shop?.shop_name || '',
       shopDescription: shop?.shop_description || '',
-      shopLogo: shop?.shop_logo || '',
+      shopLogo: null,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().max(10).typeError('First name must be a string').required(),
       lastName: Yup.string().max(10).typeError('Last name must be a string').required(),
       shopName: Yup.string().max(20).typeError('Shop name must be a string').required(),
       shopDescription: Yup.string().max(100).required(),
-      shopLogo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
@@ -82,6 +79,7 @@ export default function UpdateProfile({
       formData.append('shopDescription', values.shopDescription);
       formData.append('profileId', profile.id);
       formData.append('farmerId', shop.id);
+      formData.append('oldShopLogo', shop.shop_logo);
 
       try {
         const res = await fetch(`${getURL()}api/profiles/update`, {
@@ -90,14 +88,12 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (res.status === 204) {
+        if (res.ok) {
           setShowSuccess(true);
-          //todo better to just refresh this component than the whole page. Use state to manage profile
           setTimeout(() => {
             router.reload();
           }, 1000);
 
-          setEdit(edit => !edit);
           setSubmitting(false);
         } else {
           setShowError(true);
@@ -111,7 +107,10 @@ export default function UpdateProfile({
   const handlePhotoChange = event => {
     const file = event.target.files[0];
 
-    if (file) {
+    if (file.size > 1048576) {
+      alert('Image too big!');
+      farmerFormik.setFieldValue('shopLogo', null);
+    } else {
       farmerFormik.setFieldValue('shopLogo', file);
     }
   };

@@ -7,12 +7,15 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
         item
         md={6}
       >
-        <label htmlFor="shopName">Shop Name</label>
-        {formik.touched.shopName && formik.errors.shopName ? (
-          <span style={{ color: 'red' }}>{formik.errors.shopName} </span>
-        ) : (
-          ''
-        )}
+        <label htmlFor="shopName">
+          Shop Name{' '}
+          {formik.touched.shopName && formik.errors.shopName ? (
+            <span style={{ color: 'red' }}>{formik.errors.shopName} </span>
+          ) : (
+            ''
+          )}
+        </label>
+
         <input
           id="shopName"
           type="text"
@@ -22,12 +25,15 @@ const UpdateShopForm = ({ formik, handlePhotoChange }) => {
           onBlur={formik.handleBlur}
         />
       </Grid>
-      <label htmlFor="shopLogo">Shop Logo</label>
-      {formik.touched.shopLogo && formik.errors.shopLogo ? (
-        <span style={{ color: 'red' }}>{formik.errors.shopLogo} </span>
-      ) : (
-        ''
-      )}
+      <label htmlFor="shopLogo">
+        Shop Logo{' '}
+        {formik.touched.shopLogo && formik.errors.shopLogo ? (
+          <span style={{ color: 'red' }}>{formik.errors.shopLogo} </span>
+        ) : (
+          ''
+        )}
+      </label>
+
       <input
         type="file"
         name="shopLogo"

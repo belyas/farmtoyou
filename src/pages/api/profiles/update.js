@@ -9,6 +9,11 @@ const removeUploadedPhoto = photoFile => {
   fs.unlinkSync(`${uploadDir}/${photoFile}`);
 };
 
+const hasPhoto = photoName => {
+  const find = fs.existsSync(`${uploadDir}/${photoName}`);
+  return find;
+};
+
 export default async function update(req, res) {
   if (req.method !== 'PUT') {
     return res.status(400).json({ data: 'Request method must be put.' });
@@ -31,7 +36,7 @@ export default async function update(req, res) {
     },
   });
 
-  form.parse(req, async (err, fields, files) => {
+  form.parse(req, async (err, _fields, files) => {
     if (err) {
       return res.status(400).json({
         status: 'fail',
@@ -40,36 +45,49 @@ export default async function update(req, res) {
       });
     }
 
+    const newShopLogo = files['shopLogo']?.newFilename;
+
+    const isEmptyBody = Object.keys(_fields).length === 0 ? true : false;
+
+    if (isEmptyBody) {
+      console.log(1);
+      newShopLogo && removeUploadedPhoto(newShopLogo);
+      return res.status(400).json({ data: 'Request body must not be empty' });
+    }
+
+    const { oldShopLogo, shopLogo, ...fields } = _fields;
+
     const newUserProfile = {
       firstname: fields.firstName.trim(),
       lastname: fields.lastName.trim(),
     };
 
-    //if user is farmer, update shop
-    if (fields.farmerId) {
-      const newFarmerProfile = {
-        shop_name: fields.shopName.trim(),
-        shop_description: fields.shopDescription.trim(),
-      };
+    //update user profile
+    const { error } = await supabase.from('profiles').update(newUserProfile).eq('id', fields.profileId);
+    if (error) {
+      return res.status(500).json({ data: 'Internal server rrror', error });
+    }
 
-      // if user upload a new photo, add it to the query
-      if (files && files['shopLogo']?.newFilename) {
-        newFarmerProfile.shop_logo = files['shopLogo']?.newFilename;
-      }
+    //if user is farmer, also update shop
+    if (fields.farmerId) {
+      const newFarmerProfile = newShopLogo ? { shop_logo: newShopLogo } : {};
+
+      newFarmerProfile.shop_name = fields.shopName.trim();
+      newFarmerProfile.shop_description = fields.shopDescription.trim();
 
       const { error } = await supabase.from('farmers').update(newFarmerProfile).eq('id', fields.farmerId);
+
       if (error) {
-        return res.status(500).json({ data: 'Internal server rrror' });
+        newShopLogo && removeUploadedPhoto(newShopLogo);
+        return res.status(500).json({ data: 'Internal server rrror', error });
+      }
+
+      if (oldShopLogo && hasPhoto(oldShopLogo)) {
+        removeUploadedPhoto(oldShopLogo);
       }
     }
 
-    const { error } = await supabase.from('profiles').update(newUserProfile).eq('id', fields.profileId);
-
-    if (error) {
-      return res.status(500).json({ data: 'Internal server rrror' });
-    }
-
-    return res.status(204).end();
+    return res.status(201).json({ data: 'Product updated!' });
   });
 }
 
