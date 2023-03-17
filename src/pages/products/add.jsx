@@ -104,7 +104,7 @@ const Add = ({ data, error }) => {
         }),
       photo: Yup.mixed().required('Photo is required*'),
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required*'),
-      category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
+      category: Yup.array().min(1, 'Select at least one category*').required('Category is required*'),
       delivery_method: Yup.string().required('Please select delivery method* '),
       quantity: Yup.number()
         .typeError('Quantity must be a number')
@@ -473,7 +473,6 @@ const Add = ({ data, error }) => {
             multiple
             id="category"
             options={category}
-            sx={{ width: 690, height: 42 }}
             value={formik.values.category}
             onBlur={formik.handleBlur}
             onChange={(event, value) => {
