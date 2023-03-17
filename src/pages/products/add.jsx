@@ -473,7 +473,6 @@ const Add = ({ data, error }) => {
             multiple
             id="category"
             options={category}
-            sx={{ width: 690, height: 42 }}
             value={formik.values.category}
             onBlur={formik.handleBlur}
             onChange={(event, value) => {
