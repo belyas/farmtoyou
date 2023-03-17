@@ -40,7 +40,7 @@
   .tableContainer {
     width: 100%;
   }
-  .table{
+  .table {
     display: grid;
     width: 350px;
   }
@@ -63,7 +63,7 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-     .tableContainer {
+  .tableContainer {
     width: 800px;
   }
   .tableHead {
@@ -79,24 +79,23 @@
     display: flex;
     justify-content: center;
   }
-    
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-    .tableContainer {
-        width: 900px;
-      }
-      .tableHead {
-        display: contents;
-      }
-      .paper {
-        display: grid;
-        justify-content: center;
-      }
-      .quantity_paper {
-        width: 100%;
-        margin: '0 auto';
-        display: flex;
-        justify-content: center;
-      }
+  .tableContainer {
+    width: 900px;
   }
+  .tableHead {
+    display: contents;
+  }
+  .paper {
+    display: grid;
+    justify-content: center;
+  }
+  .quantity_paper {
+    width: 100%;
+    margin: '0 auto';
+    display: flex;
+    justify-content: center;
+  }
+}

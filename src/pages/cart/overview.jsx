@@ -55,7 +55,6 @@ const CartOverview = () => {
             component="h1"
             variant="h4"
             align="center"
-            
           >
             Cart Overview
           </Typography>
@@ -119,8 +118,7 @@ const CartOverview = () => {
       >
         <Paper
           variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, width:"100%" }}
-          
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, width: '100%' }}
         >
           <h3>Total quantity: {cart.totalQuantity()}</h3>
           <h3>Total Price: {totalPrice} </h3>
