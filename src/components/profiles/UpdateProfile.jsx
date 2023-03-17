@@ -64,14 +64,13 @@ export default function UpdateProfile({
       lastName: profile.lastname || '',
       shopName: shop?.shop_name || '',
       shopDescription: shop?.shop_description || '',
-      shopLogo: shop?.shop_logo || '',
+      shopLogo: null,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().max(10).typeError('First name must be a string').required(),
       lastName: Yup.string().max(10).typeError('Last name must be a string').required(),
       shopName: Yup.string().max(20).typeError('Shop name must be a string').required(),
       shopDescription: Yup.string().max(100).required(),
-      shopLogo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
@@ -111,7 +110,10 @@ export default function UpdateProfile({
   const handlePhotoChange = event => {
     const file = event.target.files[0];
 
-    if (file) {
+    if (file.size > 1048576) {
+      alert('Image too big!');
+      farmerFormik.setFieldValue('shopLogo', null);
+    } else {
       farmerFormik.setFieldValue('shopLogo', file);
     }
   };
