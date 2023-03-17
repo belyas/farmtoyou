@@ -9,7 +9,6 @@ import { Alert } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { getURL } from '@/utils';
 import styles from '@/styles/edit.module.css';
-import { createFilterOptions } from '@mui/material/Autocomplete';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -46,15 +45,6 @@ export async function getServerSideProps(ctx) {
   } catch (error) {
     return { props: { data: 'Internal Server Error.', error, initialSession: session } };
   }
-}
-
-// const filterOptions = createFilterOptions({
-//   ignoreCase: ,
-//   stringify: option => option.title,
-// });
-
-{
-  /* <Autocomplete filterOptions={filterOptions} />; */
 }
 
 const Edit = ({ data, farmers }) => {
@@ -126,10 +116,17 @@ const Edit = ({ data, farmers }) => {
         .typeError('Quantity must be a number')
         .positive('Quantity must be greater than zero')
         .required('Quantity is required'),
-      photo: Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576),
+
+      //only validate photo size if photo is provided
+      // photo: Yup.optional().when(value => {
+      //   if (value) {
+      //     return Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576);
+      //   } else {
+      //     Yup.mixed().notRequired();
+      //   }
+      // }),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      alert('submit');
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('price', values.price);
@@ -152,9 +149,6 @@ const Edit = ({ data, farmers }) => {
           method: 'PUT',
           body: formData,
         });
-
-        console.log('res', response);
-        console.log('res data', response.body);
 
         if (!response.ok) {
           throw new Error('Failed to submit data');
@@ -218,6 +212,7 @@ const Edit = ({ data, farmers }) => {
   //handle photo change
   const handlePhotoChange = event => {
     const file = event.target.files[0];
+    console.log(file);
 
     formik.setFieldValue('photo', file);
   };
@@ -470,11 +465,11 @@ const Edit = ({ data, farmers }) => {
           )}
 
           <Autocomplete
-            isOptionEqualToValue={(option, value) => option.value === value.value}
             className={styles.autocomplete}
             multiple
             id="category"
             options={category}
+            getOptionLabel={option => option}
             sx={{ width: 300, margin: 1 }}
             value={formik.values.category}
             onBlur={formik.handleBlur}

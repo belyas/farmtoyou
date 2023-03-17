@@ -46,23 +46,19 @@ export default async function update(req, res) {
         error: err,
       });
     }
-    console.log('files', files);
-    console.log('_fields', _fields);
 
-    const photo = files['photo']?.newFilename;
-
-    console.log('photo', photo);
+    const newPhoto = files['photo']?.newFilename;
 
     const isEmptyBody = Object.keys(_fields).length === 0 ? true : false;
 
     if (isEmptyBody) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Request body must not be empty' });
     }
 
-    const { oldphoto, id, ...fields } = _fields;
-    console.log('fields', fields);
-    const product = photo ? { photo } : {};
+    const { oldphoto, id, photo, ...fields } = _fields;
+
+    const product = newPhoto ? { photo: newPhoto } : {};
 
     //Need to have all required fields
     const formFields = [
@@ -79,37 +75,32 @@ export default async function update(req, res) {
       'delivery_method',
     ];
 
-    const allFields = hasAllFields(Object.keys(fields), formFields);
-    console.log('allFields', allFields);
-
     if (!hasAllFields(Object.keys(fields), formFields)) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Need to have all required fields.' });
     }
 
     const emptyValue = hasEmptyValue(Object.values(fields));
 
     if (emptyValue) {
-      photo && removeUploadedPhoto(photo);
-
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'All fields must not be empty' });
     }
-    console.log(3);
+
     //clean description, title and photo strings
     product.description = fields.description.trim();
     product.title = fields.title.trim();
 
     //check date is in ISO format && is in future &&  end>start
     if (!isoDate(fields.subscription_end)) {
-      photo && removeUploadedPhoto(photo);
-      console.log(4);
+      newPhoto && removeUploadedPhoto(newPhoto);
+
       return res.status(400).json({ data: 'Date must be in ISO format,e.g.,2023-01-01' });
     }
     const isValidDate = isInFuture(fields.subscription_end);
 
     if (!isValidDate) {
-      console.log(5);
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: isValidDate.message });
     }
 
@@ -120,13 +111,11 @@ export default async function update(req, res) {
     const quantityIsPositiveInt = Math.sign(fields.quantity) === 1;
 
     if (!priceIsPositiveInt) {
-      console.log(6);
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Price must be a positive integer' });
     }
     if (!quantityIsPositiveInt) {
-      console.log(7);
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Quantity must be a positive integer' });
     }
     product.price = parseInt(fields.price);
@@ -135,7 +124,7 @@ export default async function update(req, res) {
     //check farmer exists in db and parse id into Int
     const farmerExists = await farmerFound(parseInt(fields.farmer_id));
     if (!farmerExists) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Farmer id must be valid' });
     }
     product.farmer_id = parseInt(fields.farmer_id);
@@ -145,20 +134,20 @@ export default async function update(req, res) {
     const deliveryDateInWeek =
       daysOfWeek.findIndex(day => day.toLowerCase() === fields.delivery_date.toLowerCase()) !== -1;
     if (!deliveryDateInWeek) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Delivery date must be a day of a week' });
     }
     product.delivery_date = fields.delivery_date.toLowerCase();
 
     if (parseInt(fields.subscription_frequency) !== 1) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Subscription frequency must be 1' });
     }
     product.subscription_frequency = parseInt(fields.subscription_frequency);
     product.organic = fields.organic;
 
     if (Number.isNaN(parseInt(fields.delivery_method))) {
-      photo && removeUploadedPhoto(photo);
+      newPhoto && removeUploadedPhoto(newPhoto);
       return res.status(400).json({ data: 'Choose a delivery method' });
     }
 
@@ -171,7 +160,7 @@ export default async function update(req, res) {
         throw typeof error === 'string' ? new Error(error) : error;
       }
 
-      if (photo && oldphoto && hasPhoto(oldphoto)) {
+      if (newPhoto && oldphoto && hasPhoto(oldphoto)) {
         removeUploadedPhoto(oldphoto);
       }
 
