@@ -20,6 +20,7 @@ import { CardMedia } from '@mui/material';
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import BreadCrumbs from '@/components/breadCrumbs';
+import styles from '@/styles/cartOverview.module.css';
 
 const theme = createTheme();
 
@@ -44,7 +45,7 @@ const CartOverview = () => {
       ></AppBar>
       <Container
         component="main"
-        sx={{ width: 900, margin: '0 auto' }}
+        className={styles.paper}
       >
         <Paper
           variant="outlined"
@@ -58,9 +59,12 @@ const CartOverview = () => {
             Cart Overview
           </Typography>
 
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
+          <TableContainer
+            component={Paper}
+            className={styles.tableContainer}
+          >
+            <Table className={styles.table}>
+              <TableHead className={styles.tableHead}>
                 <TableRow>
                   <TableCell align="right">ID</TableCell>
                   <TableCell align="right">Item Photo</TableCell>
@@ -110,11 +114,11 @@ const CartOverview = () => {
       </Container>
       <Container
         component="child"
-        sx={{ width: 900, margin: '0 auto' }}
+        className={styles.quantity_paper}
       >
         <Paper
           variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, width: '100%' }}
         >
           <h3>Total quantity: {cart.totalQuantity()}</h3>
           <h3>Total Price: {totalPrice} </h3>
