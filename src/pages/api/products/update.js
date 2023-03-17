@@ -47,6 +47,8 @@ export default async function update(req, res) {
       });
     }
 
+    console.log('fields', _fields);
+
     const newPhoto = files['photo']?.newFilename;
 
     const isEmptyBody = Object.keys(_fields).length === 0 ? true : false;

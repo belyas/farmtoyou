@@ -108,7 +108,7 @@ const Edit = ({ data, farmers }) => {
           const date = new Date(value);
           return !isNaN(date) && date >= new Date();
         }),
-      // photo: Yup.mixed(),
+
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required*'),
       category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
       delivery_method: Yup.string().required('Please select delivery method* '),
@@ -116,15 +116,6 @@ const Edit = ({ data, farmers }) => {
         .typeError('Quantity must be a number')
         .positive('Quantity must be greater than zero')
         .required('Quantity is required'),
-
-      //only validate photo size if photo is provided
-      // photo: Yup.optional().when(value => {
-      //   if (value) {
-      //     return Yup.mixed().test('photo-size', 'Photo exceeds 1 MB limit', value => value.size < 1048576);
-      //   } else {
-      //     Yup.mixed().notRequired();
-      //   }
-      // }),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const formData = new FormData();
@@ -212,9 +203,12 @@ const Edit = ({ data, farmers }) => {
   //handle photo change
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-    console.log(file);
-
-    formik.setFieldValue('photo', file);
+    if (file.size > 1048576) {
+      alert('Image is too big!');
+      formik.setFieldValue('photo', null);
+    } else {
+      formik.setFieldValue('photo', file);
+    }
   };
 
   return (
@@ -358,7 +352,8 @@ const Edit = ({ data, farmers }) => {
             htmlFor="file"
             className={styles.label}
           >
-            Photo:
+            Photo
+            <small> limit 1 MB</small>
             {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
           </InputLabel>
           <input
