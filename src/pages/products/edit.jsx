@@ -47,7 +47,7 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-const Edit = ({ data, farmers }) => {
+const Edit = ({ data }) => {
   const router = useRouter();
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const category = [
@@ -65,10 +65,12 @@ const Edit = ({ data, farmers }) => {
     'Seeds',
     'Beans and Legumes',
   ];
+
   const daysOfWeekFromBackend = daysOfWeek.map(day => day.toLowerCase());
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       title: data.title,
@@ -165,7 +167,9 @@ const Edit = ({ data, farmers }) => {
             });
             const data = await response.json();
             return data;
-          } catch (_) {}
+          } catch (error) {
+            setShowError(true);
+          }
         };
 
         // show success message
@@ -174,7 +178,7 @@ const Edit = ({ data, farmers }) => {
         // Redirect to /products page
         setTimeout(() => {
           router.push('/products');
-        }, 500);
+        }, 3 * 1000);
       } catch (error) {
         // show error message
         setShowError(true);
@@ -224,6 +228,7 @@ const Edit = ({ data, farmers }) => {
         open={showError}
         autoHideDuration={3000}
         onClose={() => setShowError(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="error">Failed to submit data</Alert>
       </Snackbar>
@@ -231,8 +236,9 @@ const Edit = ({ data, farmers }) => {
         open={showSuccess}
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="success">Successfully submitted data</Alert>
+        <Alert severity="success">Product updated!</Alert>
       </Snackbar>
       <Grid>
         <Grid>
@@ -353,7 +359,7 @@ const Edit = ({ data, farmers }) => {
             className={styles.label}
           >
             Photo
-            <small> limit 1 MB</small>
+            <small> Limit 1 MB</small>
             {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
           </InputLabel>
           <input
