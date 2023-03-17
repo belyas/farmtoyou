@@ -39,7 +39,7 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (!res.status === '204') {
+        if (!res.status === '201') {
           throw new Error('Failed to submit data');
         }
 
@@ -81,6 +81,7 @@ export default function UpdateProfile({
       formData.append('shopDescription', values.shopDescription);
       formData.append('profileId', profile.id);
       formData.append('farmerId', shop.id);
+      formData.append('oldShopLogo', shop.shop_logo);
 
       try {
         const res = await fetch(`${getURL()}api/profiles/update`, {
@@ -89,7 +90,7 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (res.status === 204) {
+        if (res.status === 201) {
           setShowSuccess(true);
           //todo better to just refresh this component than the whole page. Use state to manage profile
           setTimeout(() => {
