@@ -47,14 +47,30 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-const Edit = ({ data, farmers }) => {
+const Edit = ({ data }) => {
   const router = useRouter();
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const category = ['Fish', 'Meat', 'Fruits', 'Mashroom', 'Milk Products', 'Vegetables'];
+  const category = [
+    'Bakery',
+    'Meat',
+    'Dairy',
+    'Fruits',
+    'Vegetables',
+    'Flour',
+    'Rice and pasta',
+    'Oil',
+    'Coffee and tea',
+    'Wine and beer',
+    'Salt and spices',
+    'Seeds',
+    'Beans and Legumes',
+  ];
+
   const daysOfWeekFromBackend = daysOfWeek.map(day => day.toLowerCase());
   // For showing error or success messages
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       title: data.title,
@@ -94,7 +110,7 @@ const Edit = ({ data, farmers }) => {
           const date = new Date(value);
           return !isNaN(date) && date >= new Date();
         }),
-      // photo: Yup.mixed(),
+
       organic: Yup.string().oneOf(['Yes', 'No'], 'Please select Yes or No').required('Organic field is required*'),
       category: Yup.array().min(1, 'Please select at least one category*').required('Category is required*'),
       delivery_method: Yup.string().required('Please select delivery method* '),
@@ -122,7 +138,7 @@ const Edit = ({ data, farmers }) => {
 
       // Uploading and submitting FIle
       try {
-        const response = await fetch(`${getURL()}api/products`, {
+        const response = await fetch(`${getURL()}api/products/update`, {
           method: 'PUT',
           body: formData,
         });
@@ -145,13 +161,15 @@ const Edit = ({ data, farmers }) => {
           formData.append('photo', dataToUpdateProduct.photo, dataToUpdateProduct.photo.name);
 
           try {
-            const response = await fetch(`${getURL()}api/products`, {
+            const response = await fetch(`${getURL()}api/products/update`, {
               method: 'PUT',
               body: formData,
             });
             const data = await response.json();
             return data;
-          } catch (_) {}
+          } catch (error) {
+            setShowError(true);
+          }
         };
 
         // show success message
@@ -160,7 +178,7 @@ const Edit = ({ data, farmers }) => {
         // Redirect to /products page
         setTimeout(() => {
           router.push('/products');
-        }, 500);
+        }, 3 * 1000);
       } catch (error) {
         // show error message
         setShowError(true);
@@ -189,8 +207,12 @@ const Edit = ({ data, farmers }) => {
   //handle photo change
   const handlePhotoChange = event => {
     const file = event.target.files[0];
-
-    formik.setFieldValue('photo', file);
+    if (file.size > 1048576) {
+      alert('Image is too big!');
+      formik.setFieldValue('photo', null);
+    } else {
+      formik.setFieldValue('photo', file);
+    }
   };
 
   return (
@@ -206,6 +228,7 @@ const Edit = ({ data, farmers }) => {
         open={showError}
         autoHideDuration={3000}
         onClose={() => setShowError(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="error">Failed to submit data</Alert>
       </Snackbar>
@@ -213,8 +236,9 @@ const Edit = ({ data, farmers }) => {
         open={showSuccess}
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="success">Successfully submitted data</Alert>
+        <Alert severity="success">Product updated!</Alert>
       </Snackbar>
       <Grid>
         <Grid>
@@ -334,7 +358,8 @@ const Edit = ({ data, farmers }) => {
             htmlFor="file"
             className={styles.label}
           >
-            Photo:
+            Photo
+            <small> Limit 1 MB</small>
             {formik.touched.photo && formik.errors.photo && <span style={{ color: 'red' }}>{formik.errors.photo}</span>}
           </InputLabel>
           <input
@@ -445,6 +470,7 @@ const Edit = ({ data, farmers }) => {
             multiple
             id="category"
             options={category}
+            getOptionLabel={option => option}
             sx={{ width: 300, margin: 1 }}
             value={formik.values.category}
             onBlur={formik.handleBlur}

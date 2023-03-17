@@ -7,10 +7,12 @@ const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess 
         open={showError}
         autoHideDuration={3000}
         onClose={() => setShowError(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="error">Failed to submit data</Alert>
       </Snackbar>
       <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={showSuccess}
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
