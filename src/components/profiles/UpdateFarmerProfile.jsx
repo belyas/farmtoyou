@@ -22,12 +22,15 @@ const UpdateFarmerProfile = ({ formik, handlePhotoChange, showError, showSuccess
           item
           md={6}
         >
-          <label htmlFor="firstName">First Name</label>
-          {formik.touched.firstName && formik.errors.firstName ? (
-            <span style={{ color: 'red' }}>{formik.errors.firstName} </span>
-          ) : (
-            ''
-          )}
+          <label htmlFor="firstName">
+            First Name
+            {formik.touched.firstName && formik.errors.firstName ? (
+              <span style={{ color: 'red' }}>{formik.errors.firstName} </span>
+            ) : (
+              ''
+            )}
+          </label>
+
           <input
             type="text"
             id="firstName"
@@ -41,12 +44,15 @@ const UpdateFarmerProfile = ({ formik, handlePhotoChange, showError, showSuccess
           item
           md={6}
         >
-          <label htmlFor="lastName">Last Name</label>
-          {formik.touched.lastName && formik.errors.lastName ? (
-            <span style={{ color: 'red' }}>{formik.errors.lastName} </span>
-          ) : (
-            ''
-          )}
+          <label htmlFor="lastName">
+            Last Name
+            {formik.touched.lastName && formik.errors.lastName ? (
+              <span style={{ color: 'red' }}>{formik.errors.lastName} </span>
+            ) : (
+              ''
+            )}
+          </label>
+
           <input
             type="text"
             id="lastName"

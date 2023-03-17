@@ -45,11 +45,14 @@ export default function UpdateProfile({
           setTimeout(() => {
             router.reload();
           }, 1000);
+
+          setSubmitting(false);
+        } else {
+          setShowError(true);
         }
       } catch (error) {
         setShowError(true);
       }
-      setSubmitting(false);
     },
   });
 

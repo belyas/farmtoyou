@@ -18,7 +18,7 @@ const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess 
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
       >
-        <Alert severity="success">Profile updated! </Alert>
+        <Alert severity="success">Information updated! </Alert>
       </Snackbar>
     </>
   );
