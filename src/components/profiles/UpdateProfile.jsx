@@ -39,18 +39,13 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (!res.status === '201') {
-          throw new Error('Failed to submit data');
+        if (res.ok) {
+          setShowSuccess(true);
+
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
         }
-
-        setShowSuccess(true);
-
-        //todo better to just refresh this component than the whole page. Use state to manage profile
-        setTimeout(() => {
-          router.reload();
-        }, 500);
-
-        setEdit(edit => !edit);
       } catch (error) {
         setShowError(true);
       }
@@ -90,14 +85,12 @@ export default function UpdateProfile({
           header: { 'content-type': 'multipart/form-data' },
         });
 
-        if (res.status === 201) {
+        if (res.ok) {
           setShowSuccess(true);
-          //todo better to just refresh this component than the whole page. Use state to manage profile
           setTimeout(() => {
             router.reload();
           }, 1000);
 
-          setEdit(edit => !edit);
           setSubmitting(false);
         } else {
           setShowError(true);

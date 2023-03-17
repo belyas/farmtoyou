@@ -1,6 +1,7 @@
 import { Snackbar, Alert } from '@mui/material';
 
 const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess }) => {
+  console.log(showSuccess);
   return (
     <>
       <Snackbar
@@ -9,7 +10,7 @@ const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess 
         onClose={() => setShowError(false)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="error">Failed to submit data</Alert>
+        <Alert severity="error">Something went wrong...</Alert>
       </Snackbar>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -17,7 +18,7 @@ const ProfileSnackBar = ({ showError, showSuccess, setShowError, setShowSuccess 
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
       >
-        <Alert severity="success">Successfully submitted data</Alert>
+        <Alert severity="success">Profile updated! </Alert>
       </Snackbar>
     </>
   );
