@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import Products from '@/components/products';
+import { Typography } from '@mui/material';
 
 export async function getServerSideProps(ctx) {
   const supabase = createServerSupabaseClient(ctx);
@@ -14,9 +15,7 @@ export async function getServerSideProps(ctx) {
 
 const SearchPage = ({ data }) => {
   return (
-    <>
-      <Products productsData={data} />
-    </>
+    <>{data.length ? <Products productsData={data} /> : <Typography variant="body1">No results found.</Typography>}</>
   );
 };
 
