@@ -219,6 +219,7 @@ export default function Checkout() {
 
       // Check the response status of the orders API call
       if (!ordersResponse.ok) {
+        setShowError(true);
         throw new Error('Error submitting orders data');
       }
 
@@ -233,6 +234,7 @@ export default function Checkout() {
 
       // Check the response status of the payment API call
       if (!paymentResponse.ok) {
+        setShowError(true);
         throw new Error('Error submitting payment data');
       }
 
@@ -247,6 +249,7 @@ export default function Checkout() {
 
       // Check the response status of the address API call
       if (!addressResponse.ok) {
+        setShowError(true);
         throw new Error('Error submitting address data');
       }
 
@@ -271,21 +274,24 @@ export default function Checkout() {
         open={showError}
         autoHideDuration={3000}
         onClose={() => setShowError(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="error">Failed to submit data</Alert>
+        <Alert severity="error">Something went wrong...</Alert>
       </Snackbar>
       <Snackbar
         open={showSuccess}
         autoHideDuration={3000}
         onClose={() => setShowSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="success">Successfully submitted data</Alert>
+        <Alert severity="success">Order placed!</Alert>
       </Snackbar>
 
       <Snackbar
         open={errorMessage}
         autoHideDuration={3000}
         onClose={() => setErrorMessage(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="error">Add Required Fields* (Phone contains 10 to 13 digits)</Alert>
       </Snackbar>
@@ -293,6 +299,7 @@ export default function Checkout() {
         open={successMessage}
         autoHideDuration={3000}
         onClose={() => setSuccessMessage(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="success">Next</Alert>
       </Snackbar>
@@ -301,6 +308,7 @@ export default function Checkout() {
         open={errorPaymentMessage}
         autoHideDuration={3000}
         onClose={() => setErrorPaymentMessage(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="error">Add Required Fields* (card:16 digits && ExpDate: MM/YY && Cvv: 3 digits)</Alert>
       </Snackbar>
@@ -308,6 +316,7 @@ export default function Checkout() {
         open={successPaymentMessage}
         autoHideDuration={3000}
         onClose={() => setSuccessPaymentMessage(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity="success">Next</Alert>
       </Snackbar>
