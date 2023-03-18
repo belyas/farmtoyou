@@ -55,7 +55,7 @@ export const Header = () => {
             variant="h6"
             noWrap
             component="a"
-            onClick={route.push('/')}
+            onClick={() => route.push('/')}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -119,7 +119,7 @@ export const Header = () => {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            onClick={() => route.push('/')}
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
