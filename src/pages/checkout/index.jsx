@@ -107,9 +107,9 @@ export default function Checkout({ savedAddress, savedPayment }) {
   };
 
   const initialPaymentState = {
-    cardName: '',
-    cardNumber: '',
-    expireDate: '',
+    cardName: savedPayment?.card_holder || '',
+    cardNumber: savedPayment ? `${'*'.repeat(12)}${savedPayment?.card_number}` : '',
+    expireDate: savedPayment?.expiration_date || '',
     cvv: '',
     focus: false,
   };
@@ -234,33 +234,65 @@ export default function Checkout({ savedAddress, savedPayment }) {
       }
 
       // Submit payment data to payment API
-      const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...paymentData, profile_id }),
-      });
-
-      // Check the response status of the payment API call
-      if (!paymentResponse.ok) {
-        setShowError(true);
-        throw new Error('Error submitting payment data');
+      //if has saved payment, use "put" method
+      if (savedPayment) {
+        const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...paymentData, profile_id }),
+        });
+        // Check the response status of the payment API call
+        if (!paymentResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting payment data');
+        }
+      } else {
+        //use post method
+        const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...paymentData, profile_id }),
+        });
+        if (!paymentResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting payment data');
+        }
       }
 
       // Submit address data to address API
-      const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...addressData, profile_id }),
-      });
+      //if has saved address, update it with "put" method
+      if (savedAddress) {
+        const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...addressData, profile_id }),
+        });
 
-      // Check the response status of the address API call
-      if (!addressResponse.ok) {
-        setShowError(true);
-        throw new Error('Error submitting address data');
+        // Check the response status of the address API call
+        if (!addressResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting address data');
+        }
+      } else {
+        const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...addressData, profile_id }),
+        });
+
+        // Check the response status of the address API call
+        if (!addressResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting address data');
+        }
       }
 
       // Remove cart data from local storage

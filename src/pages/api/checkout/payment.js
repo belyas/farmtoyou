@@ -22,7 +22,7 @@ export default async function payment(req, res) {
     }
 
     try {
-      const { error } = await supabase.from('payments').create(newPayment);
+      const { error } = await supabase.from('payments').insert(newPayment);
       if (error) {
         return res.status(500).json({ data: 'Internal server error' }, error);
       }
