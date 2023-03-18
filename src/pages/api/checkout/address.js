@@ -3,6 +3,8 @@ import { supabase } from '../../../utils/supabaseClient';
 export default async function address(req, res) {
   try {
     const addressDetail = req.body;
+    console.log('address', addressDetail);
+
     if (!addressDetail.profile_id) {
       res.status(400).json({ success: false, error: 'Profile not found' });
       return res;
