@@ -10,9 +10,9 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import AddressForm from '@/components/checkout/AddressForm';
+import PaymentForm from '@/components/checkout/PaymentForm';
+import Review from '@/components/checkout/Review';
 import * as Yup from 'yup';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
@@ -37,73 +37,83 @@ export async function getServerSideProps(ctx) {
     };
   }
 
-  try {
-    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
+  // try {
+  //   let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
 
-    if (error) {
-      throw typeof error === 'string' ? new Error(error) : error;
+  //   if (error) {
+  //     throw typeof error === 'string' ? new Error(error) : error;
+  //   }
+
+  //   return { props: { data, initialSession: session } };
+  // } catch (error) {
+  //   return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
+  // }
+
+  let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
+  let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
+
+  return {
+    props: {
+      savedPayment: paymentResult.data,
+      savedAddress: addressResult.data,
+    },
+  };
+}
+
+export default function Checkout({ savedAddress, savedPayment }) {
+  const steps = ['Shipping address', 'Payment details', 'Review your order'];
+
+  function GetStepContent(step, cart, { setAddressData, addressData, paymentData, setPaymentData }) {
+    switch (step) {
+      case 0:
+        return (
+          <AddressForm
+            setAddressData={setAddressData}
+            addressData={addressData}
+          />
+        );
+      case 1:
+        return (
+          <PaymentForm
+            setPaymentData={setPaymentData}
+            paymentData={paymentData}
+          />
+        );
+      case 2:
+        return (
+          <Review
+            paymentData={paymentData}
+            cart={cart}
+            addressData={addressData}
+          />
+        );
+      default:
+        throw new Error('Unknown step');
     }
-
-    return { props: { data, initialSession: session } };
-  } catch (error) {
-    return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
   }
-}
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+  const theme = createTheme();
 
-function GetStepContent(step, cart, { setAddressData, addressData, paymentData, setPaymentData }) {
-  switch (step) {
-    case 0:
-      return (
-        <AddressForm
-          setAddressData={setAddressData}
-          addressData={addressData}
-        />
-      );
-    case 1:
-      return (
-        <PaymentForm
-          setPaymentData={setPaymentData}
-          paymentData={paymentData}
-        />
-      );
-    case 2:
-      return (
-        <Review
-          paymentData={paymentData}
-          cart={cart}
-          addressData={addressData}
-        />
-      );
-    default:
-      throw new Error('Unknown step');
-  }
-}
+  const initialAddressState = {
+    firstName: savedAddress?.firstname || '',
+    lastName: savedAddress?.lastname || '',
+    address1: savedAddress?.address1 || '',
+    address2: savedAddress?.address2 || '',
+    city: savedAddress?.city || '',
+    province: savedAddress?.province || '',
+    code_postal: savedAddress?.code_postal || '',
+    country: savedAddress?.country || '',
+    phone: savedAddress?.phone || '',
+  };
 
-const theme = createTheme();
+  const initialPaymentState = {
+    cardName: '',
+    cardNumber: '',
+    expireDate: '',
+    cvv: '',
+    focus: false,
+  };
 
-const initialAddressState = {
-  firstName: '',
-  lastName: '',
-  address1: '',
-  address2: '',
-  city: '',
-  province: '',
-  code_postal: '',
-  country: '',
-  phone: '',
-};
-
-const initialPaymentState = {
-  cardName: '',
-  cardNumber: '',
-  expireDate: '',
-  cvv: '',
-  focus: false,
-};
-
-export default function Checkout() {
   const user = useUser();
   const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
