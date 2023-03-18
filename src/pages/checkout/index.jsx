@@ -97,8 +97,8 @@ export default function Checkout({ savedAddress, savedPayment }) {
   const initialAddressState = {
     firstName: savedAddress?.firstname || '',
     lastName: savedAddress?.lastname || '',
-    address1: savedAddress?.address1 || '',
-    address2: savedAddress?.address2 || '',
+    address1: savedAddress?.address_1 || '',
+    address2: savedAddress?.address_2 || '',
     city: savedAddress?.city || '',
     province: savedAddress?.province || '',
     code_postal: savedAddress?.code_postal || '',
