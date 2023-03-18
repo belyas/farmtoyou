@@ -232,7 +232,30 @@ export default function Checkout({ savedAddress, savedPayment }) {
         setShowError(true);
         throw new Error('Error submitting orders data');
       }
+      //construct addressdata in the format api accepts
+      console.log('addresss data from form', addressData);
+      const address = {
+        firstname: addressData.firstName,
+        lastname: addressData.lastName,
+        address_1: addressData.address1,
+        address_2: addressData.address2,
+        city: addressData.city,
+        province: addressData.province,
+        country: addressData.country,
+        phone: addressData.phone,
+        code_postal: addressData.code_postal,
+        profile_id: profile_id,
+      };
 
+      //construct paymentData in the format api accepts
+      console.log('payment data from form', paymentData);
+      const payment = {
+        card_holder: paymentData.cardName,
+        card_number: paymentData.cardNumber,
+        card_cvv: paymentData.cvv,
+        expiration_date: paymentData.expireDate,
+        profile_id: profile_id,
+      };
       // Submit payment data to payment API
       //if has saved payment, use "put" method
       if (savedPayment) {
@@ -241,7 +264,7 @@ export default function Checkout({ savedAddress, savedPayment }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...paymentData, profile_id }),
+          body: JSON.stringify(payment),
         });
         // Check the response status of the payment API call
         if (!paymentResponse.ok) {
@@ -255,7 +278,7 @@ export default function Checkout({ savedAddress, savedPayment }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...paymentData, profile_id }),
+          body: JSON.stringify(payment),
         });
         if (!paymentResponse.ok) {
           setShowError(true);
@@ -271,7 +294,7 @@ export default function Checkout({ savedAddress, savedPayment }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...addressData, profile_id }),
+          body: JSON.stringify(address),
         });
 
         // Check the response status of the address API call
@@ -285,7 +308,7 @@ export default function Checkout({ savedAddress, savedPayment }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...addressData, profile_id }),
+          body: JSON.stringify(address),
         });
 
         // Check the response status of the address API call
