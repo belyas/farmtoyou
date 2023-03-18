@@ -11,7 +11,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      expirationDate: payment?.card_holder || '',
+      cardHolder: payment?.card_holder || '',
       cardNumber: payment ? `${'*'.repeat(12)}${payment?.card_number}` : '',
       expirationDate: payment?.expiration_date || '',
       cvv: '',
@@ -28,7 +28,7 @@ export default function UpdatePayment({ payment, setEdit, showError, setShowErro
       const formData = {};
 
       formData.profile_id = payment.profile_id;
-      formData.card_holder = values.expirationDate;
+      formData.card_holder = values.cardHolder;
       formData.card_number = values.cardNumber;
       formData.card_cvv = values.cvv;
       formData.expiration_date = values.expirationDate;

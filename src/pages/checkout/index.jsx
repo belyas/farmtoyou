@@ -10,9 +10,9 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import AddressForm from '@/components/checkout/AddressForm';
+import PaymentForm from '@/components/checkout/PaymentForm';
+import Review from '@/components/checkout/Review';
 import * as Yup from 'yup';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
@@ -37,73 +37,83 @@ export async function getServerSideProps(ctx) {
     };
   }
 
-  try {
-    let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
+  // try {
+  //   let { error, data } = await supabase.from('farmer').select('id').eq('profile_id', session.user.id);
 
-    if (error) {
-      throw typeof error === 'string' ? new Error(error) : error;
+  //   if (error) {
+  //     throw typeof error === 'string' ? new Error(error) : error;
+  //   }
+
+  //   return { props: { data, initialSession: session } };
+  // } catch (error) {
+  //   return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
+  // }
+
+  let paymentResult = await supabase.from('payments_cencored').select('*').eq('profile_id', session.user.id).single();
+  let addressResult = await supabase.from('addresses').select('*').eq('profile_id', session.user.id).single();
+
+  return {
+    props: {
+      savedPayment: paymentResult.data,
+      savedAddress: addressResult.data,
+    },
+  };
+}
+
+export default function Checkout({ savedAddress, savedPayment }) {
+  const steps = ['Shipping address', 'Payment details', 'Review your order'];
+
+  function GetStepContent(step, cart, { setAddressData, addressData, paymentData, setPaymentData }) {
+    switch (step) {
+      case 0:
+        return (
+          <AddressForm
+            setAddressData={setAddressData}
+            addressData={addressData}
+          />
+        );
+      case 1:
+        return (
+          <PaymentForm
+            setPaymentData={setPaymentData}
+            paymentData={paymentData}
+          />
+        );
+      case 2:
+        return (
+          <Review
+            paymentData={paymentData}
+            cart={cart}
+            addressData={addressData}
+          />
+        );
+      default:
+        throw new Error('Unknown step');
     }
-
-    return { props: { data, initialSession: session } };
-  } catch (error) {
-    return { props: { data: 'Internal Server Error.', error: error.message, initialSession: session } };
   }
-}
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+  const theme = createTheme();
 
-function GetStepContent(step, cart, { setAddressData, addressData, paymentData, setPaymentData }) {
-  switch (step) {
-    case 0:
-      return (
-        <AddressForm
-          setAddressData={setAddressData}
-          addressData={addressData}
-        />
-      );
-    case 1:
-      return (
-        <PaymentForm
-          setPaymentData={setPaymentData}
-          paymentData={paymentData}
-        />
-      );
-    case 2:
-      return (
-        <Review
-          paymentData={paymentData}
-          cart={cart}
-          addressData={addressData}
-        />
-      );
-    default:
-      throw new Error('Unknown step');
-  }
-}
+  const initialAddressState = {
+    firstName: savedAddress?.firstname || '',
+    lastName: savedAddress?.lastname || '',
+    address1: savedAddress?.address_1 || '',
+    address2: savedAddress?.address_2 || '',
+    city: savedAddress?.city || '',
+    province: savedAddress?.province || '',
+    code_postal: savedAddress?.code_postal || '',
+    country: savedAddress?.country || '',
+    phone: savedAddress?.phone || '',
+  };
 
-const theme = createTheme();
+  const initialPaymentState = {
+    cardName: savedPayment?.card_holder || '',
+    cardNumber: savedPayment ? `${'*'.repeat(12)}${savedPayment?.card_number}` : '',
+    expireDate: savedPayment?.expiration_date || '',
+    cvv: '',
+    focus: false,
+  };
 
-const initialAddressState = {
-  firstName: '',
-  lastName: '',
-  address1: '',
-  address2: '',
-  city: '',
-  province: '',
-  code_postal: '',
-  country: '',
-  phone: '',
-};
-
-const initialPaymentState = {
-  cardName: '',
-  cardNumber: '',
-  expireDate: '',
-  cvv: '',
-  focus: false,
-};
-
-export default function Checkout() {
   const user = useUser();
   const { cart } = useContext(CartContext);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -222,35 +232,90 @@ export default function Checkout() {
         setShowError(true);
         throw new Error('Error submitting orders data');
       }
+      //construct addressdata in the format api accepts
+      console.log('addresss data from form', addressData);
+      const address = {
+        firstname: addressData.firstName,
+        lastname: addressData.lastName,
+        address_1: addressData.address1,
+        address_2: addressData.address2,
+        city: addressData.city,
+        province: addressData.province,
+        country: addressData.country,
+        phone: addressData.phone,
+        code_postal: addressData.code_postal,
+        profile_id: profile_id,
+      };
 
+      //construct paymentData in the format api accepts
+      console.log('payment data from form', paymentData);
+      const payment = {
+        card_holder: paymentData.cardName,
+        card_number: paymentData.cardNumber,
+        card_cvv: paymentData.cvv,
+        expiration_date: paymentData.expireDate,
+        profile_id: profile_id,
+      };
       // Submit payment data to payment API
-      const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...paymentData, profile_id }),
-      });
-
-      // Check the response status of the payment API call
-      if (!paymentResponse.ok) {
-        setShowError(true);
-        throw new Error('Error submitting payment data');
+      //if has saved payment, use "put" method
+      if (savedPayment) {
+        const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        // Check the response status of the payment API call
+        if (!paymentResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting payment data');
+        }
+      } else {
+        //use post method
+        const paymentResponse = await fetch(`${getURL()}api/checkout/payment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payment),
+        });
+        if (!paymentResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting payment data');
+        }
       }
 
       // Submit address data to address API
-      const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...addressData, profile_id }),
-      });
+      //if has saved address, update it with "put" method
+      if (savedAddress) {
+        const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(address),
+        });
 
-      // Check the response status of the address API call
-      if (!addressResponse.ok) {
-        setShowError(true);
-        throw new Error('Error submitting address data');
+        // Check the response status of the address API call
+        if (!addressResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting address data');
+        }
+      } else {
+        const addressResponse = await fetch(`${getURL()}api/checkout/address`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(address),
+        });
+
+        // Check the response status of the address API call
+        if (!addressResponse.ok) {
+          setShowError(true);
+          throw new Error('Error submitting address data');
+        }
       }
 
       // Remove cart data from local storage
